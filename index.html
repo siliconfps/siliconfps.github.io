@@ -223,6 +223,15 @@
             position: relative; z-index: 1;
             margin-bottom: 16px;
         }
+        .card-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.12);
+            position: relative; z-index: 1;
+            transition: transform 0.3s;
+        }
+        .card:hover .card-img { transform: scale(1.02); }
         .card .lang {
             display: inline-block;
             padding: 5px 14px; border-radius: 14px;
@@ -330,6 +339,7 @@
             <div class="card-icon">🎮</div>
             <h3><a href="https://github.com/siliconfps/xfce4-gpu-plugin" target="_blank" rel="noopener">xfce4-gpu-plugin</a></h3>
             <p>Monitor de GPU para o ambiente XFCE. Acompanhe temperatura, frequência e uso da sua placa de vídeo direto no painel.</p>
+            <img src="xfcemonitor.png" alt="Demonstração da extensão XFCE GPU Monitor" class="card-img">
             <span class="lang">Shell</span>
         </div>
 
@@ -344,6 +354,7 @@
             <div class="card-icon">⚡</div>
             <h3><a href="https://github.com/siliconfps/xfce4-cpu-plugin" target="_blank" rel="noopener">xfce4-cpu-plugin</a></h3>
             <p>Monitor de CPU para XFCE. Visualize carga, frequência e temperatura do processador no seu painel.</p>
+            <img src="xfcemonitor.png" alt="Demonstração da extensão XFCE CPU Monitor" class="card-img">
             <span class="lang">Shell</span>
         </div>
 

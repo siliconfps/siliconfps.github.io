@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Flappy Bird 3D - Three.js</title>
+    <style>
+        :root {
+            --bg: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #score-display {
+            margin-top: clamp(20px, 6vh, 60px);
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow:
+                3px 3px 0 #00000044,
+                -1px -1px 0 #00000033,
+                0 0 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            z-index: 10;
+            transition: transform 0.1s ease;
+        }
+
+        #score-display.pop {
+            transform: scale(1.25);
+        }
+
+        #message-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        #message-text {
+            font-size: clamp(18px, 3.5vw, 28px);
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.45);
+            padding: 16px 32px;
+            border-radius: 40px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.04);
+            }
+        }
+
+        #best-score {
+            margin-top: 6px;
+            font-size: clamp(14px, 2.2vw, 20px);
+            font-weight: 600;
+            color: #ffeaa7;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-layer">
+            <div id="score-display">0</div>
+            <div id="best-score"></div>
+            <div id="message-center">
+                <span id="message-text">🕊️ Clique para voar!</span>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // ==================== DOM ELEMENTS ====================
+        const container = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const bestScoreDisplay = document.getElementById('best-score');
+        const messageText = document.getElementById('message-text');
+        const messageCenter = document.getElementById('message-center');
+
+        // ==================== CONSTANTS ====================
+        const GRAVITY = 16;
+        const FLAP_VELOCITY = 7.2;
+        const PIPE_SPEED = 3.2;
+        const PIPE_WIDTH = 0.55;
+        const PIPE_DEPTH = 0.45;
+        const LIP_WIDTH = 0.75;
+        const LIP_HEIGHT = 0.22;
+        const LIP_DEPTH = 0.55;
+        const GAP_SIZE = 2.7;
+        const BIRD_RADIUS = 0.32;
+        const BIRD_X = -2.2;
+        const FLOOR_Y = -4.2;
+        const CEILING_Y = 4.2;
+        const PIPE_SPAWN_INTERVAL = 1.7;
+
+        // ==================== THREE.JS SETUP ====================
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+        container.appendChild(renderer.domElement);
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#87CEEB');
+        scene.fog = new THREE.Fog('#87CEEB', 15, 50);
+
+        // Orthographic camera
+        const frustumSize = 10;
+        let aspect = window.innerWidth / window.innerHeight;
+        const camera = new THREE.OrthographicCamera(
+            -frustumSize * aspect / 2,
+            frustumSize * aspect / 2,
+            frustumSize / 2,
+            -frustumSize / 2,
+            0.1,
+            100
+        );
+        camera.position.set(0, 0.3, 10);
+        camera.lookAt(0, 0, 0);
+
+        // ==================== LIGHTING ====================
+        const ambientLight = new THREE.AmbientLight('#bcd4f5', 1.8);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.DirectionalLight('#fffef5', 4.5);
+        sunLight.position.set(8, 12, 6);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        sunLight.shadow.camera.near = 0.5;
+        sunLight.shadow.camera.far = 60;
+        sunLight.shadow.camera.left = -15;
+        sunLight.shadow.camera.right = 15;
+        sunLight.shadow.camera.top = 10;
+        sunLight.shadow.camera.bottom = -10;
+        sunLight.shadow.bias = -0.0001;
+        sunLight.shadow.normalBias = 0.02;
+        scene.add(sunLight);
+
+        const fillLight = new THREE.DirectionalLight('#c8e0ff', 2.0);
+        fillLight.position.set(-3, 2, -2);
+        scene.add(fillLight);
+
+        // ==================== GROUND ====================
+        const groundGroup = new THREE.Group();
+        scene.add(groundGroup);
+
+        // Main ground
+        const groundGeo = new THREE.BoxGeometry(30, 0.6, 3);
+        const groundMat = new THREE.MeshStandardMaterial({
+            color: '#7B5E3B',
+            roughness: 0.85,
+            metalness: 0.05
+        });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.position.y = FLOOR_Y - 0.3;
+        ground.receiveShadow = true;
+        ground.castShadow = true;
+        groundGroup.add(ground);
+
+        // Grass layer
+        const grassGeo = new THREE.BoxGeometry(30, 0.18, 3.2);
+        const grassMat = new THREE.MeshStandardMaterial({
+            color: '#5D9B3A',
+            roughness: 0.7,
+            metalness: 0.02
+        });
+        const grass = new THREE.Mesh(grassGeo, grassMat);
+        grass.position.y = FLOOR_Y + 0.04;
+        grass.receiveShadow = true;
+        groundGroup.add(grass);
+
+        // Decorative grass blades (simple)
+        for (let i = -14; i <= 14; i += 0.7) {
+            const bladeGeo = new THREE.BoxGeometry(0.06, 0.25, 0.06);
+            const bladeMat = new THREE.MeshStandardMaterial({
+                color: new THREE.Color().setHSL(0.25 + Math.random() * 0.1, 0.7, 0.35 + Math.random() * 0.2),
+                roughness: 0.6
+            });
+            const blade = new THREE.Mesh(bladeGeo, bladeMat);
+            blade.position.set(i, FLOOR_Y + 0.2, (Math.random() - 0.5) * 2.8);
+            blade.rotation.z = (Math.random() - 0.5) * 0.3;
+            blade.rotation.x = (Math.random() - 0.5) * 0.3;
+            blade.castShadow = true;
+            blade.receiveShadow = true;
+            blade.userData = { baseX: i, baseZ: blade.position.z, phase: Math.random() * Math.PI * 2 };
+            groundGroup.add(blade);
+        }
+
+        // ==================== CLOUDS ====================
+        const cloudsGroup = new THREE.Group();
+        scene.add(cloudsGroup);
+        const cloudPositions = [
+            { x: -6, y: 2.8, z: -3, s: 1.2 },
+            { x: 0, y: 3.5, z: -4, s: 0.9 },
+            { x: 5, y: 2.2, z: -3.5, s: 1.4 },
+            { x: -3, y: 3.9, z: -5, s: 1.0 },
+            { x: 7, y: 3.1, z: -4.5, s: 1.1 },
+            { x: -8, y: 2.5, z: -3.8, s: 1.3 },
+        ];
+
+        cloudPositions.forEach(pos => {
+            const cloudGroup = new THREE.Group();
+            const cloudMat = new THREE.MeshStandardMaterial({
+                color: '#ffffff',
+                roughness: 0.95,
+                metalness: 0
+            });
+            const parts = [
+                { x: 0, y: 0, z: 0, r: 0.5 },
+                { x: 0.55, y: 0.15, z: 0.1, r: 0.4 },
+                { x: -0.5, y: 0.1, z: -0.1, r: 0.42 },
+                { x: 0.2, y: 0.45, z: 0, r: 0.35 },
+                { x: -0.25, y: 0.4, z: -0.05, r: 0.33 },
+            ];
+            parts.forEach(p => {
+                const sphereGeo = new THREE.SphereGeometry(p.r * pos.s, 8, 6);
+                const sphere = new THREE.Mesh(sphereGeo, cloudMat);
+                sphere.position.set(p.x * pos.s, p.y * pos.s, p.z * pos.s);
+                sphere.castShadow = false;
+                sphere.receiveShadow = false;
+                cloudGroup.add(sphere);
+            });
+            cloudGroup.position.set(pos.x, pos.y, pos.z);
+            cloudGroup.scale.setScalar(pos.s);
+            cloudGroup.userData = {
+                baseX: pos.x,
+                speed: 0.15 + Math.random() * 0.3,
+                amplitude: 0.3 + Math.random() * 0.5,
+                phase: Math.random() * Math.PI * 2
+            };
+            cloudsGroup.add(cloudGroup);
+        });
+
+        // ==================== BIRD CREATION ====================
+        const birdGroup = new THREE.Group();
+        scene.add(birdGroup);
+
+        // Body
+        const bodyGeo = new THREE.SphereGeometry(BIRD_RADIUS, 24, 20);
+        const bodyMat = new THREE.MeshStandardMaterial({
+            color: '#FFD93D',
+            roughness: 0.35,
+            metalness: 0.05
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.castShadow = true;
+        body.receiveShadow = true;
+        birdGroup.add(body);
+
+        // Belly (slightly lighter)
+        const bellyGeo = new THREE.SphereGeometry(BIRD_RADIUS * 0.75, 16, 12);
+        const bellyMat = new THREE.MeshStandardMaterial({
+            color: '#FFF5CC',
+            roughness: 0.4,
+            metalness: 0.02
+        });
+        const belly = new THREE.Mesh(bellyGeo, bellyMat);
+        belly.position.set(0.06, -0.08, 0.18);
+        belly.scale.set(0.85, 0.7, 0.5);
+        birdGroup.add(belly);
+
+        // Eyes
+        const eyeWhiteGeo = new THREE.SphereGeometry(0.1, 12, 8);
+        const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: '#FFFFFF', roughness: 0.1, metalness: 0 });
+        const eyeWhite = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+        eyeWhite.position.set(0.14, 0.1, 0.26);
+        birdGroup.add(eyeWhite);
+
+        const pupilGeo = new THREE.SphereGeometry(0.06, 8, 6);
+        const pupilMat = new THREE.MeshStandardMaterial({ color: '#111111', roughness: 0.05, metalness: 0.1 });
+        const pupil = new THREE.Mesh(pupilGeo, pupilMat);
+        pupil.position.set(0.18, 0.1, 0.31);
+        birdGroup.add(pupil);
+
+        // Second eye (other side, slightly visible)
+        const eyeWhite2 = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+        eyeWhite2.position.set(0.14, 0.1, -0.22);
+        eyeWhite2.scale.setScalar(0.85);
+        birdGroup.add(eyeWhite2);
+        const pupil2 = new THREE.Mesh(pupilGeo, pupilMat);
+        pupil2.position.set(0.18, 0.1, -0.26);
+        pupil2.scale.setScalar(0.85);
+        birdGroup.add(pupil2);
+
+        // Beak
+        const beakGeo = new THREE.ConeGeometry(0.09, 0.22, 8, 6);
+        const beakMat = new THREE.MeshStandardMaterial({
+            color: '#F27D16',
+            roughness: 0.3,
+            metalness: 0.05
+        });
+        const beak = new THREE.Mesh(beakGeo, beakMat);
+        beak.position.set(0.3, 0.0, 0);
+        beak.rotation.z = -Math.PI / 2;
+        beak.castShadow = true;
+        birdGroup.add(beak);
+
+        // Wings
+        const wingGroup = new THREE.Group();
+        birdGroup.add(wingGroup);
+
+        const wingGeo = new THREE.BoxGeometry(0.14, 0.3, 0.55, 2, 4, 2);
+        const wingMat = new THREE.MeshStandardMaterial({
+            color: '#F0C420',
+            roughness: 0.4,
+            metalness: 0.03
+        });
+
+        const wingLeft = new THREE.Mesh(wingGeo, wingMat);
+        wingLeft.position.set(0, 0.05, 0.32);
+        wingLeft.castShadow = true;
+        wingLeft.receiveShadow = true;
+        wingGroup.add(wingLeft);
+
+        const wingRight = new THREE.Mesh(wingGeo, wingMat);
+        wingRight.position.set(0, 0.05, -0.32);
+        wingRight.castShadow = true;
+        wingRight.receiveShadow = true;
+        wingGroup.add(wingRight);
+
+        // Tail feathers
+        const tailGroup = new THREE.Group();
+        tailGroup.position.set(-0.28, -0.05, 0);
+        birdGroup.add(tailGroup);
+        for (let i = -1; i <= 1; i++) {
+            const tailGeo = new THREE.BoxGeometry(0.08, 0.1, 0.35);
+            const tailMat = new THREE.MeshStandardMaterial({
+                color: '#E8B820',
+                roughness: 0.45,
+                metalness: 0.03
+            });
+            const tail = new THREE.Mesh(tailGeo, tailMat);
+            tail.position.set(0, i * 0.06, i * 0.2);
+            tail.rotation.x = -0.35;
+            tail.rotation.z = i * 0.15;
+            tail.castShadow = true;
+            tailGroup.add(tail);
+        }
+
+        // ==================== PIPE SYSTEM ====================
+        const pipesParent = new THREE.Group();
+        scene.add(pipesParent);
+        const activePipes = [];
+
+        function createPipePair(x, gapCenterY) {
+            const pairGroup = new THREE.Group();
+            pairGroup.position.set(x, 0, 0);
+
+            const gapTop = gapCenterY + GAP_SIZE / 2;
+            const gapBottom = gapCenterY - GAP_SIZE / 2;
+
+            // Top pipe (extends from gapTop to CEILING_Y)
+            const topPipeHeight = CEILING_Y - gapTop;
+            const topPipeY = gapTop + topPipeHeight / 2;
+
+            // Bottom pipe (extends from FLOOR_Y to gapBottom)
+            const bottomPipeHeight = gapBottom - FLOOR_Y;
+            const bottomPipeY = gapBottom - bottomPipeHeight / 2;
+
+            // Pipe material
+            const pipeBodyMat = new THREE.MeshStandardMaterial({
+                color: '#3CB878',
+                roughness: 0.5,
+                metalness: 0.1
+            });
+            const pipeLipMat = new THREE.MeshStandardMaterial({
+                color: '#2D9D5F',
+                roughness: 0.45,
+                metalness: 0.12
+            });
+            const pipeInnerMat = new THREE.MeshStandardMaterial({
+                color: '#258B4F',
+                roughness: 0.55,
+                metalness: 0.08
+            });
+
+            // --- TOP PIPE ---
+            const topPipeGroup = new THREE.Group();
+            const topBodyGeo = new THREE.BoxGeometry(PIPE_WIDTH, topPipeHeight, PIPE_DEPTH);
+            const topBody = new THREE.Mesh(topBodyGeo, pipeBodyMat);
+            topBody.position.y = topPipeY;
+            topBody.castShadow = true;
+            topBody.receiveShadow = true;
+            topPipeGroup.add(topBody);
+
+            // Top pipe lip (at bottom)
+            const topLipGeo = new THREE.BoxGeometry(LIP_WIDTH, LIP_HEIGHT, LIP_DEPTH);
+            const topLip = new THREE.Mesh(topLipGeo, pipeLipMat);
+            topLip.position.y = gapTop + LIP_HEIGHT / 2;
+            topLip.castShadow = true;
+            topLip.receiveShadow = true;
+            topPipeGroup.add(topLip);
+
+            // Inner shadow on lip
+            const topLipInnerGeo = new THREE.BoxGeometry(LIP_WIDTH - 0.12, LIP_HEIGHT * 0.5, LIP_DEPTH - 0.08);
+            const topLipInner = new THREE.Mesh(topLipInnerGeo, pipeInnerMat);
+            topLipInner.position.y = gapTop + LIP_HEIGHT / 2;
+            topLipInner.position.z = 0;
+            topPipeGroup.add(topLipInner);
+
+            pairGroup.add(topPipeGroup);
+
+            // --- BOTTOM PIPE ---
+            const bottomPipeGroup = new THREE.Group();
+            const bottomBodyGeo = new THREE.BoxGeometry(PIPE_WIDTH, bottomPipeHeight, PIPE_DEPTH);
+            const bottomBody = new THREE.Mesh(bottomBodyGeo, pipeBodyMat);
+            bottomBody.position.y = bottomPipeY;
+            bottomBody.castShadow = true;
+            bottomBody.receiveShadow = true;
+            bottomPipeGroup.add(bottomBody);
+
+            // Bottom pipe lip (at top)
+            const bottomLipGeo = new THREE.BoxGeometry(LIP_WIDTH, LIP_HEIGHT, LIP_DEPTH);
+            const bottomLip = new THREE.Mesh(bottomLipGeo, pipeLipMat);
+            bottomLip.position.y = gapBottom - LIP_HEIGHT / 2;
+            bottomLip.castShadow = true;
+            bottomLip.receiveShadow = true;
+            bottomPipeGroup.add(bottomLip);
+
+            // Inner shadow on lip
+            const bottomLipInnerGeo = new THREE.BoxGeometry(LIP_WIDTH - 0.12, LIP_HEIGHT * 0.5, LIP_DEPTH - 0.08);
+            const bottomLipInner = new THREE.Mesh(bottomLipInnerGeo, pipeInnerMat);
+            bottomLipInner.position.y = gapBottom - LIP_HEIGHT / 2;
+            bottomPipeGroup.add(bottomLipInner);
+
+            pairGroup.add(bottomPipeGroup);
+
+            pipesParent.add(pairGroup);
+
+            const pipeData = {
+                group: pairGroup,
+                topGroup: topPipeGroup,
+                bottomGroup: bottomPipeGroup,
+                scored: false,
+                gapCenterY: gapCenterY,
+                gapTop: gapTop,
+                gapBottom: gapBottom,
+            };
+            activePipes.push(pipeData);
+            return pipeData;
+        }
+
+        function removePipe(pipeData) {
+            pipesParent.remove(pipeData.group);
+            // Dispose geometries and materials
+            pipeData.group.traverse(child => {
+                if (child.geometry && child.geometry !== groundGeo && child.geometry !== grassGeo &&
+                    child.geometry !== bodyGeo && child.geometry !== wingGeo) {
+                    child.geometry.dispose();
+                }
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(m => m.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            });
+        }
+
+        function clearAllPipes() {
+            while (activePipes.length > 0) {
+                const pipe = activePipes.pop();
+                removePipe(pipe);
+            }
+        }
+
+        // ==================== GAME STATE ====================
+        const state = {
+            status: 'waiting', // 'waiting' | 'playing' | 'gameover'
+            score: 0,
+            bestScore: 0,
+            birdY: 0,
+            birdVelocityY: 0,
+            birdRotationZ: 0,
+            pipeSpawnTimer: 0,
+            gameOverTimer: 0,
+            shakeTimer: 0,
+            shakeIntensity: 0,
+            wingFlapTimer: 0,
+            wingFlapSpeed: 12,
+        };
+
+        // Load best score
+        try {
+            const saved = localStorage.getItem('flappy3d_best');
+            if (saved !== null) {
+                state.bestScore = parseInt(saved, 10) || 0;
+            }
+        } catch (e) {
+            state.bestScore = 0;
+        }
+        bestScoreDisplay.textContent = state.bestScore > 0 ? `🏆 Melhor: ${state.bestScore}` : '';
+
+        // ==================== HELPER FUNCTIONS ====================
+        function getSpawnX() {
+            return frustumSize * aspect / 2 + 1.5;
+        }
+
+        function getDespawnX() {
+            return -frustumSize * aspect / 2 - 2;
+        }
+
+        function getRandomGapCenter() {
+            const minGap = FLOOR_Y + GAP_SIZE / 2 + 0.5;
+            const maxGap = CEILING_Y - GAP_SIZE / 2 - 0.5;
+            return minGap + Math.random() * (maxGap - minGap);
+        }
+
+        function getBirdWorldBox() {
+            const box = new THREE.Box3().setFromObject(birdGroup);
+            // Shrink hitbox slightly for fairness
+            const shrink = 0.08;
+            box.min.x += shrink;
+            box.max.x -= shrink;
+            box.min.y += shrink;
+            box.max.y -= shrink;
+            box.min.z += shrink;
+            box.max.z -= shrink;
+            return box;
+        }
+
+        function getPipeBoxes(pipeData) {
+            const topBox = new THREE.Box3().setFromObject(pipeData.topGroup);
+            const bottomBox = new THREE.Box3().setFromObject(pipeData.bottomGroup);
+            // Slight shrink for fairness
+            const s = 0.04;
+            [topBox, bottomBox].forEach(b => {
+                b.min.x += s;
+                b.max.x -= s;
+                b.min.y += s;
+                b.max.y -= s;
+            });
+            return { topBox, bottomBox };
+        }
+
+        function checkCollision(pipeData) {
+            const birdBox = getBirdWorldBox();
+            const { topBox, bottomBox } = getPipeBoxes(pipeData);
+            return birdBox.intersectsBox(topBox) || birdBox.intersectsBox(bottomBox);
+        }
+
+        // ==================== GAME ACTIONS ====================
+        function flap() {
+            if (state.status === 'waiting') {
+                state.status = 'playing';
+                state.birdVelocityY = FLAP_VELOCITY;
+                state.pipeSpawnTimer = 0;
+                state.score = 0;
+                scoreDisplay.textContent = '0';
+                scoreDisplay.classList.remove('pop');
+                messageCenter.style.display = 'none';
+                clearAllPipes();
+                state.birdY = 0;
+                birdGroup.position.set(BIRD_X, 0, 0);
+                birdGroup.rotation.z = 0;
+                state.birdRotationZ = 0;
+                state.shakeTimer = 0;
+                state.shakeIntensity = 0;
+                state.gameOverTimer = 0;
+                return;
+            }
+
+            if (state.status === 'playing') {
+                state.birdVelocityY = FLAP_VELOCITY;
+                state.wingFlapSpeed = 20;
+                state.wingFlapTimer = 0;
+                // Quick upward rotation
+                state.birdRotationZ = 0.35;
+                return;
+            }
+
+            if (state.status === 'gameover' && state.gameOverTimer > 0.55) {
+                resetGame();
+                return;
+            }
+        }
+
+        function resetGame() {
+            state.status = 'waiting';
+            state.score = 0;
+            state.birdY = 0;
+            state.birdVelocityY = 0;
+            state.birdRotationZ = 0;
+            state.pipeSpawnTimer = 0;
+            state.gameOverTimer = 0;
+            state.shakeTimer = 0;
+            state.shakeIntensity = 0;
+            state.wingFlapTimer = 0;
+            state.wingFlapSpeed = 12;
+            scoreDisplay.textContent = '0';
+            scoreDisplay.classList.remove('pop');
+            birdGroup.position.set(BIRD_X, 0, 0);
+            birdGroup.rotation.set(0, 0, 0);
+            birdGroup.scale.set(1, 1, 1);
+            bodyMat.color.set('#FFD93D');
+            clearAllPipes();
+            messageCenter.style.display = 'block';
+            messageText.textContent = '🕊️ Clique para voar!';
+            camera.position.set(0, 0.3, 10);
+            camera.lookAt(0, 0, 0);
+            bestScoreDisplay.textContent = state.bestScore > 0 ? `🏆 Melhor: ${state.bestScore}` : '';
+        }
+
+        function triggerGameOver() {
+            if (state.status !== 'playing') return;
+            state.status = 'gameover';
+            state.gameOverTimer = 0;
+            state.shakeTimer = 0.4;
+            state.shakeIntensity = 0.25;
+            bodyMat.color.set('#FF6B6B');
+            birdGroup.scale.set(1.08, 1.08, 1.08);
+
+            // Update best score
+            if (state.score > state.bestScore) {
+                state.bestScore = state.score;
+                try {
+                    localStorage.setItem('flappy3d_best', state.bestScore);
+                } catch (e) { /* ignore */ }
+                bestScoreDisplay.textContent = `🏆 Melhor: ${state.bestScore}`;
+            }
+
+            messageCenter.style.display = 'block';
+            messageText.textContent = `💀 Fim de jogo! Placar: ${state.score}`;
+        }
+
+        function addScore(pipeData) {
+            if (!pipeData.scored) {
+                pipeData.scored = true;
+                state.score++;
+                scoreDisplay.textContent = state.score;
+                // Pop animation
+                scoreDisplay.classList.add('pop');
+                setTimeout(() => scoreDisplay.classList.remove('pop'), 100);
+            }
+        }
+
+        // ==================== INPUT HANDLERS ====================
+        function handlePointerDown(e) {
+            e.preventDefault();
+            window.focus();
+            flap();
+        }
+        renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+        container.addEventListener('pointerdown', handlePointerDown);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+                e.preventDefault();
+                flap();
+            }
+        });
+
+        // Prevent double-tap zoom on mobile
+        document.addEventListener('touchstart', (e) => {
+            if (e.target === renderer.domElement || container.contains(e.target)) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }
+        }, { passive: false });
+
+        // ==================== RESIZE HANDLER ====================
+        window.addEventListener('resize', () => {
+            aspect = window.innerWidth / window.innerHeight;
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.left = -frustumSize * aspect / 2;
+            camera.right = frustumSize * aspect / 2;
+            camera.top = frustumSize / 2;
+            camera.bottom = -frustumSize / 2;
+            camera.updateProjectionMatrix();
+        });
+
+        // ==================== GAME LOOP ====================
+        const clock = new THREE.Clock();
+        let elapsedTotal = 0;
+
+        function animate(timestamp) {
+            requestAnimationFrame(animate);
+
+            let dt = clock.getDelta();
+            if (dt > 0.15) dt = 0.15; // Cap to avoid large jumps
+            if (dt <= 0) dt = 0.016;
+
+            elapsedTotal += dt;
+
+            // --- UPDATE BASED ON STATE ---
+            if (state.status === 'waiting') {
+                // Gentle floating animation
+                state.birdY = Math.sin(elapsedTotal * 2.5) * 0.35;
+                birdGroup.position.set(BIRD_X, state.birdY, 0);
+                birdGroup.rotation.z = Math.sin(elapsedTotal * 2.5) * 0.08;
+                // Gentle wing flap
+                state.wingFlapTimer += dt;
+                const wingAngle = Math.sin(state.wingFlapTimer * 8) * 0.25;
+                wingLeft.rotation.x = wingAngle;
+                wingRight.rotation.x = -wingAngle;
+            }
+
+            if (state.status === 'playing') {
+                // Gravity
+                state.birdVelocityY -= GRAVITY * dt;
+                state.birdY += state.birdVelocityY * dt;
+
+                // Clamp to floor/ceiling
+                if (state.birdY < FLOOR_Y + BIRD_RADIUS) {
+                    state.birdY = FLOOR_Y + BIRD_RADIUS;
+                    state.birdVelocityY = 0;
+                    triggerGameOver();
+                } else if (state.birdY > CEILING_Y - BIRD_RADIUS) {
+                    state.birdY = CEILING_Y - BIRD_RADIUS;
+                    state.birdVelocityY = 0;
+                    triggerGameOver();
+                }
+
+                birdGroup.position.set(BIRD_X, state.birdY, 0);
+
+                // Bird rotation based on velocity
+                const targetRotZ = Math.max(-0.7, Math.min(0.4, state.birdVelocityY * 0.12));
+                state.birdRotationZ += (targetRotZ - state.birdRotationZ) * Math.min(dt * 8, 1);
+                birdGroup.rotation.z = state.birdRotationZ;
+
+                // Wing flap animation
+                state.wingFlapSpeed += (12 - state.wingFlapSpeed) * dt * 6; // Return to normal
+                state.wingFlapTimer += dt;
+                const wingFreq = state.wingFlapSpeed;
+                const wingAmp = Math.min(0.7, Math.abs(state.birdVelocityY) * 0.08 + 0.35);
+                const wingAngle = Math.sin(state.wingFlapTimer * wingFreq) * wingAmp;
+                wingLeft.rotation.x = wingAngle;
+                wingRight.rotation.x = -wingAngle;
+
+                // Move pipes
+                for (const pipe of activePipes) {
+                    pipe.group.position.x -= PIPE_SPEED * dt;
+                }
+
+                // Check collisions
+                for (const pipe of activePipes) {
+                    if (checkCollision(pipe)) {
+                        triggerGameOver();
+                        break;
+                    }
+                }
+
+                // Check scoring
+                for (const pipe of activePipes) {
+                    if (!pipe.scored && birdGroup.position.x > pipe.group.position.x + PIPE_WIDTH / 2) {
+                        addScore(pipe);
+                    }
+                }
+
+                // Remove off-screen pipes
+                const despawnX = getDespawnX();
+                for (let i = activePipes.length - 1; i >= 0; i--) {
+                    if (activePipes[i].group.position.x < despawnX) {
+                        const removed = activePipes.splice(i, 1)[0];
+                        removePipe(removed);
+                    }
+                }
+
+                // Spawn new pipes
+                state.pipeSpawnTimer += dt;
+                if (state.pipeSpawnTimer >= PIPE_SPAWN_INTERVAL) {
+                    state.pipeSpawnTimer -= PIPE_SPAWN_INTERVAL;
+                    const spawnX = getSpawnX();
+                    const gapCenter = getRandomGapCenter();
+                    createPipePair(spawnX, gapCenter);
+                }
+            }
+
+            if (state.status === 'gameover') {
+                state.gameOverTimer += dt;
+
+                // Bird falls
+                if (state.birdY > FLOOR_Y + BIRD_RADIUS) {
+                    state.birdVelocityY -= GRAVITY * dt;
+                    state.birdY += state.birdVelocityY * dt;
+                    if (state.birdY <= FLOOR_Y + BIRD_RADIUS) {
+                        state.birdY = FLOOR_Y + BIRD_RADIUS;
+                        state.birdVelocityY = 0;
+                    }
+                }
+                birdGroup.position.set(BIRD_X, state.birdY, 0);
+
+                // Rotate bird downward
+                const targetRotZ = -0.8;
+                state.birdRotationZ += (targetRotZ - state.birdRotationZ) * Math.min(dt * 5, 1);
+                birdGroup.rotation.z = state.birdRotationZ;
+
+                // Wings droop
+                wingLeft.rotation.x += (-0.6 - wingLeft.rotation.x) * dt * 4;
+                wingRight.rotation.x += (0.6 - wingRight.rotation.x) * dt * 4;
+
+                // Update message when bird settles
+                if (state.gameOverTimer > 0.55 && state.birdY <= FLOOR_Y + BIRD_RADIUS + 0.1) {
+                    messageText.textContent = `💀 Placar: ${state.score} — Clique para recomeçar`;
+                }
+            }
+
+            // --- SHAKE CAMERA ---
+            if (state.shakeTimer > 0) {
+                state.shakeTimer -= dt;
+                const intensity = state.shakeIntensity * (state.shakeTimer / 0.4);
+                const shakeX = (Math.random() - 0.5) * intensity * 2;
+                const shakeY = (Math.random() - 0.5) * intensity * 2;
+                camera.position.set(shakeX, 0.3 + shakeY, 10);
+                if (state.shakeTimer <= 0) {
+                    camera.position.set(0, 0.3, 10);
+                }
+            }
+
+            // --- ANIMATE CLOUDS ---
+            cloudsGroup.children.forEach(cloud => {
+                cloud.userData.phase += dt * cloud.userData.speed;
+                cloud.position.x = cloud.userData.baseX + Math.sin(cloud.userData.phase) * cloud.userData
+                    .amplitude;
+            });
+
+            // --- ANIMATE GRASS BLADES ---
+            groundGroup.children.forEach(child => {
+                if (child.userData && child.userData.baseX !== undefined) {
+                    child.userData.phase += dt * (1.5 + Math.sin(child.userData.baseX) * 0.8);
+                    child.rotation.z = Math.sin(child.userData.phase) * 0.2;
+                    child.position.x = child.userData.baseX + Math.sin(child.userData.phase * 0.7) * 0.1;
+                }
+            });
+
+            // --- RENDER ---
+            renderer.render(scene, camera);
+        }
+
+        // ==================== INITIALIZATION ====================
+        function init() {
+            birdGroup.position.set(BIRD_X, 0, 0);
+            birdGroup.rotation.set(0, 0, 0);
+            state.birdY = 0;
+            state.birdVelocityY = 0;
+            messageCenter.style.display = 'block';
+            messageText.textContent = '🕊️ Clique para voar!';
+            scoreDisplay.textContent = '0';
+            bestScoreDisplay.textContent = state.bestScore > 0 ? `🏆 Melhor: ${state.bestScore}` : '';
+            clearAllPipes();
+
+            // Spawn initial pipes for preview (far away)
+            const spawnX = getSpawnX();
+            createPipePair(spawnX + 2.5, getRandomGapCenter());
+            createPipePair(spawnX + 5.5, getRandomGapCenter());
+        }
+
+        init();
+        requestAnimationFrame(animate);
+
+        console.log('🐦 Flappy Bird 3D pronto!');
+        console.log('  - Clique/toque na tela ou pressione ESPAÇO para voar');
+        console.log('  - Passe pelos canos verdes para marcar pontos');
+        console.log('  - Evite bater nos canos, no chão ou no teto');
+        console.log('✨ Divirta-se!');
+    </script>
+</body>
+</html>

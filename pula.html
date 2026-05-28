@@ -329,7 +329,7 @@
             <h3>🏆 Ranking</h3>
             <ul id="leaderboard-list"></ul>
             <div id="leaderboard-empty">Nenhuma pontuação ainda. Jogue!</div>
-            <div id="leaderboard-storage-warn" style="display:none;color:#ffa726;font-size:0.8rem;margin-top:6px;text-align:center;">Modo offline — pontuações não serão salvas ao fechar.</div>
+            <div id="leaderboard-storage-warn" style="display:none;color:#ffa726;font-size:0.8rem;margin-top:6px;text-align:center;">Sem conexão — ranking indisponível.</div>
             <button id="leaderboard-clear">Limpar ranking</button>
         </div>
 
@@ -350,13 +350,17 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
             }
         }
     </script>
 
     <script type="module">
         import * as THREE from 'three';
+        import { initializeApp } from 'firebase/app';
+        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
         // ==================== DOM ELEMENTS ====================
         const container = document.getElementById('game-container');
@@ -795,98 +799,132 @@
         }
         bestScoreDisplay.textContent = state.bestScore > 0 ? `🏆 Melhor: ${state.bestScore}` : '';
 
-        // ==================== LEADERBOARD FUNCTIONS ====================
-        const LEADERBOARD_KEY = 'flappy3d_leaderboard';
-        const NAME_MEMORY_KEY = 'flappy3d_lastname';
-        const MAX_LEADERBOARD_ENTRIES = 10;
-        let leaderboardData = [];
-        let pendingScore = 0;
-        let lastAddedName = null;
-        let storageAvailable = true;         // set to false if localStorage is blocked
-        let memFallback = {};                // in-memory fallback when localStorage fails
+        // ==================== FIREBASE INIT ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqLToVRD3qdWDkowyXYHY9REhtyRndlJQ",
+            authDomain: "siliconfps.firebaseapp.com",
+            projectId: "siliconfps",
+            storageBucket: "siliconfps.firebasestorage.app",
+            messagingSenderId: "111048209537",
+            appId: "1:111048209537:web:e6583958433585f7740980"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ==================== LOCAL STORAGE HELPERS (best score + name memory) ====================
+        let storageAvailable = true;
+        let memFallback = {};
 
         function storageGet(key) {
             if (!storageAvailable) return memFallback[key] || null;
             try {
                 var val = localStorage.getItem(key);
-                if (val !== null) memFallback[key] = val; // sync fallback cache
+                if (val !== null) memFallback[key] = val;
                 return val;
             } catch (e) {
-                console.warn('[Leaderboard] localStorage read failed, switching to in-memory mode:', e.message);
+                console.warn('[Storage] localStorage read failed, switching to in-memory mode:', e.message);
                 storageAvailable = false;
                 return memFallback[key] || null;
             }
         }
 
         function storageSet(key, value) {
-            memFallback[key] = value; // always update in-memory cache
+            memFallback[key] = value;
             if (!storageAvailable) return;
             try {
                 localStorage.setItem(key, value);
             } catch (e) {
-                console.warn('[Leaderboard] localStorage write failed, switching to in-memory mode:', e.message);
+                console.warn('[Storage] localStorage write failed, switching to in-memory mode:', e.message);
                 storageAvailable = false;
             }
         }
 
-        function loadLeaderboard() {
+        // ==================== LEADERBOARD FUNCTIONS (Firestore) ====================
+        const LEADERBOARD_COLLECTION = 'leaderboard';
+        const NAME_MEMORY_KEY = 'flappy3d_lastname';
+        const MAX_LEADERBOARD_ENTRIES = 10;
+        let leaderboardData = [];
+        let pendingScore = 0;
+        let lastAddedName = null;
+        let firestoreOnline = true;
+
+        async function loadLeaderboard() {
             try {
-                var raw = storageGet(LEADERBOARD_KEY);
-                leaderboardData = raw ? JSON.parse(raw) : [];
-                if (!Array.isArray(leaderboardData)) leaderboardData = [];
-                leaderboardData.sort(function(a, b) { return b.score - a.score; });
+                const q = query(
+                    collection(db, LEADERBOARD_COLLECTION),
+                    orderBy('score', 'desc'),
+                    limit(MAX_LEADERBOARD_ENTRIES)
+                );
+                const snapshot = await getDocs(q);
+                leaderboardData = snapshot.docs.map(doc => doc.data());
+                firestoreOnline = true;
             } catch (e) {
-                console.warn('[Leaderboard] Parse error, resetting data:', e.message);
-                leaderboardData = [];
+                console.warn('[Leaderboard] Firestore load failed:', e.message);
+                firestoreOnline = false;
             }
-        }
-
-        function saveLeaderboard(data) {
-            storageSet(LEADERBOARD_KEY, JSON.stringify(data));
-        }
-
-        function getExistingIndex(name) {
-            const key = name.trim().toLowerCase();
-            return leaderboardData.findIndex(e => e.name.toLowerCase() === key);
-        }
-
-        function addToLeaderboard(name, score) {
-            const cleanName = name.trim() || 'Anônimo';
-            const existingIdx = getExistingIndex(cleanName);
-
-            if (existingIdx !== -1) {
-                // Same name already exists — only keep the higher score
-                if (score > leaderboardData[existingIdx].score) {
-                    leaderboardData[existingIdx].score = score;
-                    leaderboardData[existingIdx].date = Date.now();
-                    lastAddedName = leaderboardData[existingIdx].name;
-                } else {
-                    // New score is not better, but still track the name
-                    lastAddedName = leaderboardData[existingIdx].name;
-                }
-            } else {
-                // New name — add entry
-                leaderboardData.push({ name: cleanName, score, date: Date.now() });
-                lastAddedName = cleanName;
-            }
-
-            // Sort, trim, save
-            leaderboardData.sort((a, b) => b.score - a.score);
-            leaderboardData = leaderboardData.slice(0, MAX_LEADERBOARD_ENTRIES);
-            saveLeaderboard(leaderboardData);
             renderLeaderboard();
         }
 
-        function isHighScore(score) {
+        async function addToLeaderboard(name, score) {
+            const cleanName = name.trim() || 'Anônimo';
+            const nameKey = cleanName.toLowerCase();
+            try {
+                const q = query(
+                    collection(db, LEADERBOARD_COLLECTION),
+                    where('nameKey', '==', nameKey)
+                );
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    const doc = snapshot.docs[0];
+                    if (score > doc.data().score) {
+                        await updateDoc(doc.ref, { score, date: Date.now() });
+                    }
+                    lastAddedName = doc.data().name;
+                } else {
+                    await addDoc(collection(db, LEADERBOARD_COLLECTION), {
+                        name: cleanName,
+                        nameKey,
+                        score,
+                        date: Date.now()
+                    });
+                    lastAddedName = cleanName;
+                }
+                // Trim to top 10
+                const allQ = query(collection(db, LEADERBOARD_COLLECTION), orderBy('score', 'desc'));
+                const allSnapshot = await getDocs(allQ);
+                if (allSnapshot.docs.length > MAX_LEADERBOARD_ENTRIES) {
+                    for (const doc of allSnapshot.docs.slice(MAX_LEADERBOARD_ENTRIES)) {
+                        await deleteDoc(doc.ref);
+                    }
+                }
+                firestoreOnline = true;
+            } catch (e) {
+                console.warn('[Leaderboard] Firestore write failed:', e.message);
+                firestoreOnline = false;
+            }
+            await loadLeaderboard();
+        }
+
+        async function isHighScore(score) {
             if (score <= 0) return false;
-            // Always worth checking — there's room, or beats the #10 spot
-            if (leaderboardData.length < MAX_LEADERBOARD_ENTRIES) return true;
-            return score > leaderboardData[leaderboardData.length - 1].score;
+            try {
+                const q = query(
+                    collection(db, LEADERBOARD_COLLECTION),
+                    orderBy('score', 'desc'),
+                    limit(MAX_LEADERBOARD_ENTRIES)
+                );
+                const snapshot = await getDocs(q);
+                if (snapshot.docs.length < MAX_LEADERBOARD_ENTRIES) return true;
+                const lowest = snapshot.docs[snapshot.docs.length - 1].data();
+                return score > lowest.score;
+            } catch (e) {
+                return false;
+            }
         }
 
         function renderLeaderboard() {
             leaderboardList.innerHTML = '';
-            leaderboardStorageWarn.style.display = storageAvailable ? 'none' : 'block';
+            leaderboardStorageWarn.style.display = firestoreOnline ? 'none' : 'block';
             if (leaderboardData.length === 0) {
                 leaderboardEmpty.style.display = 'block';
                 return;
@@ -913,19 +951,16 @@
             const visible = leaderboardPanel.classList.toggle('visible');
             leaderboardBtn.textContent = visible ? '✕ Fechar' : '🏆 Ranking';
             if (visible) {
-                leaderboardStorageWarn.style.display = storageAvailable ? 'none' : 'block';
-                renderLeaderboard();
+                leaderboardStorageWarn.style.display = firestoreOnline ? 'none' : 'block';
+                loadLeaderboard();
             }
         }
 
         function showNameInput(score) {
             pendingScore = score;
             nameInputScore.textContent = score;
-
-            // Pre-fill with last used name
-            let lastName = storageGet(NAME_MEMORY_KEY) || '';
+            const lastName = storageGet(NAME_MEMORY_KEY) || '';
             nameInputField.value = lastName;
-
             nameInputOverlay.classList.add('visible');
             setTimeout(() => {
                 nameInputField.focus();
@@ -939,26 +974,32 @@
             lastAddedName = null;
         }
 
-        function submitName() {
+        async function submitName() {
             const name = nameInputField.value.trim() || 'Anônimo';
-            // Remember this name for next time
             storageSet(NAME_MEMORY_KEY, name);
             if (pendingScore > 0) {
-                addToLeaderboard(name, pendingScore);
+                await addToLeaderboard(name, pendingScore);
             }
             hideNameInput();
             leaderboardPanel.classList.add('visible');
             leaderboardBtn.textContent = '✕ Fechar';
-            renderLeaderboard();
         }
 
         function skipNameInput() {
             hideNameInput();
         }
 
-        function clearLeaderboard() {
-            leaderboardData = [];
-            saveLeaderboard(leaderboardData);
+        async function clearLeaderboard() {
+            try {
+                const q = query(collection(db, LEADERBOARD_COLLECTION));
+                const snapshot = await getDocs(q);
+                for (const doc of snapshot.docs) {
+                    await deleteDoc(doc.ref);
+                }
+                leaderboardData = [];
+            } catch (e) {
+                console.warn('[Leaderboard] Clear failed:', e.message);
+            }
             renderLeaderboard();
             leaderboardEmpty.style.display = 'block';
         }
@@ -1141,9 +1182,11 @@
             }
 
             // Show name input if qualifies for leaderboard
-            if (isHighScore(state.score)) {
-                setTimeout(() => showNameInput(state.score), 400);
-            }
+            isHighScore(state.score).then(function(qualifies) {
+                if (qualifies) {
+                    setTimeout(function() { showNameInput(state.score); }, 400);
+                }
+            });
 
             messageCenter.style.display = 'block';
             messageText.textContent = `💀 Fim de jogo! Placar: ${state.score}`;

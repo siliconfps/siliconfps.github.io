@@ -118,6 +118,197 @@
             letter-spacing: 1px;
             opacity: 0.9;
         }
+
+        /* ── Leaderboard Toggle Button ── */
+        #leaderboard-btn {
+            position: absolute;
+            top: clamp(10px, 2vh, 20px);
+            right: clamp(10px, 2vw, 20px);
+            pointer-events: auto;
+            z-index: 30;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-size: clamp(11px, 1.5vw, 14px);
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        #leaderboard-btn:hover { background: rgba(0,0,0,0.65); }
+
+        /* ── Leaderboard Panel ── */
+        #leaderboard-panel {
+            position: absolute;
+            top: 50%;
+            right: clamp(10px, 3vw, 30px);
+            transform: translateY(-50%);
+            pointer-events: auto;
+            z-index: 25;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 18px 20px;
+            min-width: 200px;
+            max-width: 260px;
+            color: #fff;
+            display: none;
+        }
+        #leaderboard-panel.visible { display: block; }
+        #leaderboard-panel h3 {
+            text-align: center;
+            font-size: clamp(13px, 1.6vw, 16px);
+            margin-bottom: 10px;
+            color: #ffeaa7;
+            letter-spacing: 1px;
+        }
+        #leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #leaderboard-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 8px;
+            font-size: clamp(11px, 1.3vw, 13px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            letter-spacing: 0.5px;
+        }
+        #leaderboard-list li:last-child { border-bottom: none; }
+        #leaderboard-list li.highlight {
+            background: rgba(85, 239, 196, 0.15);
+            border-radius: 6px;
+            animation: highlightPulse 0.6s ease-in-out 2;
+        }
+        @keyframes highlightPulse {
+            0%, 100% { background: rgba(85, 239, 196, 0.15); }
+            50% { background: rgba(85, 239, 196, 0.35); }
+        }
+        #leaderboard-list li .rank {
+            font-weight: 800;
+            color: #ffeaa7;
+            margin-right: 8px;
+            min-width: 20px;
+        }
+        #leaderboard-list li .name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 8px;
+        }
+        #leaderboard-list li .pts {
+            font-weight: 700;
+            color: #55efc4;
+        }
+        #leaderboard-empty {
+            text-align: center;
+            font-size: 11px;
+            opacity: 0.6;
+            padding: 8px 0;
+        }
+        #leaderboard-clear {
+            display: block;
+            margin: 10px auto 0;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.4);
+            font-size: 10px;
+            padding: 4px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        #leaderboard-clear:hover {
+            color: #ff6b6b;
+            border-color: rgba(255,107,107,0.4);
+        }
+
+        /* ── Name Input Overlay ── */
+        #name-input-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: auto;
+            z-index: 35;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+        }
+        #name-input-overlay.visible { display: flex; }
+        #name-input-box {
+            background: rgba(20,20,40,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            color: #fff;
+            max-width: 320px;
+            width: 85%;
+        }
+        #name-input-box h4 {
+            font-size: clamp(15px, 2.5vw, 20px);
+            margin-bottom: 6px;
+            color: #ffeaa7;
+        }
+        #name-input-box .subtitle {
+            font-size: clamp(11px, 1.5vw, 13px);
+            opacity: 0.7;
+            margin-bottom: 16px;
+        }
+        #name-input-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: clamp(13px, 1.8vw, 16px);
+            text-align: center;
+            outline: none;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+        #name-input-box input::placeholder { color: rgba(255,255,255,0.4); }
+        #name-input-box button {
+            pointer-events: auto;
+            background: #55efc4;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            font-size: clamp(12px, 1.6vw, 15px);
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: transform 0.15s, background 0.2s;
+        }
+        #name-input-box button:hover {
+            transform: scale(1.04);
+            background: #6ff5d4;
+        }
+        #name-input-box button.skip {
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        #name-input-box button.skip:hover {
+            color: rgba(255,255,255,0.8);
+            transform: scale(1.04);
+        }
     </style>
 </head>
 <body>
@@ -127,6 +318,30 @@
             <div id="best-score"></div>
             <div id="message-center">
                 <span id="message-text">🕊️ Clique para voar!</span>
+            </div>
+        </div>
+
+        <!-- Leaderboard Toggle -->
+        <button id="leaderboard-btn">🏆 Ranking</button>
+
+        <!-- Leaderboard Panel -->
+        <div id="leaderboard-panel">
+            <h3>🏆 Ranking</h3>
+            <ul id="leaderboard-list"></ul>
+            <div id="leaderboard-empty">Nenhuma pontuação ainda. Jogue!</div>
+            <button id="leaderboard-clear">Limpar ranking</button>
+        </div>
+
+        <!-- Name Input Overlay -->
+        <div id="name-input-overlay">
+            <div id="name-input-box">
+                <h4>🎉 Nova pontuação!</h4>
+                <div class="subtitle">Você fez <strong id="name-input-score">0</strong> pontos</div>
+                <input type="text" id="name-input-field" placeholder="Seu nome" maxlength="18" autocomplete="off" />
+                <div>
+                    <button id="name-input-save">💾 Salvar</button>
+                    <button class="skip" id="name-input-skip">Pular</button>
+                </div>
             </div>
         </div>
     </div>
@@ -148,6 +363,16 @@
         const bestScoreDisplay = document.getElementById('best-score');
         const messageText = document.getElementById('message-text');
         const messageCenter = document.getElementById('message-center');
+        const leaderboardBtn = document.getElementById('leaderboard-btn');
+        const leaderboardPanel = document.getElementById('leaderboard-panel');
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const leaderboardEmpty = document.getElementById('leaderboard-empty');
+        const nameInputOverlay = document.getElementById('name-input-overlay');
+        const nameInputField = document.getElementById('name-input-field');
+        const nameInputScore = document.getElementById('name-input-score');
+        const nameInputSave = document.getElementById('name-input-save');
+        const nameInputSkip = document.getElementById('name-input-skip');
+        const leaderboardClear = document.getElementById('leaderboard-clear');
 
         // ==================== CONSTANTS ====================
         const GRAVITY = 16;
@@ -568,6 +793,194 @@
         }
         bestScoreDisplay.textContent = state.bestScore > 0 ? `🏆 Melhor: ${state.bestScore}` : '';
 
+        // ==================== LEADERBOARD FUNCTIONS ====================
+        const LEADERBOARD_KEY = 'flappy3d_leaderboard';
+        const NAME_MEMORY_KEY = 'flappy3d_lastname';
+        const MAX_LEADERBOARD_ENTRIES = 10;
+        let leaderboardData = [];
+        let pendingScore = 0;
+        let lastAddedName = null;
+
+        function loadLeaderboard() {
+            try {
+                const raw = localStorage.getItem(LEADERBOARD_KEY);
+                leaderboardData = raw ? JSON.parse(raw) : [];
+                if (!Array.isArray(leaderboardData)) leaderboardData = [];
+                leaderboardData.sort((a, b) => b.score - a.score);
+            } catch (e) {
+                leaderboardData = [];
+            }
+        }
+
+        function saveLeaderboard(data) {
+            try {
+                localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(data));
+            } catch (e) { /* ignore */ }
+        }
+
+        function getExistingIndex(name) {
+            const key = name.trim().toLowerCase();
+            return leaderboardData.findIndex(e => e.name.toLowerCase() === key);
+        }
+
+        function addToLeaderboard(name, score) {
+            const cleanName = name.trim() || 'Anônimo';
+            const existingIdx = getExistingIndex(cleanName);
+
+            if (existingIdx !== -1) {
+                // Same name already exists — only keep the higher score
+                if (score > leaderboardData[existingIdx].score) {
+                    leaderboardData[existingIdx].score = score;
+                    leaderboardData[existingIdx].date = Date.now();
+                    lastAddedName = leaderboardData[existingIdx].name;
+                } else {
+                    // New score is not better, but still track the name
+                    lastAddedName = leaderboardData[existingIdx].name;
+                }
+            } else {
+                // New name — add entry
+                leaderboardData.push({ name: cleanName, score, date: Date.now() });
+                lastAddedName = cleanName;
+            }
+
+            // Sort, trim, save
+            leaderboardData.sort((a, b) => b.score - a.score);
+            leaderboardData = leaderboardData.slice(0, MAX_LEADERBOARD_ENTRIES);
+            saveLeaderboard(leaderboardData);
+            renderLeaderboard();
+        }
+
+        function isHighScore(score) {
+            if (score <= 0) return false;
+            // Always worth checking — there's room, or beats the #10 spot
+            if (leaderboardData.length < MAX_LEADERBOARD_ENTRIES) return true;
+            return score > leaderboardData[leaderboardData.length - 1].score;
+        }
+
+        function renderLeaderboard() {
+            leaderboardList.innerHTML = '';
+            if (leaderboardData.length === 0) {
+                leaderboardEmpty.style.display = 'block';
+                return;
+            }
+            leaderboardEmpty.style.display = 'none';
+            leaderboardData.forEach((entry, i) => {
+                const li = document.createElement('li');
+                const medals = ['🥇', '🥈', '🥉'];
+                const rank = i < 3 ? medals[i] : `${i + 1}.`;
+                const isHighlight = lastAddedName && entry.name === lastAddedName;
+                if (isHighlight) li.classList.add('highlight');
+                li.innerHTML = `<span class="rank">${rank}</span><span class="name">${escapeHTML(entry.name)}</span><span class="pts">${entry.score}</span>`;
+                leaderboardList.appendChild(li);
+            });
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function toggleLeaderboard() {
+            const visible = leaderboardPanel.classList.toggle('visible');
+            leaderboardBtn.textContent = visible ? '✕ Fechar' : '🏆 Ranking';
+            if (visible) renderLeaderboard();
+        }
+
+        function showNameInput(score) {
+            pendingScore = score;
+            nameInputScore.textContent = score;
+
+            // Pre-fill with last used name
+            let lastName = '';
+            try { lastName = localStorage.getItem(NAME_MEMORY_KEY) || ''; } catch (e) {}
+            nameInputField.value = lastName;
+
+            nameInputOverlay.classList.add('visible');
+            setTimeout(() => {
+                nameInputField.focus();
+                if (lastName) nameInputField.select();
+            }, 150);
+        }
+
+        function hideNameInput() {
+            nameInputOverlay.classList.remove('visible');
+            pendingScore = 0;
+            lastAddedName = null;
+        }
+
+        function submitName() {
+            const name = nameInputField.value.trim() || 'Anônimo';
+            // Remember this name for next time
+            try { localStorage.setItem(NAME_MEMORY_KEY, name); } catch (e) {}
+            if (pendingScore > 0) {
+                addToLeaderboard(name, pendingScore);
+            }
+            hideNameInput();
+            leaderboardPanel.classList.add('visible');
+            leaderboardBtn.textContent = '✕ Fechar';
+            renderLeaderboard();
+        }
+
+        function skipNameInput() {
+            hideNameInput();
+        }
+
+        function clearLeaderboard() {
+            leaderboardData = [];
+            saveLeaderboard(leaderboardData);
+            renderLeaderboard();
+            leaderboardEmpty.style.display = 'block';
+        }
+
+        // Leaderboard event listeners
+        leaderboardBtn.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleLeaderboard();
+        });
+
+        nameInputSave.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            submitName();
+        });
+
+        nameInputSkip.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            skipNameInput();
+        });
+
+        nameInputField.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                submitName();
+            }
+        });
+
+        // Prevent game flap when interacting with leaderboard
+        nameInputOverlay.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+        });
+        leaderboardClear.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const senha = prompt('Digite a senha para limpar o ranking:');
+            if (senha === 'admin123') {
+                clearLeaderboard();
+            } else if (senha !== null) {
+                alert('Senha incorreta!');
+            }
+        });
+        leaderboardPanel.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+        });
+
+        // Load initial leaderboard
+        loadLeaderboard();
+
         // ==================== HELPER FUNCTIONS ====================
         function getSpawnX() {
             return frustumSize * aspect / 2 + 1.5;
@@ -671,6 +1084,7 @@
             birdGroup.scale.set(1, 1, 1);
             bodyMat.color.set('#FFD93D');
             clearAllPipes();
+            hideNameInput();
             messageCenter.style.display = 'block';
             messageText.textContent = '🕊️ Clique para voar!';
             camera.position.set(0, 0.3, 10);
@@ -694,6 +1108,11 @@
                     localStorage.setItem('flappy3d_best', state.bestScore);
                 } catch (e) { /* ignore */ }
                 bestScoreDisplay.textContent = `🏆 Melhor: ${state.bestScore}`;
+            }
+
+            // Show name input if qualifies for leaderboard
+            if (isHighScore(state.score)) {
+                setTimeout(() => showNameInput(state.score), 400);
             }
 
             messageCenter.style.display = 'block';

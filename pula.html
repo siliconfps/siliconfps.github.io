@@ -329,6 +329,7 @@
             <h3>🏆 Ranking</h3>
             <ul id="leaderboard-list"></ul>
             <div id="leaderboard-empty">Nenhuma pontuação ainda. Jogue!</div>
+            <div id="leaderboard-storage-warn" style="display:none;color:#ffa726;font-size:0.8rem;margin-top:6px;text-align:center;">Modo offline — pontuações não serão salvas ao fechar.</div>
             <button id="leaderboard-clear">Limpar ranking</button>
         </div>
 
@@ -373,6 +374,7 @@
         const nameInputSave = document.getElementById('name-input-save');
         const nameInputSkip = document.getElementById('name-input-skip');
         const leaderboardClear = document.getElementById('leaderboard-clear');
+        const leaderboardStorageWarn = document.getElementById('leaderboard-storage-warn');
 
         // ==================== CONSTANTS ====================
         const GRAVITY = 16;
@@ -784,7 +786,7 @@
 
         // Load best score
         try {
-            const saved = localStorage.getItem('flappy3d_best');
+            const saved = storageGet('flappy3d_best');
             if (saved !== null) {
                 state.bestScore = parseInt(saved, 10) || 0;
             }
@@ -800,22 +802,47 @@
         let leaderboardData = [];
         let pendingScore = 0;
         let lastAddedName = null;
+        let storageAvailable = true;         // set to false if localStorage is blocked
+        let memFallback = {};                // in-memory fallback when localStorage fails
+
+        function storageGet(key) {
+            if (!storageAvailable) return memFallback[key] || null;
+            try {
+                var val = localStorage.getItem(key);
+                if (val !== null) memFallback[key] = val; // sync fallback cache
+                return val;
+            } catch (e) {
+                console.warn('[Leaderboard] localStorage read failed, switching to in-memory mode:', e.message);
+                storageAvailable = false;
+                return memFallback[key] || null;
+            }
+        }
+
+        function storageSet(key, value) {
+            memFallback[key] = value; // always update in-memory cache
+            if (!storageAvailable) return;
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                console.warn('[Leaderboard] localStorage write failed, switching to in-memory mode:', e.message);
+                storageAvailable = false;
+            }
+        }
 
         function loadLeaderboard() {
             try {
-                const raw = localStorage.getItem(LEADERBOARD_KEY);
+                var raw = storageGet(LEADERBOARD_KEY);
                 leaderboardData = raw ? JSON.parse(raw) : [];
                 if (!Array.isArray(leaderboardData)) leaderboardData = [];
-                leaderboardData.sort((a, b) => b.score - a.score);
+                leaderboardData.sort(function(a, b) { return b.score - a.score; });
             } catch (e) {
+                console.warn('[Leaderboard] Parse error, resetting data:', e.message);
                 leaderboardData = [];
             }
         }
 
         function saveLeaderboard(data) {
-            try {
-                localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(data));
-            } catch (e) { /* ignore */ }
+            storageSet(LEADERBOARD_KEY, JSON.stringify(data));
         }
 
         function getExistingIndex(name) {
@@ -859,6 +886,7 @@
 
         function renderLeaderboard() {
             leaderboardList.innerHTML = '';
+            leaderboardStorageWarn.style.display = storageAvailable ? 'none' : 'block';
             if (leaderboardData.length === 0) {
                 leaderboardEmpty.style.display = 'block';
                 return;
@@ -884,7 +912,10 @@
         function toggleLeaderboard() {
             const visible = leaderboardPanel.classList.toggle('visible');
             leaderboardBtn.textContent = visible ? '✕ Fechar' : '🏆 Ranking';
-            if (visible) renderLeaderboard();
+            if (visible) {
+                leaderboardStorageWarn.style.display = storageAvailable ? 'none' : 'block';
+                renderLeaderboard();
+            }
         }
 
         function showNameInput(score) {
@@ -892,8 +923,7 @@
             nameInputScore.textContent = score;
 
             // Pre-fill with last used name
-            let lastName = '';
-            try { lastName = localStorage.getItem(NAME_MEMORY_KEY) || ''; } catch (e) {}
+            let lastName = storageGet(NAME_MEMORY_KEY) || '';
             nameInputField.value = lastName;
 
             nameInputOverlay.classList.add('visible');
@@ -912,7 +942,7 @@
         function submitName() {
             const name = nameInputField.value.trim() || 'Anônimo';
             // Remember this name for next time
-            try { localStorage.setItem(NAME_MEMORY_KEY, name); } catch (e) {}
+            storageSet(NAME_MEMORY_KEY, name);
             if (pendingScore > 0) {
                 addToLeaderboard(name, pendingScore);
             }
@@ -1105,7 +1135,7 @@
             if (state.score > state.bestScore) {
                 state.bestScore = state.score;
                 try {
-                    localStorage.setItem('flappy3d_best', state.bestScore);
+                    storageSet('flappy3d_best', '' + state.bestScore);
                 } catch (e) { /* ignore */ }
                 bestScoreDisplay.textContent = `🏆 Melhor: ${state.bestScore}`;
             }

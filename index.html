@@ -6,15 +6,15 @@
     <title>SILICONFPS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #e0e0e0;
+            color: #f0f0f0;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -65,7 +65,7 @@
         }
         .avatar {
             width: 140px; height: 140px;
-            border-radius: 50%;
+            border-radius: 18px;
             background: linear-gradient(135deg, #f093fb, #f5576c, #ffd452);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
@@ -80,8 +80,8 @@
         .avatar-img {
             width: 100%; height: 100%;
             object-fit: cover;
-            object-position: top center;
-            border-radius: 50%;
+            object-position: calc(50% - 5px) top;
+            border-radius: 16px;
             transform: scale(2.8);
             transform-origin: top center;
         }
@@ -105,14 +105,19 @@
         }
         .profile .tagline {
             font-size: 1.1rem;
-            color: #aaa;
+            color: #d0d0d8;
             margin-bottom: 12px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-shadow: 0 0 12px rgba(240,147,251,0.2);
         }
         .profile .location {
             display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(255,255,255,0.08);
-            padding: 10px 22px; border-radius: 28px;
-            font-size: 0.95rem; color: #ccc;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 22px; border-radius: 12px;
+            font-size: 0.95rem; color: #e8e8f0;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .profile .location i { color: #4caf50; }
         .social-links {
@@ -121,7 +126,7 @@
         }
         .social-links a {
             display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 22px; border-radius: 28px;
+            padding: 10px 22px; border-radius: 12px;
             font-size: 0.95rem; font-weight: 600;
             text-decoration: none; color: #fff;
             transition: transform 0.25s, box-shadow 0.25s;
@@ -165,7 +170,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .stat-label { font-size: 0.85rem; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 2px; }
+        .stat-label { font-family: 'Space Grotesk', 'Outfit', sans-serif; font-size: 0.85rem; color: #b0b0c0; margin-top: 4px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
 
         /* ===== SECTION TITLE ===== */
         .section-title {
@@ -219,14 +224,23 @@
         }
         .card--5 .card-icon { color: #ab47bc; }
         .card h3 {
+            font-family: 'Space Grotesk', 'Outfit', sans-serif;
             font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;
             position: relative; z-index: 1;
+            letter-spacing: 0.3px;
+        }
+        .card h3 a {
+            color: #f5f5f5;
+            text-shadow: 0 0 8px rgba(255,255,255,0.15);
         }
         .card p {
-            font-size: 0.75rem; color: #aaa; line-height: 1.35;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.7rem; color: #c8c8d0; line-height: 1.4;
             position: relative; z-index: 1;
             margin-bottom: 8px;
             flex-shrink: 0;
+            font-weight: 400;
+            letter-spacing: -0.2px;
         }
         .card-img {
             width: 100%;
@@ -241,11 +255,12 @@
         }
         .card:hover .card-img { transform: scale(1.02); }
         .card .lang {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
             display: inline-block;
             align-self: flex-start;
             padding: 4px 10px; border-radius: 12px;
-            font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
+            font-size: 0.68rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
             position: relative; z-index: 1;
             margin-top: auto;
         }
@@ -259,10 +274,10 @@
         .card--6 { border-top: 3px solid #ff9800; } .card--6::before { background: #ff9800; } .card--6 .lang { background: rgba(255,152,0,0.2); color: #ff9800; }
 
         .card a {
-            color: #e0e0e0; text-decoration: none;
-            transition: color 0.2s;
+            color: #f5f5f5; text-decoration: none;
+            transition: color 0.2s, text-shadow 0.2s;
         }
-        .card a:hover { color: #fff; }
+        .card a:hover { color: #fff; text-shadow: 0 0 14px rgba(255,255,255,0.3); }
 
         /* ===== GAME SECTION ===== */
         .game-wrapper {
@@ -294,9 +309,11 @@
             text-align: center;
             margin-top: 70px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            color: #666;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #9090a0;
             font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         .footer span {
             background: linear-gradient(90deg, #f093fb, #f5576c);
@@ -402,14 +419,14 @@
 
         <div class="card card--5">
             <div class="card-icon">🗂️</div>
-            <h3><a href="https://github.com/siliconfps/otimizador-windows" target="_blank" rel="noopener">lxde-gpu-cpu-monitor</a></h3>
+            <h3><a href="https://github.com/siliconfps/lxpanel-gpu-cpu-monitor" target="_blank" rel="noopener">lxpanel-gpu-cpu-monitor</a></h3>
             <p>Monitor de recursos para o painel do lxde.</p>
             <span class="lang">C</span>
         </div>
 
         <div class="card card--6">
             <div class="card-icon">📊</div>
-            <h3><a href="https://github.com/siliconfps/hardview" target="_blank" rel="noopener">lxde-cpu-gpu-monitor</a></h3>
+            <h3><a href="https://github.com/siliconfps/lxpanel-cpu-gpu-monitor" target="_blank" rel="noopener">lxpanel-cpu-gpu-monitor</a></h3>
             <p>Monitor de recursos para o painel do lxde.</p>
             <span class="lang">C</span>
         </div>

@@ -180,17 +180,19 @@
         /* ===== PROJECT CARDS ===== */
         .projects {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
             margin-bottom: 48px;
         }
         .card {
             position: relative;
+            display: flex;
+            flex-direction: column;
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 28px;
+            border-radius: 16px;
+            padding: 16px;
             overflow: hidden;
             transition: transform 0.35s, border-color 0.35s, box-shadow 0.35s;
             cursor: default;
@@ -211,34 +213,41 @@
         .card:hover::before { opacity: 0.35; transform: scale(1.3); }
 
         .card-icon {
-            font-size: 2rem; margin-bottom: 14px;
+            font-size: 1.2rem; margin-bottom: 4px;
             display: block;
+            line-height: 1;
         }
         .card--5 .card-icon { color: #ab47bc; }
         .card h3 {
-            font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;
+            font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;
             position: relative; z-index: 1;
         }
         .card p {
-            font-size: 0.92rem; color: #aaa; line-height: 1.5;
+            font-size: 0.75rem; color: #aaa; line-height: 1.35;
             position: relative; z-index: 1;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+            flex-shrink: 0;
         }
         .card-img {
             width: 100%;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
             border: 1px solid rgba(255,255,255,0.12);
             position: relative; z-index: 1;
             transition: transform 0.3s;
+            flex-shrink: 0;
         }
         .card:hover .card-img { transform: scale(1.02); }
         .card .lang {
             display: inline-block;
-            padding: 5px 14px; border-radius: 14px;
-            font-size: 0.78rem; font-weight: 700;
+            align-self: flex-start;
+            padding: 4px 10px; border-radius: 12px;
+            font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 1px;
             position: relative; z-index: 1;
+            margin-top: auto;
         }
 
         /* Color variants per card */
@@ -364,30 +373,30 @@
         <div class="card card--1">
             <div class="card-icon">🎮</div>
             <h3><a href="https://github.com/siliconfps/xfce4-gpu-plugin" target="_blank" rel="noopener">xfce4-gpu-plugin</a></h3>
-            <p>Monitor de GPU para o ambiente XFCE. Acompanhe temperatura, frequência e uso da sua placa de vídeo direto no painel.</p>
-            <img src="xfcemonitor.png" alt="Demonstração da extensão XFCE GPU Monitor" class="card-img">
+            <p>Monitor de GPU para XFCE — temperatura, frequência e uso direto no painel.</p>
+            <img src="xfcegpu.png" alt="Demonstração da extensão XFCE GPU Monitor" class="card-img">
             <span class="lang">Shell</span>
         </div>
 
         <div class="card card--2">
             <div class="card-icon">🖥️</div>
             <h3><a href="https://github.com/siliconfps/gnome-gpu-monitor" target="_blank" rel="noopener">gnome-gpu-monitor</a></h3>
-            <p>Extensão que monitora o uso de GPU no GNOME 42+. Visual limpo e integrado ao shell do GNOME.</p>
+            <p>Monitor de GPU para GNOME 42+ — visual limpo integrado ao shell.</p>
             <span class="lang">JavaScript</span>
         </div>
 
         <div class="card card--3">
             <div class="card-icon">⚡</div>
             <h3><a href="https://github.com/siliconfps/xfce4-cpu-plugin" target="_blank" rel="noopener">xfce4-cpu-plugin</a></h3>
-            <p>Monitor de CPU para XFCE. Visualize carga, frequência e temperatura do processador no seu painel.</p>
-            <img src="xfcemonitor.png" alt="Demonstração da extensão XFCE CPU Monitor" class="card-img">
+            <p>Monitor de CPU para XFCE — carga, frequência e temperatura no painel.</p>
+            <img src="xfcecpu.png" alt="Demonstração da extensão XFCE CPU Monitor" class="card-img">
             <span class="lang">Shell</span>
         </div>
 
         <div class="card card--4">
             <div class="card-icon">👾</div>
             <h3><a href="https://github.com/siliconfps/gnome-cpu-monitor" target="_blank" rel="noopener">gnome-cpu-monitor</a></h3>
-            <p>Monitor de CPU para GNOME 42+. Extensão nativa que mostra o desempenho do processador em tempo real.</p>
+            <p>Monitor de CPU para GNOME 42+ — desempenho do processador em tempo real.</p>
             <span class="lang">JavaScript</span>
         </div>
 

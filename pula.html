@@ -360,7 +360,7 @@
     <script type="module">
         import * as THREE from 'three';
         import { initializeApp } from 'firebase/app';
-        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc } from 'firebase/firestore';
+        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, setDoc } from 'firebase/firestore';
 
         // ==================== DOM ELEMENTS ====================
         const container = document.getElementById('game-container');
@@ -877,8 +877,10 @@
                 if (!snapshot.empty) {
                     const doc = snapshot.docs[0];
                     if (score > doc.data().score) {
-                        // Inclui name explicitamente — a regra exige name + score
-                        await updateDoc(doc.ref, { name: doc.data().name, score, date: Date.now() });
+                        // setDoc sem merge: envia documento inteiro para a regra
+                        // ver todos os campos necessários (name + score)
+                        const d = doc.data();
+                        await setDoc(doc.ref, { name: d.name, nameKey: d.nameKey, score, date: Date.now() });
                     }
                     lastAddedName = doc.data().name;
                 } else {
@@ -899,8 +901,9 @@
                 if (aliveDocs.length > MAX_LEADERBOARD_ENTRIES) {
                     for (const doc of aliveDocs.slice(MAX_LEADERBOARD_ENTRIES)) {
                         try {
-                            // Inclui name explicitamente — a regra exige name + score
-                            await updateDoc(doc.ref, { name: doc.data().name, score: -1, date: Date.now() });
+                            // setDoc sem merge: envia documento inteiro para a regra
+                            const d = doc.data();
+                            await setDoc(doc.ref, { name: d.name, nameKey: d.nameKey, score: -1, date: Date.now() });
                         } catch (err) {
                             console.warn('[Leaderboard] Soft-delete trim failed for doc ' + doc.id + ':', err.message);
                         }
@@ -1023,8 +1026,9 @@
                 // pelas regras do Firestore: allow delete: if false)
                 for (const doc of aliveDocs) {
                     try {
-                        // Inclui name explicitamente — a regra exige name + score
-                        await updateDoc(doc.ref, { name: doc.data().name, score: -1, date: Date.now() });
+                        // setDoc sem merge: envia documento inteiro para a regra
+                        const d = doc.data();
+                        await setDoc(doc.ref, { name: d.name, nameKey: d.nameKey, score: -1, date: Date.now() });
                         cleared++;
                     } catch (err) {
                         failed++;

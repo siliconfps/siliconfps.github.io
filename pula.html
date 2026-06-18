@@ -990,18 +990,52 @@
         }
 
         async function clearLeaderboard() {
+            let deleted = 0;
+            let failed = 0;
+
             try {
                 const q = query(collection(db, LEADERBOARD_COLLECTION));
                 const snapshot = await getDocs(q);
-                for (const doc of snapshot.docs) {
-                    await deleteDoc(doc.ref);
+
+                if (snapshot.docs.length === 0) {
+                    leaderboardData = [];
+                    renderLeaderboard();
+                    leaderboardEmpty.style.display = 'block';
+                    alert('✅ Ranking já está vazio!');
+                    return;
                 }
-                leaderboardData = [];
+
+                // Tenta deletar cada documento individualmente, sem parar nos erros
+                for (const doc of snapshot.docs) {
+                    try {
+                        await deleteDoc(doc.ref);
+                        deleted++;
+                    } catch (err) {
+                        failed++;
+                        console.warn('[Leaderboard] Falha ao deletar doc ' + doc.id + ':', err.message);
+                    }
+                }
             } catch (e) {
-                console.warn('[Leaderboard] Clear failed:', e.message);
+                console.warn('[Leaderboard] Clear query failed:', e.message);
+                failed = -1; // marcador de falha total
             }
+
+            // Sempre limpa os dados locais
+            leaderboardData = [];
             renderLeaderboard();
             leaderboardEmpty.style.display = 'block';
+
+            // Feedback para o usuário
+            if (failed === -1) {
+                alert('❌ Erro de conexão ao tentar limpar o ranking.\nVerifique sua internet e tente novamente.');
+            } else if (failed > 0) {
+                alert('⚠️ ' + deleted + ' registro(s) removido(s), mas ' + failed + ' falhou(aram).\nTente novamente — os que sobraram ainda aparecem no servidor.');
+            } else {
+                alert('✅ Ranking limpo com sucesso! (' + deleted + ' registro(s) removido(s))');
+            }
+
+            // Recarrega do servidor para confirmar
+            setTimeout(() => loadLeaderboard(), 800);
         }
 
         // Leaderboard event listeners

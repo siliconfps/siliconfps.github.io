@@ -877,7 +877,8 @@
                 if (!snapshot.empty) {
                     const doc = snapshot.docs[0];
                     if (score > doc.data().score) {
-                        await updateDoc(doc.ref, { score, date: Date.now() });
+                        // Inclui name explicitamente — a regra exige name + score
+                        await updateDoc(doc.ref, { name: doc.data().name, score, date: Date.now() });
                     }
                     lastAddedName = doc.data().name;
                 } else {
@@ -898,7 +899,8 @@
                 if (aliveDocs.length > MAX_LEADERBOARD_ENTRIES) {
                     for (const doc of aliveDocs.slice(MAX_LEADERBOARD_ENTRIES)) {
                         try {
-                            await updateDoc(doc.ref, { score: -1, date: Date.now() });
+                            // Inclui name explicitamente — a regra exige name + score
+                            await updateDoc(doc.ref, { name: doc.data().name, score: -1, date: Date.now() });
                         } catch (err) {
                             console.warn('[Leaderboard] Soft-delete trim failed for doc ' + doc.id + ':', err.message);
                         }
@@ -1021,7 +1023,8 @@
                 // pelas regras do Firestore: allow delete: if false)
                 for (const doc of aliveDocs) {
                     try {
-                        await updateDoc(doc.ref, { score: -1, date: Date.now() });
+                        // Inclui name explicitamente — a regra exige name + score
+                        await updateDoc(doc.ref, { name: doc.data().name, score: -1, date: Date.now() });
                         cleared++;
                     } catch (err) {
                         failed++;

@@ -360,7 +360,7 @@
     <script type="module">
         import * as THREE from 'three';
         import { initializeApp } from 'firebase/app';
-        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+        import { getFirestore, collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc } from 'firebase/firestore';
 
         // ==================== DOM ELEMENTS ====================
         const container = document.getElementById('game-container');
@@ -856,7 +856,7 @@
                     limit(MAX_LEADERBOARD_ENTRIES)
                 );
                 const snapshot = await getDocs(q);
-                leaderboardData = snapshot.docs.map(doc => doc.data());
+                leaderboardData = snapshot.docs.map(doc => doc.data()).filter(entry => entry.score >= 0);
                 firestoreOnline = true;
             } catch (e) {
                 console.warn('[Leaderboard] Firestore load failed:', e.message);
@@ -889,12 +889,19 @@
                     });
                     lastAddedName = cleanName;
                 }
-                // Trim to top 10
+                // Trim to top 10 (soft-delete: marca score como -1 em vez de deletar,
+                // porque as regras do Firestore têm allow delete: if false)
                 const allQ = query(collection(db, LEADERBOARD_COLLECTION), orderBy('score', 'desc'));
                 const allSnapshot = await getDocs(allQ);
-                if (allSnapshot.docs.length > MAX_LEADERBOARD_ENTRIES) {
-                    for (const doc of allSnapshot.docs.slice(MAX_LEADERBOARD_ENTRIES)) {
-                        await deleteDoc(doc.ref);
+                // Filtra só entradas vivas para contar
+                const aliveDocs = allSnapshot.docs.filter(d => d.data().score >= 0);
+                if (aliveDocs.length > MAX_LEADERBOARD_ENTRIES) {
+                    for (const doc of aliveDocs.slice(MAX_LEADERBOARD_ENTRIES)) {
+                        try {
+                            await updateDoc(doc.ref, { score: -1, date: Date.now() });
+                        } catch (err) {
+                            console.warn('[Leaderboard] Soft-delete trim failed for doc ' + doc.id + ':', err.message);
+                        }
                     }
                 }
                 firestoreOnline = true;
@@ -914,8 +921,10 @@
                     limit(MAX_LEADERBOARD_ENTRIES)
                 );
                 const snapshot = await getDocs(q);
-                if (snapshot.docs.length < MAX_LEADERBOARD_ENTRIES) return true;
-                const lowest = snapshot.docs[snapshot.docs.length - 1].data();
+                // Filtra só entradas vivas (score >= 0) — as com score -1 são soft-deleted
+                const aliveDocs = snapshot.docs.filter(d => d.data().score >= 0);
+                if (aliveDocs.length < MAX_LEADERBOARD_ENTRIES) return true;
+                const lowest = aliveDocs[aliveDocs.length - 1].data();
                 return score > lowest.score;
             } catch (e) {
                 return false;
@@ -990,14 +999,17 @@
         }
 
         async function clearLeaderboard() {
-            let deleted = 0;
+            let cleared = 0;
             let failed = 0;
 
             try {
                 const q = query(collection(db, LEADERBOARD_COLLECTION));
                 const snapshot = await getDocs(q);
 
-                if (snapshot.docs.length === 0) {
+                // Filtra só entradas que ainda não foram soft-deletadas
+                const aliveDocs = snapshot.docs.filter(d => d.data().score >= 0);
+
+                if (aliveDocs.length === 0) {
                     leaderboardData = [];
                     renderLeaderboard();
                     leaderboardEmpty.style.display = 'block';
@@ -1005,14 +1017,15 @@
                     return;
                 }
 
-                // Tenta deletar cada documento individualmente, sem parar nos erros
-                for (const doc of snapshot.docs) {
+                // Soft-delete: marca score = -1 em cada documento (deleteDoc é bloqueado
+                // pelas regras do Firestore: allow delete: if false)
+                for (const doc of aliveDocs) {
                     try {
-                        await deleteDoc(doc.ref);
-                        deleted++;
+                        await updateDoc(doc.ref, { score: -1, date: Date.now() });
+                        cleared++;
                     } catch (err) {
                         failed++;
-                        console.warn('[Leaderboard] Falha ao deletar doc ' + doc.id + ':', err.message);
+                        console.warn('[Leaderboard] Falha ao limpar doc ' + doc.id + ':', err.message);
                     }
                 }
             } catch (e) {
@@ -1029,9 +1042,9 @@
             if (failed === -1) {
                 alert('❌ Erro de conexão ao tentar limpar o ranking.\nVerifique sua internet e tente novamente.');
             } else if (failed > 0) {
-                alert('⚠️ ' + deleted + ' registro(s) removido(s), mas ' + failed + ' falhou(aram).\nTente novamente — os que sobraram ainda aparecem no servidor.');
+                alert('⚠️ ' + cleared + ' registro(s) limpo(s), mas ' + failed + ' falhou(aram).\nTente novamente.');
             } else {
-                alert('✅ Ranking limpo com sucesso! (' + deleted + ' registro(s) removido(s))');
+                alert('✅ Ranking limpo com sucesso! (' + cleared + ' registro(s) removido(s))');
             }
 
             // Recarrega do servidor para confirmar

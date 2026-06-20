@@ -1273,6 +1273,13 @@
             }
         });
 
+        // Receive flap commands from parent page (when iframe lacks focus)
+        window.addEventListener('message', (e) => {
+            if (e.data && e.data.action === 'flap') {
+                flap();
+            }
+        });
+
         // Prevent double-tap zoom on mobile
         document.addEventListener('touchstart', (e) => {
             if (e.target === renderer.domElement || container.contains(e.target)) {

@@ -1,760 +1,1649 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="tokyo-night">
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🌸 SiliconFlower — Agente CLI/TUI para Windows</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siliconflower 🌸 — Agente de IA CLI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- Fonts via Google Fonts CDN -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+        :root {
+            --black: #0a0a0a;
+            --black-light: #111111;
+            --black-card: #161616;
+            --black-hover: #1a1a1a;
+            --purple-deep: #2d1b4e;
+            --purple-dark: #4a2875;
+            --purple: #7c3aed;
+            --purple-light: #a78bfa;
+            --purple-lighter: #c4b5fd;
+            --lilac: #c084fc;
+            --lilac-light: #d8b4fe;
+            --lilac-pale: #e9d5ff;
+            --lilac-glow: #f3e8ff;
+            --pink-accent: #e879f9;
+            --white: #f5f0ff;
+            --white-dim: #c8c0d8;
+            --gradient-main: linear-gradient(135deg, #7c3aed 0%, #c084fc 50%, #e879f9 100%);
+            --gradient-dark: linear-gradient(135deg, #2d1b4e 0%, #4a2875 100%);
+            --gradient-card: linear-gradient(145deg, rgba(124, 58, 237, 0.08) 0%, rgba(192, 132, 252, 0.04) 100%);
+            --glow-purple: 0 0 40px rgba(124, 58, 237, 0.3);
+            --glow-lilac: 0 0 60px rgba(192, 132, 252, 0.2);
+        }
 
-<style>
-/* ================= Base CSS ================= */
-:root {
-  --bg: #1a1b26;
-  --bg-soft: #16161e;
-  --surface: #24283b;
-  --surface-2: #2f334d;
-  --border: rgba(192, 202, 245, 0.12);
-  --border-strong: rgba(192, 202, 245, 0.24);
-  --text-1: #c0caf5;
-  --text-2: #a9b1d6;
-  --text-3: #565f89;
-  --accent: #7aa2f7;
-  --accent-2: #bb9af7;
-  --accent-3: #7dcfff;
-  --good: #9ece6a;
-  --warn: #e0af68;
-  --bad: #f7768e;
-  --grad: linear-gradient(135deg, #7aa2f7, #bb9af7 55%, #f7768e);
-  --grad-soft: linear-gradient(135deg, #24283b, #2f334d);
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 20px;
-  --shadow: 0 10px 30px rgba(0,0,0,.45);
-  --shadow-lg: 0 24px 62px rgba(0,0,0,.6);
-  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
-  --font-display: var(--font-sans);
-  --letter-tight: -.02em;
-  --letter-normal: -.01em;
-  --ease: cubic-bezier(.4,0,.2,1);
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-*, *::before, *::after { box-sizing: border-box; }
-html, body {
-  margin: 0; padding: 0; background: var(--bg); color: var(--text-1);
-  font-family: var(--font-sans); font-weight: 400; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  letter-spacing: var(--letter-normal);
-  overflow: hidden; width: 100vw; height: 100vh;
-}
-img, svg, video { max-width: 100%; display: block; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-code, kbd, pre, samp { font-family: var(--font-mono); }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
 
-/* ================= Slide System ================= */
-.deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: var(--bg); }
-.slide {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 60px 64px 50px 64px; /* Sufficient clearance for fixed header & footer */
-  box-sizing: border-box;
-  opacity: 0; pointer-events: none;
-  transition: opacity .4s var(--ease), transform .4s var(--ease);
-  transform: translateX(30px);
-  overflow-y: auto;
-}
-.slide.is-active { opacity: 1; pointer-events: auto; transform: translateX(0); z-index: 2; }
-.slide.is-prev { transform: translateX(-30px); }
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--purple-dark);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--purple); }
 
-/* Typography */
-.eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--text-3); }
-.kicker { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-h1.title, .h1 { font-family: var(--font-display); font-size: 48px; line-height: 1.1; font-weight: 800; letter-spacing: var(--letter-tight); margin: 0 0 12px; color: var(--text-1); }
-h2.title, .h2 { font-family: var(--font-display); font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: var(--letter-tight); margin: 0 0 10px; }
-h3, .h3 { font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: var(--letter-normal); margin: 0 0 8px; }
-h4, .h4 { font-size: 17px; line-height: 1.3; font-weight: 600; margin: 0 0 6px; }
-.lede { font-size: 18px; line-height: 1.5; color: var(--text-2); font-weight: 300; max-width: 72ch; }
-.dim { color: var(--text-2); }
-.dim2 { color: var(--text-3); }
-.mono { font-family: var(--font-mono); }
-.gradient-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        /* ===== UTILITY ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-/* Layout Primitives */
-.stack > * + * { margin-top: 10px; }
-.row { display: flex; gap: 16px; align-items: center; }
-.row.wrap { flex-wrap: wrap; }
-.grid { display: grid; gap: 16px; }
-.g2 { grid-template-columns: repeat(2, 1fr); }
-.g3 { grid-template-columns: repeat(3, 1fr); }
-.g4 { grid-template-columns: repeat(4, 1fr); }
-.center { display: flex; align-items: center; justify-content: center; text-align: center; }
-.fill { flex: 1; }
-.mt-s { margin-top: 6px; } .mt-m { margin-top: 12px; } .mt-l { margin-top: 20px; }
-.mb-s { margin-bottom: 6px; } .mb-m { margin-bottom: 12px; } .mb-l { margin-bottom: 20px; }
+        .gradient-text {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-/* Cards & Pills */
-.card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 18px 20px; box-shadow: var(--shadow); position: relative; overflow: hidden;
-}
-.card-soft { background: var(--surface-2); border: 1px solid var(--border); }
-.card-accent { background: var(--surface); border-top: 3px solid var(--accent); }
-.pill {
-  display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500;
-  background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border);
-}
-.pill-accent {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent); border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-}
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
 
-/* Terminal Box */
-.terminal-box {
-  background: #0d0e15; border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
-  padding: 14px 16px; font-family: var(--font-mono); font-size: 12px; color: #a9b1d6;
-  white-space: pre; overflow-x: auto; line-height: 1.4; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
-}
+        /* ===== PARTICLES BACKGROUND ===== */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-/* Chrome Elements (FIXED layout to prevent overlapping) */
-.deck-header {
-  position: fixed; top: 0; left: 0; right: 0; height: 48px;
-  padding: 12px 40px; display: flex; align-items: center; justify-content: space-between;
-  font-size: 12px; color: var(--text-3); letter-spacing: .12em; text-transform: uppercase;
-  z-index: 20; pointer-events: none;
-  background: linear-gradient(to bottom, var(--bg) 80%, transparent);
-}
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
 
-.deck-footer {
-  position: fixed; bottom: 0; left: 0; right: 0; height: 42px;
-  padding: 10px 40px; display: flex; align-items: center; justify-content: space-between;
-  font-size: 12px; color: var(--text-3); z-index: 20; pointer-events: none;
-  background: linear-gradient(to top, var(--bg) 80%, transparent);
-}
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+        }
 
-.slide-number::before { content: attr(data-current); }
-.slide-number::after { content: " / " attr(data-total); }
-.progress-bar { position: fixed; left: 0; right: 0; bottom: 0; height: 3px; background: transparent; z-index: 30; }
-.progress-bar > span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s var(--ease); }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-/* Speaker Notes Overlay */
-.notes { display: none !important; }
-.notes-overlay {
-  position: fixed; inset: auto 0 0 0; max-height: 40vh; background: rgba(20,22,30,.96); color: #e8ebf4;
-  padding: 20px 32px; font-size: 15px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,.1);
-  transform: translateY(100%); transition: transform .3s var(--ease); z-index: 40; overflow: auto;
-}
-.notes-overlay.open { transform: translateY(0); }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--white);
+        }
 
-/* Overview Overlay */
-.overview {
-  position: fixed; inset: 0; background: rgba(10,12,18,.95); backdrop-filter: blur(12px); z-index: 50;
-  display: none; padding: 40px; overflow: auto; grid-template-columns: repeat(4, 1fr); gap: 16px; align-content: start;
-}
-.overview.open { display: grid; }
-.overview .thumb {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-  aspect-ratio: 16/9; overflow: hidden; cursor: pointer; position: relative; color: var(--text-1); padding: 14px;
-  font-size: 11px; transition: transform .2s var(--ease);
-}
-.overview .thumb:hover { transform: scale(1.04); }
+        .nav-logo .flower-icon {
+            font-size: 1.6rem;
+            animation: spin-slow 8s linear infinite;
+        }
 
-/* Animations CSS */
-@keyframes kf-fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-@keyframes kf-rise { from { opacity: 0; transform: translateY(28px) scale(.98); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
-.anim-fade-up { animation: kf-fade-up .6s var(--ease) both; }
-.anim-rise-in { animation: kf-rise .7s var(--ease) both; }
-.anim-stagger-list > * { opacity: 0; animation: kf-rise .5s var(--ease) both; }
-.anim-stagger-list > *:nth-child(1) { animation-delay: .05s; }
-.anim-stagger-list > *:nth-child(2) { animation-delay: .10s; }
-.anim-stagger-list > *:nth-child(3) { animation-delay: .15s; }
-.anim-stagger-list > *:nth-child(4) { animation-delay: .20s; }
-.anim-stagger-list > *:nth-child(5) { animation-delay: .25s; }
-.anim-stagger-list > *:nth-child(6) { animation-delay: .30s; }
+        @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-/* Table styling */
-.ppt-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
-.ppt-table th { background: var(--surface-2); text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border-strong); color: var(--accent); }
-.ppt-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
-.ppt-table tr:hover td { background: rgba(255,255,255,0.02); color: var(--text-1); }
-</style>
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-main);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--lilac-light);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 8px 20px;
+            background: var(--gradient-main);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--glow-purple);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 1;
+            padding: 120px 24px 80px;
+        }
+
+        .hero-bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero-bg-glow.glow-1 {
+            top: 10%;
+            left: 20%;
+            background: var(--purple);
+        }
+
+        .hero-bg-glow.glow-2 {
+            bottom: 10%;
+            right: 15%;
+            background: var(--lilac);
+        }
+
+        .hero-bg-glow.glow-3 {
+            top: 40%;
+            right: 30%;
+            background: var(--pink-accent);
+            opacity: 0.08;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--lilac-light);
+            margin-bottom: 32px;
+            background: rgba(124, 58, 237, 0.08);
+            animation: fade-in-up 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            animation: fade-in-up 0.8s ease-out 0.1s both;
+        }
+
+        .hero-flower-line {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            animation: fade-in-up 0.8s ease-out 0.2s both;
+            letter-spacing: 12px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            color: var(--white-dim);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            font-weight: 400;
+            animation: fade-in-up 0.8s ease-out 0.3s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fade-in-up 0.8s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: var(--gradient-main);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 14px 32px;
+            background: transparent;
+            border: 1px solid rgba(124, 58, 237, 0.4);
+            border-radius: 12px;
+            color: var(--lilac-light);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--purple);
+        }
+
+        /* ===== TERMINAL PREVIEW ===== */
+        .terminal-section {
+            position: relative;
+            z-index: 1;
+            padding: 0 24px 120px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .terminal {
+            background: var(--black-light);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 16px;
+            max-width: 750px;
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), var(--glow-lilac);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 20px;
+            background: rgba(124, 58, 237, 0.06);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #f59e0b; }
+        .terminal-dot.green { background: #22c55e; }
+
+        .terminal-title {
+            margin-left: 12px;
+            font-size: 0.8rem;
+            color: var(--white-dim);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            animation: typewriter 0.3s ease-out forwards;
+        }
+
+        .terminal-prompt {
+            color: var(--lilac);
+        }
+
+        .terminal-command {
+            color: var(--white);
+        }
+
+        .terminal-output {
+            color: var(--white-dim);
+        }
+
+        .terminal-flower {
+            color: var(--pink-accent);
+        }
+
+        .terminal-success {
+            color: #22c55e;
+        }
+
+        .terminal-accent {
+            color: var(--purple-light);
+        }
+
+        @keyframes typewriter {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--lilac);
+            margin-bottom: 20px;
+            background: rgba(124, 58, 237, 0.06);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--white-dim);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== FEATURES GRID ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--black-card);
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            border-radius: 20px;
+            padding: 36px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-main);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 0 40px rgba(124, 58, 237, 0.08);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid rgba(124, 58, 237, 0.15);
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--white);
+        }
+
+        .feature-card p {
+            color: var(--white-dim);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .feature-tag {
+            padding: 4px 12px;
+            background: rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--purple-light);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ===== CAPABILITIES ===== */
+        .capabilities-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .capabilities-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .capability-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .capability-item:hover {
+            background: rgba(124, 58, 237, 0.05);
+            border-color: rgba(124, 58, 237, 0.15);
+        }
+
+        .capability-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 10px;
+        }
+
+        .capability-text h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .capability-text p {
+            font-size: 0.9rem;
+            color: var(--white-dim);
+        }
+
+        .capabilities-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flower-diagram {
+            position: relative;
+            width: 360px;
+            height: 360px;
+        }
+
+        .flower-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
+            z-index: 2;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.5); }
+            50% { box-shadow: 0 0 60px rgba(192, 132, 252, 0.6); }
+        }
+
+        .petal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.4s;
+            animation: float-petal 6s ease-in-out infinite;
+        }
+
+        .petal:hover {
+            background: rgba(124, 58, 237, 0.25);
+            transform: translate(-50%, -50%) scale(1.15) !important;
+            box-shadow: var(--glow-purple);
+        }
+
+        .petal:nth-child(1) { animation-delay: 0s; }
+        .petal:nth-child(2) { animation-delay: 0.5s; }
+        .petal:nth-child(3) { animation-delay: 1s; }
+        .petal:nth-child(4) { animation-delay: 1.5s; }
+        .petal:nth-child(5) { animation-delay: 2s; }
+        .petal:nth-child(6) { animation-delay: 2.5s; }
+        .petal:nth-child(7) { animation-delay: 3s; }
+        .petal:nth-child(8) { animation-delay: 3.5s; }
+
+        @keyframes float-petal {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== SKILLS SECTION ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-card {
+            background: var(--black-card);
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .skill-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .skill-card p {
+            color: var(--white-dim);
+            font-size: 0.9rem;
+        }
+
+        /* ===== STATS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 80px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 32px 16px;
+            border-radius: 16px;
+            background: var(--black-card);
+            border: 1px solid rgba(124, 58, 237, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--white-dim);
+            font-weight: 500;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 48px;
+            left: calc(16.66% + 16px);
+            right: calc(16.66% + 16px);
+            height: 2px;
+            background: linear-gradient(to right, var(--purple), var(--lilac), var(--pink-accent));
+            opacity: 0.3;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-main);
+            box-shadow: var(--glow-purple);
+        }
+
+        .step-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .step-card p {
+            color: var(--white-dim);
+            font-size: 0.95rem;
+        }
+
+        /* ===== CODE EXAMPLE ===== */
+        .code-showcase {
+            max-width: 800px;
+            margin: 64px auto 0;
+        }
+
+        .code-block {
+            background: var(--black-light);
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(124, 58, 237, 0.05);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+        }
+
+        .code-lang {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--lilac);
+        }
+
+        .code-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.9;
+            overflow-x: auto;
+        }
+
+        .code-body .comment { color: #6b7280; }
+        .code-body .keyword { color: var(--purple-light); }
+        .code-body .string { color: #22c55e; }
+        .code-body .function { color: var(--lilac); }
+        .code-body .type { color: var(--pink-accent); }
+        .code-body .punctuation { color: var(--white-dim); }
+
+        /* ===== TECH STACK ===== */
+        .tech-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .tech-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--black-card);
+            border: 1px solid rgba(124, 58, 237, 0.12);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--white-dim);
+            transition: all 0.3s;
+        }
+
+        .tech-badge:hover {
+            border-color: var(--purple);
+            color: var(--white);
+            background: rgba(124, 58, 237, 0.08);
+        }
+
+        .tech-badge span {
+            font-size: 1.2rem;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            text-align: center;
+            padding: 120px 24px;
+        }
+
+        .cta-box {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 64px 48px;
+            background: var(--gradient-dark);
+            border-radius: 24px;
+            border: 1px solid rgba(124, 58, 237, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '🌸';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            opacity: 0.08;
+        }
+
+        .cta-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-box p {
+            color: var(--white-dim);
+            margin-bottom: 32px;
+            font-size: 1.05rem;
+        }
+
+        .cta-install {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--lilac-light);
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-install:hover {
+            border-color: var(--purple);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cta-install .copy-icon {
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .cta-install:hover .copy-icon {
+            opacity: 1;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(124, 58, 237, 0.1);
+            padding: 48px 24px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .footer-copy {
+            color: var(--white-dim);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--white-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--lilac-light);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.98);
+                padding: 24px;
+                gap: 20px;
+                border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .capabilities-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .capabilities-visual {
+                order: -1;
+            }
+
+            .flower-diagram {
+                width: 280px;
+                height: 280px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .steps-grid::before { display: none; }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cta-box {
+                padding: 40px 24px;
+            }
+        }
+    </style>
 </head>
+<body>
 
-<body data-themes="tokyo-night,cyberpunk-neon,aurora,terminal-green,minimal-white">
+    <!-- Particles Canvas -->
+    <canvas id="particles-canvas"></canvas>
 
-<div class="deck">
-  <!-- FIXED Header Chrome -->
-  <div class="deck-header">
-    <span>🌸 SiliconFlower AI Agent</span>
-    <span class="theme-indicator">tokyo-night</span>
-  </div>
-
-  <!-- FIXED Footer Chrome -->
-  <div class="deck-footer">
-    <span class="deck-footer-text dim2">Pressione → ou Espaço para avançar · T troca tema · S modo apresentador</span>
-    <span class="slide-number"></span>
-  </div>
-
-  <!-- SLIDE 1: Cover / Hero -->
-  <section class="slide" data-title="Capa" data-footer="Pressione → ou Espaço para avançar · T troca tema · S abre modo apresentador">
-    <div class="row wrap mb-s">
-      <span class="pill pill-accent">v0.2.1 Standalone</span>
-      <span class="pill">Windows & PowerShell Native</span>
-      <span class="pill">MCP Ready</span>
-      <span class="pill">Reasoning Control</span>
-    </div>
-    <h1 class="h1 anim-fade-up">🌸 <span class="gradient-text">SILICONFLOWER</span></h1>
-    <p class="lede anim-rise-in">
-      Agente CLI/TUI de Inteligência Artificial para Windows com suporte nativo a <strong>Model Context Protocol (MCP)</strong>,
-      <strong>Raciocínio Controlável</strong>, <strong>Contador de Tokens em Tempo Real</strong> e <strong>3 Modos de Operação</strong>.
-    </p>
-
-    <div class="grid g3 mt-l anim-stagger-list">
-      <div class="card card-accent">
-        <h4>⚡ Ultra Rápido & Leve</h4>
-        <p class="dim">Desenvolvido em TypeScript com runtime Bun / Node.js. Sem necessidade de Nerd Fonts ou configurações complexas.</p>
-      </div>
-      <div class="card card-accent">
-        <h4>🧠 Modos & Raciocínio</h4>
-        <p class="dim">Alternância dinâmica entre Programação, Sistema e Plano, combinados com níveis de Reasoning (`none` a `high`).</p>
-      </div>
-      <div class="card card-accent">
-        <h4>📦 Standalone .exe</h4>
-        <p class="dim">Compilado em executável único para Windows, rodando diretamente no seu terminal do PowerShell sem dependências.</p>
-      </div>
-    </div>
-
-    <div class="notes">
-      <strong>Apresentação do SiliconFlower:</strong><br>
-      Este slide introduz o SiliconFlower como o agente TUI/CLI de IA de última geração para Windows.<br>
-      Destaque que ele foi feito sob medida para PowerShell/CMD e oferece controle total de raciocínio, ferramentas e MCP.
-    </div>
-  </section>
-
-  <!-- SLIDE 2: Interface TUI & Experiência -->
-  <section class="slide" data-title="Interface TUI" data-footer="Interface TUI Limpa e Transparente no Windows Terminal">
-    <p class="kicker">Interface Limpa & Eficiente</p>
-    <h2 class="h2">Visualização TUI em Tempo Real</h2>
-    <div class="grid g2 mt-m">
-      <div class="terminal-box">
-  S I L I C O N F L O W E R
---------------------------------------------------------------------------------
-  voce  > crie um backup da pasta src em backups/ e organize as tarefas
-  ia    > análise concluída. criando diretório e copiando arquivos...
---------------------------------------------------------------------------------
-  Tarefas (To-Do):
-  [✓] Analisar estrutura da pasta src
-  [▶] Executar cópia de segurança em backups/
---------------------------------------------------------------------------------
-  > digite para a LLM...
---------------------------------------------------------------------------------
-  Model: deepseek-ai/DeepSeek-V4-Pro  Reasoning: high  Mode: PROG
-  Tools: 17  Skills: 3  Tokens: 3.2K
-  pronto (3.2K tokens)
-      </div>
-
-      <div class="stack">
-        <div class="card">
-          <h4>📊 Painel de Status em Tempo Real</h4>
-          <p class="dim">Exibe modelo ativo, nível de raciocínio (`high`), modo de operação (`PROG`), contagem de ferramentas e uso de tokens em tempo real.</p>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <span class="flower-icon">🌸</span>
+                <span class="gradient-text">siliconflower</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#features">Funcionalidades</a></li>
+                <li><a href="#capabilities">Capacidades</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#how">Como Funciona</a></li>
+            </ul>
+            <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="nav-cta">GitHub ⭐</a>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">☰</button>
         </div>
-        <div class="card">
-          <h4>📝 Gerenciador de Tarefas Integrado (To-Do)</h4>
-          <p class="dim">Acompanhamento transparente das ações do agente com status `[✓] Concluído`, `[▶] Em Andamento` e `[ ] Pendente`.</p>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg-glow glow-1"></div>
+        <div class="hero-bg-glow glow-2"></div>
+        <div class="hero-bg-glow glow-3"></div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                🌺 Agente de IA CLI para Windows
+            </div>
+            <h1>
+                <span class="gradient-text">silicon</span><span>flower</span>
+            </h1>
+            <div class="hero-flower-line">
+                🌸 🌺 🌼 🌷 🌻 🪻 🌹
+            </div>
+            <p class="hero-subtitle">
+                Um agente de inteligência artificial que opera no terminal com acesso real ao sistema de arquivos, ferramentas MCP e raciocínio avançado para desenvolvedores.
+            </p>
+            <div class="hero-buttons">
+                <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="btn-primary">🚀 Baixar no GitHub</a>
+                <a href="#features" class="btn-secondary">🌼 Explorar Features</a>
+            </div>
         </div>
-        <div class="card">
-          <h4>💻 Compatibilidade Universal com Windows</h4>
-          <p class="dim">Funciona perfeitamente no Windows Terminal, PowerShell, CMD e VS Code Terminal sem quebrar caracteres.</p>
+    </section>
+
+    <!-- Terminal Preview -->
+    <div class="terminal-section animate-on-scroll">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">siliconflower — terminal</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <!-- Lines added via JS -->
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="notes">
-      <strong>Demonstração da TUI:</strong><br>
-      Mostre o preview do terminal. A TUI reage ao vivo às respostas da LLM e mostra o progresso das tarefas.<br>
-      Mencione o baixo consumo de recursos e a transparência do uso de tokens e ferramentas.
-    </div>
-  </section>
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-tag">🌸 Funcionalidades</div>
+                <h2>O que o <span class="gradient-text">siliconflower</span> faz</h2>
+                <p>Um agente completo que entende seu código, gerencia seu sistema e executa tarefas complexas com inteligência.</p>
+            </div>
 
-  <!-- SLIDE 3: Tabela de Funcionalidades -->
-  <section class="slide" data-title="Funcionalidades" data-footer="Visão Geral de Recursos Nativos e Arquitetura">
-    <p class="kicker">Visão Geral dos Recursos</p>
-    <h2 class="h2">Recursos do SiliconFlower</h2>
-    <table class="ppt-table mt-m">
-      <thead>
-        <tr>
-          <th>Área</th>
-          <th>Descrição</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Provedores LLM</strong></td>
-          <td>Compatível com APIs OpenAI (`/v1/chat/completions`) e Anthropic (`/v1/messages`). Suporta SiliconFlow, OpenRouter, etc.</td>
-        </tr>
-        <tr>
-          <td><strong>Contador de Tokens</strong></td>
-          <td>Contagem em tempo real na TUI com estimativa local instantânea + metadados exatos da API.</td>
-        </tr>
-        <tr>
-          <td><strong>Raciocínio Controlável</strong></td>
-          <td>Níveis `none`, `low`, `medium` e `high`. Envia `reasoning_effort` ou `thinking` com `budget_tokens`. Alternável com `Ctrl+E`.</td>
-        </tr>
-        <tr>
-          <td><strong>Modos de Operação</strong></td>
-          <td>`programação` (código), `sistema` (administração Windows) e `plano` (apenas leitura/planejamento). Alternável com `Ctrl+O`.</td>
-        </tr>
-        <tr>
-          <td><strong>Ferramentas Nativas</strong></td>
-          <td>Leitura/escrita de arquivos, busca recursiva (`grep_content`), edição atômica (`apply_patch`), execução no PowerShell, subagentes (`run_task`).</td>
-        </tr>
-        <tr>
-          <td><strong>Protocolo MCP</strong></td>
-          <td>Suporte completo a servidores MCP via `stdio` (ex: Git, Filesystem, Brave Search) mesclando ferramentas dinamicamente.</td>
-        </tr>
-        <tr>
-          <td><strong>Habilidades (.md)</strong></td>
-          <td>Carregamento dinâmico de guias personalizadas na pasta `~/.siliconflower/skills/*.md`.</td>
-        </tr>
-      </tbody>
-    </table>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">📂</div>
+                    <h3>Sistema de Arquivos</h3>
+                    <p>Lê, cria, edita e gerencia arquivos e diretórios com precisão cirúrgica. Suporta patches atômicos e operações em lote.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">read_file</span>
+                        <span class="feature-tag">write_file</span>
+                        <span class="feature-tag">edit_file</span>
+                        <span class="feature-tag">apply_patch</span>
+                    </div>
+                </div>
 
-    <div class="notes">
-      <strong>Recursos Principais:</strong><br>
-      Ponto chave: SiliconFlower une ferramentas locais seguras, MCP extensível e raciocínio profundo em uma só ferramenta para Windows.
-    </div>
-  </section>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">💻</div>
+                    <h3>Execução de Comandos</h3>
+                    <p>Executa comandos no terminal (PowerShell/Bash) com suporte a processos em background, timeouts e captura de output.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">execute_command</span>
+                        <span class="feature-tag">background</span>
+                        <span class="feature-tag">timeout</span>
+                    </div>
+                </div>
 
-  <!-- SLIDE 4: Modos de Operação & Raciocínio -->
-  <section class="slide" data-title="Modos e Raciocínio" data-footer="Atalhos TUI: Ctrl+O (Alternar Modo) · Ctrl+E (Alternar Raciocínio)">
-    <p class="kicker">Controle Total de Execução</p>
-    <h2 class="h2">Modos de Operação & Raciocínio</h2>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Navegação de Código</h3>
+                    <p>Mapeia repositórios, busca símbolos (funções, classes, tipos) e pesquisa conteúdo com regex em todo o projeto.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">repo_map</span>
+                        <span class="feature-tag">find_symbol</span>
+                        <span class="feature-tag">grep_content</span>
+                    </div>
+                </div>
 
-    <div class="grid g2 mt-m">
-      <!-- Modos -->
-      <div class="stack">
-        <h3>🎭 Modos de Operação <span class="mono dim2">(Ctrl+O)</span></h3>
-        <div class="card card-soft">
-          <div class="row"><span class="pill pill-accent">programação</span><strong>Código & Refatoração</strong></div>
-          <p class="dim mt-s">Focado em leitura, escrita, revisão de código e automação de desenvolvimento seguindo o padrão do projeto.</p>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Acesso à Web</h3>
+                    <p>Pesquisa na web e busca conteúdo de páginas automaticamente, convertendo HTML em Markdown limpo para análise.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">web_search</span>
+                        <span class="feature-tag">web_fetch</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Subagentes Autônomos</h3>
+                    <p>Lança subagentes para executar tarefas em paralelo ou background — pesquisas complexas, refatorações e verificações.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">run_task</span>
+                        <span class="feature-tag">background</span>
+                        <span class="feature-tag">parallel</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Memória Persistente</h3>
+                    <p>Salva regras de projeto, preferências do usuário e aprendizados que persistem entre sessões. Nunca perca contexto.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">save_memory</span>
+                        <span class="feature-tag">recall_memory</span>
+                        <span class="feature-tag">scope</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🔀</div>
+                    <h3>Git Worktrees</h3>
+                    <p>Cria branches de trabalho isoladas para testar mudanças com segurança, sem afetar o branch principal.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">enter_worktree</span>
+                        <span class="feature-tag">exit_worktree</span>
+                        <span class="feature-tag">isolamento</span>
+                    </div>
+                </div>
+
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">📊</div>
+                    <h3>Artefatos Estruturados</h3>
+                    <p>Gera relatórios, diagramas Mermaid, documentos HTML, JSON e código. Tudo salvo e recuperável por ID.</p>
+                    <div class="feature-tags">
+                        <span class="feature-tag">create_artifact</span>
+                        <span class="feature-tag">mermaid</span>
+                        <span class="feature-tag">html</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row animate-on-scroll">
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">30+</div>
+                    <div class="stat-label">Ferramentas Disponíveis</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">∞</div>
+                    <div class="stat-label">Linguagens Suportadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">24/7</div>
+                    <div class="stat-label">Disponibilidade</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">0ms</div>
+                    <div class="stat-label">Latência de Setup</div>
+                </div>
+            </div>
         </div>
-        <div class="card card-soft">
-          <div class="row"><span class="pill pill-accent">sistema</span><strong>Administração Windows</strong></div>
-          <p class="dim mt-s">Permite execução de scripts PowerShell, backups, gerenciamento de serviços e tarefas do sistema.</p>
+    </section>
+
+    <!-- Capabilities -->
+    <section id="capabilities">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-tag">🌺 Capacidades</div>
+                <h2>Como o <span class="gradient-text">siliconflower</span> pensa</h2>
+                <p>Raciocínio antes de ação, convenções do projeto e código idiomático e seguro.</p>
+            </div>
+
+            <div class="capabilities-wrapper">
+                <div class="capabilities-list">
+                    <div class="capability-item animate-on-scroll">
+                        <div class="capability-icon">🧩</div>
+                        <div class="capability-text">
+                            <h4>Raciocínio Antes de Agir</h4>
+                            <p>Analisa o contexto, lê os arquivos relevantes e planeja antes de executar qualquer modificação.</p>
+                        </div>
+                    </div>
+                    <div class="capability-item animate-on-scroll">
+                        <div class="capability-icon">📐</div>
+                        <div class="capability-text">
+                            <h4>Convenções do Projeto</h4>
+                            <p>Segue as bibliotecas, padrões e estilos já existentes no código. Nunca impõe estilos arbitrários.</p>
+                        </div>
+                    </div>
+                    <div class="capability-item animate-on-scroll">
+                        <div class="capability-icon">🛡️</div>
+                        <div class="capability-text">
+                            <h4>Código Seguro</h4>
+                            <p>Escreve código idiomático, com tratamento de erros, validação de inputs e boas práticas de segurança.</p>
+                        </div>
+                    </div>
+                    <div class="capability-item animate-on-scroll">
+                        <div class="capability-icon">🎯</div>
+                        <div class="capability-text">
+                            <h4>Foco em Programação</h4>
+                            <p>Escreve, revisa, refatora e explica código em qualquer linguagem. Mode, Review, Debug — tudo no terminal.</p>
+                        </div>
+                    </div>
+                    <div class="capability-item animate-on-scroll">
+                        <div class="capability-icon">🇧🇷</div>
+                        <div class="capability-text">
+                            <h4>Português Brasileiro</h4>
+                            <p>Responde nativamente em PT-BR com formatação Markdown e comunicação técnica clara.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="capabilities-visual animate-on-scroll">
+                    <div class="flower-diagram">
+                        <div class="flower-center">🌸</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(0, -120px);">📂</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(85px, -85px);">💻</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(120px, 0);">🔍</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(85px, 85px);">🌐</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(0, 120px);">🤖</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(-85px, 85px);">🧠</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(-120px, 0);">🔀</div>
+                        <div class="petal" style="transform: translate(-50%, -50%) translate(-85px, -85px);">📊</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card card-soft">
-          <div class="row"><span class="pill pill-accent">plano</span><strong>Segurança & Apenas Leitura</strong></div>
-          <p class="dim mt-s">Bloqueia edições e comandos modificadores. O agente apenas analisa e propõe o plano para sua aprovação.</p>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-tag">🌼 Skills Especializadas</div>
+                <h2>Habilidades <span class="gradient-text">modulares</span></h2>
+                <p>Skills são módulos de instruções especializadas que expandem as capacidades do agente para domínios específicos.</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">🔍</div>
+                    <h3>Code Review</h3>
+                    <p>Análise profunda de código com foco em qualidade, segurança, performance e boas práticas.</p>
+                </div>
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">💾</div>
+                    <h3>Windows Backup</h3>
+                    <p>Automação de backups no Windows com estratégias inteligentes de versionamento e restauração.</p>
+                </div>
+                <div class="skill-card animate-on-scroll">
+                    <div class="skill-icon">🔒</div>
+                    <h3>Windows Privacy</h3>
+                    <p>Configuração e auditoria de privacidade no Windows, desabilitando telemetria e rastreamento.</p>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <!-- Raciocínio -->
-      <div class="stack">
-        <h3>🧠 Níveis de Raciocínio <span class="mono dim2">(Ctrl+E)</span></h3>
-        <div class="card card-accent">
-          <div class="row"><span class="pill">none</span><span class="pill">low</span><span class="pill">medium</span><span class="pill pill-accent">high</span></div>
-          <p class="dim mt-m">Ajusta o nível de pensamento lógico conforme a complexidade do desafio:</p>
-          <ul class="dim mt-s" style="padding-left: 20px;">
-            <li><strong>DeepSeek / OpenAI:</strong> Envia parâmetro `reasoning_effort`.</li>
-            <li><strong>Anthropic:</strong> Ativa modelo `thinking` com orçamento dinâmico de `budget_tokens`.</li>
-            <li>Permite economia de custos em tarefas simples e máximo poder analítico em refatorações complexas.</li>
-          </ul>
+    <!-- How It Works -->
+    <section id="how">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-tag">🌷 Como Funciona</div>
+                <h2>Simples como <span class="gradient-text">plantar uma flor</span></h2>
+                <p>Três passos para ter um agente de IA poderoso no seu terminal.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">1</div>
+                    <h3>Instale</h3>
+                    <p>Configure o Siliconflower no seu ambiente Windows com Node.js ou Bun. Uma vez instalado, ele está pronto.</p>
+                </div>
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">2</div>
+                    <h3>Converse</h3>
+                    <p>Diga o que precisa em português. Ele entende contexto, lê seu projeto e planeja antes de agir.</p>
+                </div>
+                <div class="step-card animate-on-scroll">
+                    <div class="step-number">3</div>
+                    <h3>Construa</h3>
+                    <p>Ele executa: cria arquivos, edita código, roda comandos, faz commits e muito mais — tudo pelo terminal.</p>
+                </div>
+            </div>
+
+            <!-- Code Example -->
+            <div class="code-showcase animate-on-scroll">
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">terminal</span>
+                        <span style="font-size: 0.8rem; color: var(--white-dim);">exemplo de uso</span>
+                    </div>
+                    <div class="code-body">
+                        <div><span class="comment">// No seu terminal, basta conversar:</span></div>
+                        <div>&nbsp;</div>
+                        <div><span class="punctuation">$</span> <span class="function">siliconflower</span></div>
+                        <div>&nbsp;</div>
+                        <div><span class="keyword">🌸</span> <span class="string">"Crie uma API REST em TypeScript com Hono</span></div>
+                        <div><span class="string">   para gerenciar tarefas, com validação Zod"</span></div>
+                        <div>&nbsp;</div>
+                        <div><span class="comment">// O siliconflower vai:</span></div>
+                        <div><span class="comment">// 1. Mapear o projeto atual</span></div>
+                        <div><span class="comment">// 2. Criar a estrutura de arquivos</span></div>
+                        <div><span class="comment">// 3. Escrever o código idiomatico</span></div>
+                        <div><span class="comment">// 4. Configurar tsconfig e dependências</span></div>
+                        <div><span class="comment">// 5. Testar e documentar</span></div>
+                        <div>&nbsp;</div>
+                        <div><span class="success">✅ Projeto criado com sucesso!</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div class="tech-row animate-on-scroll">
+                <div class="tech-badge"><span>⚡</span> Node.js</div>
+                <div class="tech-badge"><span>🧅</span> Bun</div>
+                <div class="tech-badge"><span>🐚</span> PowerShell</div>
+                <div class="tech-badge"><span>📁</span> Git</div>
+                <div class="tech-badge"><span>🔌</span> MCP Tools</div>
+                <div class="tech-badge"><span>📝</span> Markdown</div>
+                <div class="tech-badge"><span>🎨</span> Mermaid</div>
+                <div class="tech-badge"><span>🤖</span> Subagentes</div>
+            </div>
         </div>
-      </div>
-    </div>
+    </section>
 
-    <div class="notes">
-      <strong>Modos e Raciocínio:</strong><br>
-      Explique a importância do modo 'plano' para segurança quando o usuário quer apenas auditoria ou planejamento.<br>
-      O atalho Ctrl+E permite alternar o raciocínio sem reiniciar a sessão.
-    </div>
-  </section>
-
-  <!-- SLIDE 5: Ferramentas Nativas & Protocolo MCP -->
-  <section class="slide" data-title="Ferramentas e MCP" data-footer="Segurança em Primeiro Lugar · Extensibilidade com Ecossistema MCP">
-    <p class="kicker">Arquitetura Extensível</p>
-    <h2 class="h2">Ferramentas Nativas & Protocolo MCP</h2>
-
-    <div class="grid g2 mt-m">
-      <div class="card">
-        <h3>🛠️ Ferramentas Nativas Incorporadas</h3>
-        <div class="grid g2 mt-s" style="font-size: 12px;">
-          <div>
-            <p><code>read_file</code> - Leitura com offset/limit</p>
-            <p><code>write_file</code> - Criação de arquivos</p>
-            <p><code>edit_file</code> - Substituição precisa</p>
-            <p><code>apply_patch</code> - Edição atômica multi-bloco</p>
-            <p><code>grep_content</code> - Busca por regex</p>
-            <p><code>search_files</code> - Filtro com padrões Glob</p>
-          </div>
-          <div>
-            <p><code>execute_command</code> - PowerShell silencioso</p>
-            <p><code>run_task</code> - Subagente isolado</p>
-            <p><code>todowrite</code> - Painel de tarefas da sessão</p>
-            <p><code>ask_question</code> - Perguntas interativas</p>
-            <p><code>read_logs</code> - Filtro de logs da sessão</p>
-            <p><code>delete_path</code> - Exclusão protegida</p>
-          </div>
+    <!-- CTA -->
+    <section class="cta-section" id="install">
+        <div class="cta-box animate-on-scroll">
+            <div style="font-size: 3rem; margin-bottom: 16px;">🌸🌺🌼</div>
+            <h2>Pronto para <span class="gradient-text">florescer</span>?</h2>
+            <p>Baixe o siliconflower no GitHub e transforme seu terminal em um ambiente de desenvolvimento inteligente.</p>
+            <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; margin: 20px 0 16px; font-size: 1.1rem; padding: 14px 32px; text-decoration: none; border-radius: 12px;">⭐ Ver no GitHub</a>
+            <br>
+            <div class="cta-install" onclick="copyInstall()">
+                <span>git clone https://github.com/siliconfps/siliconflower</span>
+                <span class="copy-icon">📋</span>
+            </div>
+            <br>
+            <div style="font-size: 0.85rem; color: var(--white-dim);">
+                Requer Node.js 18+ ou Bun • Windows 10/11
+            </div>
         </div>
-        <p class="dim mt-s" style="font-size: 11px;">🛡️ Proteção ativa: timeout de 60s, janelas ocultas e bloqueio de pastas sensíveis (System32, .ssh, .aws).</p>
-      </div>
+    </section>
 
-      <div class="card card-soft">
-        <h3>🧩 Protocolo MCP (Model Context Protocol)</h3>
-        <p class="dim" style="font-size: 12px;">Conecte qualquer servidor MCP diretamente na sua configuração (`config.json`):</p>
-        <div class="terminal-box mt-s" style="font-size: 11px;">
-"mcpServers": {
-  "git": {
-    "command": "uvx",
-    "args": ["mcp-server-git", "--repository", "C:/meu-repo"]
-  },
-  "filesystem": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:/Users"]
-  }
-}
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span>🌸</span>
+                <span class="gradient-text">siliconflower</span>
+            </div>
+            <div class="footer-copy">
+                Feito com 💜 e inteligência artificial
+            </div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#capabilities">Capacidades</a>
+                <a href="#skills">Skills</a>
+                <a href="https://github.com/siliconfps/siliconflower" target="_blank">GitHub</a>
+                <a href="#install">Instalar</a>
+            </div>
         </div>
-        <p class="dim mt-s" style="font-size: 11px;">As ferramentas do MCP são descobertas e mescladas automaticamente com as nativas.</p>
-      </div>
-    </div>
+    </footer>
 
-    <div class="notes">
-      <strong>Ferramentas & MCP:</strong><br>
-      Ressalte que o SiliconFlower já vem com tudo pronto para manipular arquivos e executar PowerShell com segurança.<br>
-      A integração MCP abre um ecossistema gigante de ferramentas comunitárias (Git, Postgres, Brave Search, etc).
-    </div>
-  </section>
+    <script>
+        // ===== PARTICLES =====
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
 
-  <!-- SLIDE 6: Modelos Suportados (2026) -->
-  <section class="slide" data-title="Modelos Suportados" data-footer="Compatível com SiliconFlow, OpenRouter, OpenAI, Anthropic e modelos locais">
-    <p class="kicker">Compatibilidade Ampla de LLMs</p>
-    <h2 class="h2">Modelos Recomendados (2026)</h2>
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-    <div class="grid g2 mt-m">
-      <div class="card">
-        <h4>🌐 Open-Weights & Provedores Compatíveis</h4>
-        <p class="dim" style="font-size:12px; margin-bottom: 6px;">Conecte via SiliconFlow, OpenRouter ou APIs locais</p>
-        <ul style="font-size: 12px; padding-left: 16px;" class="stack">
-          <li><strong>DeepSeek-V4-Pro:</strong> 284B–1.6T MoE · Contexto 1M · Raciocínio Nativo</li>
-          <li><strong>Qwen-3.7-Max:</strong> Até 1.1T MoE · Código e matemática de alto nível</li>
-          <li><strong>Llama-4-Scout:</strong> Janela de contexto massiva de até 10M tokens</li>
-          <li><strong>GLM-5.2:</strong> 753B · Automação de tarefas e uso intensivo de terminal</li>
-          <li><strong>Gemma-4-31B:</strong> Execução local super eficiente em GPU/CPU</li>
-        </ul>
-      </div>
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
 
-      <div class="card card-soft">
-        <h4>🔒 Modelos Proprietários</h4>
-        <p class="dim" style="font-size:12px; margin-bottom: 6px;">Suporte direto às APIs oficiais</p>
-        <ul style="font-size: 12px; padding-left: 16px;" class="stack">
-          <li><strong>OpenAI:</strong> `gpt-5.5` / `gpt-5.6` · Contexto até 1M tokens com raciocínio autônomo</li>
-          <li><strong>Anthropic:</strong> `claude-opus-4.8` / `claude-5` · Engenharia de software profunda</li>
-          <li><strong>Google:</strong> `gemini-3.5-pro` · Janela de 2M tokens e multimodalidade</li>
-          <li><strong>xAI:</strong> `grok-4.3` · Pesquisa técnica e resolução lógica em tempo real</li>
-        </ul>
-      </div>
-    </div>
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.hue = Math.random() > 0.5 ? 270 : 290;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-    <div class="notes">
-      <strong>Ecossistema de Modelos:</strong><br>
-      O SiliconFlower permite alternar entre qualquer modelo com uma simples flag CLI `--model` ou alteração na config.<br>
-      Mencione que no Brasil o uso de provedores como SiliconFlow e OpenRouter garante alta velocidade com custo reduzido.
-    </div>
-  </section>
+                if (mouse.x && mouse.y) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        this.x -= dx * 0.002;
+                        this.y -= dy * 0.002;
+                    }
+                }
 
-  <!-- SLIDE 7: Instalação & Compilação Standalone -->
-  <section class="slide" data-title="Instalação" data-footer="Deploy Simples no Windows · Bun compile gera executável sem dependências">
-    <p class="kicker">Início Rápido</p>
-    <h2 class="h2">Instalação & Standalone .exe</h2>
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.hue}, 70%, 70%, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
 
-    <div class="grid g3 mt-m anim-stagger-list">
-      <div class="card">
-        <h4>1. Requisitos</h4>
-        <p class="dim" style="font-size: 12px;">
-          • <strong>Bun >= 1.1</strong> (Recomendado)<br>
-          • ou <strong>Node.js >= 20</strong> + `tsx`<br>
-          • Windows Terminal / PowerShell
-        </p>
-      </div>
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
 
-      <div class="card">
-        <h4>2. Execução Direta</h4>
-        <div class="terminal-box" style="font-size: 11px;">
-git clone https://github.com/siliconflower/siliconflower.git
-cd siliconflower
-bun install
-bun run start
-        </div>
-        <p class="dim mt-s" style="font-size:11px;">Na primeira vez, abre o assistente interativo (*wizard*).</p>
-      </div>
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
 
-      <div class="card card-accent">
-        <h4>3. Compilar Executável .exe</h4>
-        <div class="terminal-box" style="font-size: 11px;">
-bun run build
-npm run install:bin
-        </div>
-        <p class="dim mt-s" style="font-size:11px;">Gera `dist/siliconflower.exe` e adiciona ao seu PATH no Windows sem precisar de Admin.</p>
-      </div>
-    </div>
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `hsla(270, 60%, 60%, ${0.08 * (1 - dist / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
 
-    <div class="card card-soft mt-m">
-      <h4>⚡ Comandos CLI Úteis</h4>
-      <div class="row wrap mt-s" style="font-size: 12px; font-family: var(--font-mono);">
-        <span class="pill">bun run start -- config</span>
-        <span class="pill">bun run start -- show</span>
-        <span class="pill">bun run start -- -m deepseek-ai/DeepSeek-V4-Pro -r high</span>
-      </div>
-    </div>
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
 
-    <div class="notes">
-      <strong>Instalação e Deploy:</strong><br>
-      Mostre como é simples começar. O comando `bun run build` transforma todo o agente TypeScript em um único `.exe` independente que roda direto no Windows.
-    </div>
-  </section>
+        // ===== TERMINAL ANIMATION =====
+        const terminalLines = [
+            { type: 'prompt', text: '🌸 siliconflower> ', extra: 'Olá! Como posso ajudar?' },
+            { type: 'input', text: 'Crie um componente React com TypeScript' },
+            { type: 'blank' },
+            { type: 'thinking', text: '🧠 Analisando estrutura do projeto...' },
+            { type: 'output', text: '📂 Lendo package.json, tsconfig.json...' },
+            { type: 'output', text: '🔍 Mapeando diretório src/components/...' },
+            { type: 'output', text: '✨ Criando src/components/UserCard.tsx' },
+            { type: 'output', text: '📝 Escrevendo código com tipos TypeScript' },
+            { type: 'output', text: '✅ Arquivo criado com sucesso!' },
+            { type: 'blank' },
+            { type: 'success', text: '🌸 Pronto! Componente UserCard criado com:' },
+            { type: 'accent', text: '   • Props tipadas com interface' },
+            { type: 'accent', text: '   • Estilos com Tailwind CSS' },
+            { type: 'accent', text: '   • Testes unitários inclusos' },
+        ];
 
-  <!-- SLIDE 8: Conclusão & CTA -->
-  <section class="slide center tc" data-title="Conclusão" data-footer="SiliconFlower · Licença MIT · Projeto Open-Source para Windows">
-    <div>
-      <p class="kicker">Pronto para Começar?</p>
-      <h1 class="h1 anim-rise-in">🌸 Transforme seu Terminal no Windows</h1>
-      <p class="lede" style="margin: 12px auto;">
-        Um agente de inteligência artificial veloz, seguro e totalmente sob o seu controle.
-      </p>
+        const terminalBody = document.getElementById('terminal-body');
 
-      <div class="row center mt-l gap" style="gap: 16px;">
-        <div class="card card-soft" style="text-align: left; padding: 16px 24px;">
-          <strong>⌨️ Atalhos Rápidos da TUI</strong><br>
-          <span class="dim" style="font-size: 13px;">
-            <kbd>Enter</kbd> Enviar mensagem · <kbd>Ctrl+E</kbd> Mudar Raciocínio · <kbd>Ctrl+O</kbd> Mudar Modo · <kbd>Ctrl+C</kbd> Cancelar
-          </span>
-        </div>
-      </div>
+        function renderTerminal() {
+            terminalBody.innerHTML = '';
+            terminalLines.forEach((line, i) => {
+                const div = document.createElement('div');
+                div.className = 'terminal-line';
+                div.style.animationDelay = `${i * 0.15}s`;
 
-      <div class="mt-m">
-        <p class="dim2" style="font-size: 13px;">Licença MIT · Projeto Aberto para Windows</p>
-      </div>
-    </div>
+                if (line.type === 'blank') {
+                    div.innerHTML = '&nbsp;';
+                } else if (line.type === 'prompt') {
+                    div.innerHTML = `<span class="terminal-prompt">${line.text}</span><span class="terminal-command">${line.extra}</span>`;
+                } else if (line.type === 'input') {
+                    div.innerHTML = `<span class="terminal-prompt">❯ </span><span class="terminal-command">${line.text}</span>`;
+                } else if (line.type === 'thinking') {
+                    div.innerHTML = `<span class="terminal-flower">${line.text}</span>`;
+                } else if (line.type === 'output') {
+                    div.innerHTML = `<span class="terminal-output">${line.text}</span>`;
+                } else if (line.type === 'success') {
+                    div.innerHTML = `<span class="terminal-success">${line.text}</span>`;
+                } else if (line.type === 'accent') {
+                    div.innerHTML = `<span class="terminal-accent">${line.text}</span>`;
+                }
 
-    <div class="notes">
-      <strong>Conclusão e Encerramento:</strong><br>
-      Resuma os pontos fortes do SiliconFlower.<br>
-      Incentive o público a pressionar 'T' na apresentação para ver a flexibilidade do sistema de temas.
-    </div>
-  </section>
-</div>
+                terminalBody.appendChild(div);
+            });
+        }
 
-<!-- Dynamic Embedded Runtime JS & Themes -->
-<script>
-(function() {
-  'use strict';
+        // Intersection observer for terminal
+        const terminalObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    renderTerminal();
+                    terminalObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
 
-  /* Theme definitions dictionary for inline dynamic switching (T key) */
-  const THEME_VARIABLES = {
-    "tokyo-night": `
-      --bg:#1a1b26;--bg-soft:#16161e;--surface:#24283b;--surface-2:#2f334d;
-      --border:rgba(192,202,245,.12);--border-strong:rgba(192,202,245,.24);
-      --text-1:#c0caf5;--text-2:#a9b1d6;--text-3:#565f89;
-      --accent:#7aa2f7;--accent-2:#bb9af7;--accent-3:#7dcfff;
-      --good:#9ece6a;--warn:#e0af68;--bad:#f7768e;
-      --grad:linear-gradient(135deg,#7aa2f7,#bb9af7 55%,#f7768e);
-      --grad-soft:linear-gradient(135deg,#24283b,#2f334d);
-      --radius:12px;--radius-sm:8px;--radius-lg:20px;
-      --shadow:0 10px 30px rgba(0,0,0,.45);--shadow-lg:0 24px 62px rgba(0,0,0,.6);
-    `,
-    "cyberpunk-neon": `
-      --bg:#080914;--bg-soft:#0d0e21;--surface:#131536;--surface-2:#1c1e48;
-      --border:rgba(255,0,128,.2);--border-strong:rgba(0,240,255,.4);
-      --text-1:#f0f3ff;--text-2:#b8c0e0;--text-3:#6c76a0;
-      --accent:#ff007f;--accent-2:#00f0ff;--accent-3:#ffe600;
-      --good:#00ff88;--warn:#ffe600;--bad:#ff0055;
-      --grad:linear-gradient(135deg,#ff007f,#00f0ff 50%,#ffe600);
-      --grad-soft:linear-gradient(135deg,#131536,#1c1e48);
-      --radius:8px;--radius-sm:4px;--radius-lg:14px;
-      --shadow:0 10px 30px rgba(255,0,127,.25);--shadow-lg:0 24px 62px rgba(0,240,255,.3);
-    `,
-    "aurora": `
-      --bg:#0b132b;--bg-soft:#1c2541;--surface:#1c2541;--surface-2:#3a506b;
-      --border:rgba(91,192,190,.15);--border-strong:rgba(91,192,190,.3);
-      --text-1:#e0f2fe;--text-2:#93c5fd;--text-3:#475569;
-      --accent:#5bc0be;--accent-2:#6fffe9;--accent-3:#3a506b;
-      --good:#4ade80;--warn:#facc15;--bad:#f87171;
-      --grad:linear-gradient(135deg,#5bc0be,#6fffe9 60%,#a7f3d0);
-      --grad-soft:linear-gradient(135deg,#1c2541,#3a506b);
-      --radius:16px;--radius-sm:10px;--radius-lg:24px;
-      --shadow:0 10px 30px rgba(11,19,43,.5);--shadow-lg:0 24px 62px rgba(11,19,43,.7);
-    `,
-    "terminal-green": `
-      --bg:#0a0e0a;--bg-soft:#111811;--surface:#142014;--surface-2:#1c2e1c;
-      --border:rgba(0,255,102,.2);--border-strong:rgba(0,255,102,.4);
-      --text-1:#00ff66;--text-2:#00cc52;--text-3:#008837;
-      --accent:#00ff66;--accent-2:#33ff88;--accent-3:#66ffaa;
-      --good:#00ff66;--warn:#ffcc00;--bad:#ff3333;
-      --grad:linear-gradient(135deg,#00ff66,#33ff88 50%,#00cc52);
-      --grad-soft:linear-gradient(135deg,#142014,#1c2e1c);
-      --radius:4px;--radius-sm:2px;--radius-lg:8px;
-      --shadow:0 10px 30px rgba(0,255,102,.15);--shadow-lg:0 24px 62px rgba(0,255,102,.25);
-    `,
-    "minimal-white": `
-      --bg:#ffffff;--bg-soft:#f7f7f8;--surface:#ffffff;--surface-2:#f2f2f4;
-      --border:rgba(0,0,0,.08);--border-strong:rgba(0,0,0,.16);
-      --text-1:#111216;--text-2:#55596a;--text-3:#8a8f9e;
-      --accent:#3b6cff;--accent-2:#7a5cff;--accent-3:#ff5c8a;
-      --good:#1aaf6c;--warn:#f5a524;--bad:#e0445a;
-      --grad:linear-gradient(135deg,#3b6cff,#7a5cff 55%,#ff5c8a);
-      --grad-soft:linear-gradient(135deg,#eef2ff,#f5ecff 55%,#ffeef5);
-      --radius:18px;--radius-sm:12px;--radius-lg:26px;
-      --shadow:0 10px 30px rgba(18,24,40,.08);--shadow-lg:0 24px 60px rgba(18,24,40,.14);
-    `
-  };
+        const terminalSection = document.querySelector('.terminal-section');
+        if (terminalSection) terminalObserver.observe(terminalSection);
 
-  function applyThemeVariables(name) {
-    if (THEME_VARIABLES[name]) {
-      let dynamicStyle = document.getElementById('embedded-theme-style');
-      if (!dynamicStyle) {
-        dynamicStyle = document.createElement('style');
-        dynamicStyle.id = 'embedded-theme-style';
-        document.head.appendChild(dynamicStyle);
-      }
-      dynamicStyle.textContent = `:root { ${THEME_VARIABLES[name]} }`;
-      document.documentElement.setAttribute('data-theme', name);
-      const ind = document.querySelector('.theme-indicator');
-      if (ind) ind.textContent = name;
-    }
-  }
+        // ===== SCROLL ANIMATIONS =====
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-  function ready(fn) {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            scrollObserver.observe(el);
+        });
 
-  ready(function() {
-    const deck = document.querySelector('.deck');
-    if (!deck) return;
-    const slides = Array.from(deck.querySelectorAll('.slide'));
-    if (!slides.length) return;
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
 
-    let idx = 0;
-    const total = slides.length;
+        // ===== MOBILE MENU =====
+        document.getElementById('mobile-toggle').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('open');
+        });
 
-    /* Progress bar */
-    let bar = document.querySelector('.progress-bar');
-    if (!bar) {
-      bar = document.createElement('div');
-      bar.className = 'progress-bar';
-      bar.innerHTML = '<span></span>';
-      document.body.appendChild(bar);
-    }
-    const barFill = bar.querySelector('span');
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav-links').classList.remove('open');
+            });
+        });
 
-    /* Notes overlay (N key) */
-    let notes = document.querySelector('.notes-overlay');
-    if (!notes) {
-      notes = document.createElement('div');
-      notes.className = 'notes-overlay';
-      document.body.appendChild(notes);
-    }
+        // ===== COPY INSTALL =====
+        function copyInstall() {
+            navigator.clipboard.writeText('git clone https://github.com/siliconfps/siliconflower').then(() => {
+                const el = document.querySelector('.cta-install');
+                const original = el.innerHTML;
+                el.innerHTML = '<span>✅ Copiado!</span>';
+                setTimeout(() => { el.innerHTML = original; }, 2000);
+            });
+        }
 
-    /* Overview grid (O key) */
-    let overview = document.querySelector('.overview');
-    if (!overview) {
-      overview = document.createElement('div');
-      overview.className = 'overview';
-      slides.forEach((s, i) => {
-        const t = document.createElement('div');
-        t.className = 'thumb';
-        const title = s.getAttribute('data-title') || ('Slide ' + (i + 1));
-        t.innerHTML = `<div style="font-weight:700;font-size:13px;color:var(--accent);">${i + 1}. ${title}</div>`;
-        t.addEventListener('click', () => { go(i); toggleOverview(false); });
-        overview.appendChild(t);
-      });
-      document.body.appendChild(overview);
-    }
-
-    function go(n) {
-      n = Math.max(0, Math.min(total - 1, n));
-      slides.forEach((s, i) => {
-        s.classList.toggle('is-active', i === n);
-        s.classList.toggle('is-prev', i < n);
-      });
-      idx = n;
-      barFill.style.width = ((n + 1) / total * 100) + '%';
-      
-      document.querySelectorAll('.slide-number').forEach(el => {
-        el.setAttribute('data-current', n + 1);
-        el.setAttribute('data-total', total);
-      });
-
-      /* Dynamic Footer Text update from data-footer */
-      const footerText = slides[n].getAttribute('data-footer') || '';
-      const footerEl = document.querySelector('.deck-footer-text');
-      if (footerEl) footerEl.textContent = footerText;
-
-      const note = slides[n].querySelector('.notes');
-      notes.innerHTML = note ? note.innerHTML : '<em>(Sem notas para esta página)</em>';
-
-      const hashTarget = '#/' + (n + 1);
-      if (location.hash !== hashTarget) history.replaceState(null, '', hashTarget);
-    }
-
-    function toggleNotes(force) {
-      notes.classList.toggle('open', force !== undefined ? force : !notes.classList.contains('open'));
-    }
-
-    function toggleOverview(force) {
-      overview.classList.toggle('open', force !== undefined ? force : !overview.classList.contains('open'));
-    }
-
-    /* Themes cycling */
-    const themesAttr = document.body.getAttribute('data-themes') || 'tokyo-night,cyberpunk-neon,aurora,terminal-green,minimal-white';
-    const themes = themesAttr.split(',').map(s => s.trim()).filter(Boolean);
-    let themeIdx = 0;
-
-    function cycleTheme() {
-      if (!themes.length) return;
-      themeIdx = (themeIdx + 1) % themes.length;
-      applyThemeVariables(themes[themeIdx]);
-    }
-
-    function fullscreen() {
-      if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
-      else document.exitFullscreen && document.exitFullscreen();
-    }
-
-    /* Keyboard Nav */
-    document.addEventListener('keydown', function(e) {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      switch (e.key) {
-        case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx + 1); e.preventDefault(); break;
-        case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx - 1); e.preventDefault(); break;
-        case 'Home': go(0); break;
-        case 'End': go(total - 1); break;
-        case 'f': case 'F': fullscreen(); break;
-        case 'n': case 'N': toggleNotes(); break;
-        case 'o': case 'O': toggleOverview(); break;
-        case 't': case 'T': cycleTheme(); break;
-        case 'Escape': toggleOverview(false); toggleNotes(false); break;
-      }
-    });
-
-    /* Hash nav */
-    function fromHash() {
-      const m = /^#\/(\d+)/.exec(location.hash || '');
-      if (m) go(Math.max(0, parseInt(m[1], 10) - 1));
-    }
-    window.addEventListener('hashchange', fromHash);
-
-    // Initial setup
-    applyThemeVariables(themes[0]);
-    fromHash();
-    go(idx);
-  });
-})();
-</script>
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

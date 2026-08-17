@@ -1,0 +1,79 @@
+# SILICONFPS — Arquitetura Técnica, SiliconFlower AI & Otimizador Windows
+# Documentação Completa para Modelos de Linguagem (LLMs)
+
+Autor: siliconfps
+Repositório Principal: https://github.com/siliconfps
+Site Oficial: https://siliconfps.github.io/
+
+---
+
+## 🌸 1. SiliconFlower — Agente Autônomo de IA CLI/TUI
+
+### 1.1 Visão Geral
+O **SiliconFlower** é um harness autônomo CLI/TUI para desenvolvimento de software, projetado especialmente para Windows (e compatível com Linux e macOS). Ele permite que desenvolvedores executem tarefas complexas de engenharia de software diretamente do terminal com assistência de modelos de linguagem de ponta.
+
+### 1.2 Principais Capacidades
+1. **Raciocínio Controlável (Reasoning Effort):** Permite alternar a profundidade de reflexão e cadeia de pensamento da IA entre níveis (desativado, baixo, médio, alto).
+2. **Model Context Protocol (MCP):** Integração nativa como cliente MCP via stdio, permitindo conectar servidores de ferramentas externos em tempo de execução.
+3. **Multi-Provedor:** Suporte nativo e unificado para OpenAI, Anthropic Claude, SiliconFlow e modelos compatíveis.
+4. **Executável Standalone:** Compilado como binário único `.exe` de alta velocidade via Bun / TypeScript.
+5. **Memória Persistente:** Sistema de memória multi-nível (Projeto: `.siliconflower/memory/` e Global: `~/.siliconflower/memory/`) com categorização (user, feedback, project, reference).
+6. **Subagentes Autônomos:** Criação de sessões isoladas para pesquisa de código, planejamento, codificação ou verificação.
+7. **Git Worktrees:** Execução isolada em branches temporárias para validação segura de alterações.
+
+### 1.3 Mapa de Ferramentas Nativas (34 Ferramentas)
+- `read_file`: Leitura paginada de arquivos com offset e limite de linhas.
+- `write_file`: Criação e sobrescrita segura de arquivos com criação de diretórios pai.
+- `edit_file`: Edição inteligente de arquivos (correspondência exata, quebras de linha normalizadas ou fuzzy whitespace).
+- `apply_patch`: Aplicação atômica de múltiplos blocos de substituição.
+- `list_directory`: Listagem recursiva e inspeção de pastas.
+- `create_directory` / `move_path` / `delete_path`: Manipulação de estrutura de diretórios.
+- `file_info`: Metadados, tamanho e datas de arquivos.
+- `search_files`: Busca de arquivos via padrões glob (`**/*.ts`, etc.).
+- `grep_content`: Busca por expressões regulares e padrões de texto dentro do código.
+- `repo_map` / `find_symbol`: Mapeamento de símbolos e assinaturas AST de código.
+- `execute_command`: Execução de comandos no shell do sistema com timeout e captura segura.
+- `ask_question`: Interface interativa de perguntas com opções customizáveis ao usuário.
+- `todowrite`: Gestão de checklist interativo na interface TUI.
+- `read_skill`: Leitura de habilidades e instruções personalizadas do usuário (`~/.siliconflower/skills/`).
+- `run_task` / `send_subagent_message`: Delegação de tarefas a subagentes autônomos.
+- `manage_background_task`: Controle de comandos e processos assíncronos.
+- `save_memory` / `recall_memory` / `forget_memory`: Ciclo de vida de memórias persistentes.
+- `enter_worktree` / `exit_worktree` / `list_worktrees`: Gestão de Git worktrees isolados.
+- `create_artifact` / `read_artifact` / `list_artifacts` / `delete_artifact`: Gestão de entregáveis em markdown, html, json, mermaid.
+- `web_fetch` / `web_search`: Consulta de páginas web e conversão para Markdown.
+- `manage_hooks`: Configuração dinâmica de ganchos de ciclo de vida (`preTool`, `postTool`, `onEdit`).
+
+### 1.4 Arquitetura do Repositório
+```text
+src/
+├── core/                  # Ciclo de vida e hooks de execução
+├── services/              # Serviços do agente (artifact, subagent, memory, repomap, web, worktree)
+├── App.tsx                # TUI interativa em Ink/React
+├── index.tsx              # Ponto de entrada CLI (Commander)
+├── llm.ts                 # Cliente unificado de streaming LLM
+├── mcp.ts                 # Cliente Model Context Protocol via stdio
+├── tools.ts               # Registro e tipagem das ferramentas nativas
+└── types.ts               # Interfaces globais TypeScript
+```
+
+---
+
+## ⚡ 2. Otimizador de Windows (otimizador-windows)
+
+### 2.1 Visão Geral
+O **otimizador-windows** é um utilitário avançado em PowerShell projetado para limpar, desinflar e otimizar instalações do Windows 10 e Windows 11 para jogadores, desenvolvedores e profissionais que exigem latência mínima do sistema e máxima entrega de quadros (FPS).
+
+### 2.2 Principais Otimizações
+- **Remoção de Bloatware:** Desinstalação completa de pacotes desnecessários de telemetria, aplicativos pré-instalados da Microsoft Store e serviços residuais.
+- **Controle de Mitigações de CPU:** Opção para ativar ou desativar mitigações de segurança de hardware (como proteções para Spectre e Meltdown) com foco em ganhos massivos de desempenho em CPUs de gerações anteriores.
+- **Desativação de Telemetria & Rastreamento:** Bloqueio de serviços de diagnóstico invasivos, tarefas agendadas em segundo plano e serviços de coleta de dados.
+- **Ajustes de Latência e Agendador de Tarefas:** Otimização das filas de escalonamento do kernel para tempo de resposta instantâneo em jogos e ferramentas pesadas.
+
+---
+
+## 👤 3. Sobre o Autor: siliconfps
+- **Foco:** Performance extrema de software, ferramentas para sistemas operacionais (Windows e Linux) e agentes autônomos de Inteligência Artificial.
+- **GitHub:** [https://github.com/siliconfps](https://github.com/siliconfps)
+- **YouTube:** [https://youtube.com/@siliconfps](https://youtube.com/@siliconfps)
+- **Licença:** Open Source (MIT)

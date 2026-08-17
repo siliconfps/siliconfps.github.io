@@ -1,0 +1,20 @@
+# SILICONFPS
+
+> Projetos de software de alta performance, agente de inteligência artificial autônomo SiliconFlower e ferramentas de otimização para Windows desenvolvidos por siliconfps.
+
+## Projetos Principais
+
+- [SiliconFlower AI Agent](https://siliconfps.github.io/siliconflower.html): Harness CLI/TUI autônomo para desenvolvimento de software no Windows com raciocínio controlável (Reasoning Effort), 34 ferramentas integradas, protocolo MCP (Model Context Protocol), memória persistente, subagentes e suporte multi-provedor (OpenAI, Anthropic, SiliconFlow).
+- [Otimizador de Windows](https://github.com/siliconfps/otimizador-windows): Script modular PowerShell focado em máxima redução de latência, remoção de bloatware, controle de telemetria e gerenciamento de mitigações de CPU no Windows 10 e 11.
+
+## Documentação Técnica & Links
+
+- [SiliconFlower Live Deck & Demonstração](https://siliconfps.github.io/siliconflower.html): Demonstração interativa, arquitetura técnica e apresentação do agente SiliconFlower.
+- [Repositório SiliconFlower no GitHub](https://github.com/siliconfps/siliconflower): Código-fonte oficial do SiliconFlower.
+- [Repositório Otimizador Windows no GitHub](https://github.com/siliconfps/otimizador-windows): Código-fonte e scripts de otimização de sistema operacional.
+- [Perfil GitHub do Autor](https://github.com/siliconfps): Todos os repositórios públicos e contribuições open source.
+- [Canal do YouTube](https://youtube.com/@siliconfps): Vídeos e benchmarks de desempenho.
+
+## Documentação Completa para LLMs
+
+- [LLMS Full Technical Specification](https://siliconfps.github.io/llms-full.txt): Especificação técnica completa de arquitetura, ferramentas e parâmetros para consumo direto por agentes de IA.

@@ -1,4 +1,4 @@
-# SILICONFPS — Arquitetura Técnica, SiliconFlower AI & Otimizador Windows
+# SILICONFPS — Arquitetura Técnica, SiliconFlower AI, MarkiiDown & Otimizações
 # Documentação Completa para Modelos de Linguagem (LLMs)
 
 Autor: siliconfps
@@ -7,7 +7,7 @@ Site Oficial: https://siliconfps.github.io/
 
 ---
 
-## 🌸 1. SiliconFlower — Agente Autônomo de IA CLI/TUI
+## 🌸 1. SiliconFlower — Agente Autônomo de IA CLI/TUI (1º Destaque)
 
 ### 1.1 Visão Geral
 O **SiliconFlower** é um harness autônomo CLI/TUI para desenvolvimento de software, projetado especialmente para Windows (e compatível com Linux e macOS). Ele permite que desenvolvedores executem tarefas complexas de engenharia de software diretamente do terminal com assistência de modelos de linguagem de ponta.
@@ -44,36 +44,72 @@ O **SiliconFlower** é um harness autônomo CLI/TUI para desenvolvimento de soft
 - `web_fetch` / `web_search`: Consulta de páginas web e conversão para Markdown.
 - `manage_hooks`: Configuração dinâmica de ganchos de ciclo de vida (`preTool`, `postTool`, `onEdit`).
 
-### 1.4 Arquitetura do Repositório
-```text
-src/
-├── core/                  # Ciclo de vida e hooks de execução
-├── services/              # Serviços do agente (artifact, subagent, memory, repomap, web, worktree)
-├── App.tsx                # TUI interativa em Ink/React
-├── index.tsx              # Ponto de entrada CLI (Commander)
-├── llm.ts                 # Cliente unificado de streaming LLM
-├── mcp.ts                 # Cliente Model Context Protocol via stdio
-├── tools.ts               # Registro e tipagem das ferramentas nativas
-└── types.ts               # Interfaces globais TypeScript
-```
-
 ---
 
-## ⚡ 2. Otimizador de Windows (otimizador-windows)
+## 🚀 2. MarkiiDown — Leitor de Markdown Standalone em Bun/TypeScript (2º Destaque)
 
 ### 2.1 Visão Geral
-O **otimizador-windows** é um utilitário avançado em PowerShell projetado para limpar, desinflar e otimizar instalações do Windows 10 e Windows 11 para jogadores, desenvolvedores e profissionais que exigem latência mínima do sistema e máxima entrega de quadros (FPS).
+O **MarkiiDown** é um leitor de Markdown de alta performance projetado para rodar diretamente no terminal de forma interativa (TUI Pager) ou via linha de comando. Ele opera de forma **100% offline**, sem criar servidores web locais, sem abrir portas de rede e sem depender de navegadores externos.
 
-### 2.2 Principais Otimizações
-- **Remoção de Bloatware:** Desinstalação completa de pacotes desnecessários de telemetria, aplicativos pré-instalados da Microsoft Store e serviços residuais.
-- **Controle de Mitigações de CPU:** Opção para ativar ou desativar mitigações de segurança de hardware (como proteções para Spectre e Meltdown) com foco em ganhos massivos de desempenho em CPUs de gerações anteriores.
-- **Desativação de Telemetria & Rastreamento:** Bloqueio de serviços de diagnóstico invasivos, tarefas agendadas em segundo plano e serviços de coleta de dados.
-- **Ajustes de Latência e Agendador de Tarefas:** Otimização das filas de escalonamento do kernel para tempo de resposta instantâneo em jogos e ferramentas pesadas.
+### 2.2 Principais Capacidades
+1. **100% Standalone & Offline:** Zero servidores HTTP, zero portas de rede e zero tráfego externo.
+2. **Instalador sem Administrador (`--install`):** Instala em `%LOCALAPPDATA%\MarkiiDown`, adiciona automaticamente ao `PATH` do usuário e configura o menu de contexto do Windows.
+3. **Integração com Windows Explorer:** Opção *"Abrir com MarkiiDown"* no menu de contexto ao clicar com botão direito em qualquer `.md`.
+4. **Visualizador Interativo TUI Pager:** Buffer alternativo de terminal (`\x1B[?1049h`), rolagem suave (`j`/`k`, setas, `PgDn`), barra de progresso em porcentagem e busca em tempo real (`/`).
+5. **Sumário Integrado (TOC):** Tecla `t` para listar e pular diretamente para qualquer seção do documento.
+6. **Modo Monitoramento Contínuo (`--watch` / `-w`):** Observa alterações no arquivo em tempo real e re-renderiza instantaneamente.
+7. **Exportação Estática para HTML (`--export` / `-e`):** Converte Markdown para documento `.html` autocontido direto no disco.
+
+### 2.3 Controles de Teclado no TUI Pager
+- `↓` / `j` / `Enter`: Rola 1 linha para baixo.
+- `↑` / `k`: Rola 1 linha para cima.
+- `Espaço` / `PgDown`: Rola 1 página para baixo.
+- `PgUp` / `b`: Rola 1 página para cima.
+- `Home` / `g`: Início do documento.
+- `End` / `G`: Final do documento.
+- `/`: Busca por texto interativa.
+- `n` / `N`: Próxima / anterior ocorrência da busca.
+- `t`: Abrir sumário navegável (TOC).
+- `q` / `Esc`: Sair do visualizador.
 
 ---
 
-## 👤 3. Sobre o Autor: siliconfps
+## ⚡ 3. Otimizador de Windows (3º Destaque)
+
+### 3.1 Visão Geral
+O **otimizador-windows** é um utilitário avançado em PowerShell (com versão executável standalone `.exe`) projetado para limpar, desinflar e otimizar instalações do Windows 10 e Windows 11 para jogadores, desenvolvedores e profissionais que exigem latência mínima do sistema e máxima entrega de FPS.
+
+### 3.2 Principais Otimizações
+- **Remoção de Bloatware:** Desinstalação completa de pacotes de telemetria, aplicativos pré-instalados da Microsoft Store e serviços residuais.
+- **Controle de Mitigações de CPU:** Gerenciamento seguro de mitigações de segurança de hardware (como Spectre e Meltdown) com foco em ganhos massivos de desempenho em CPUs.
+- **Desativação de Telemetria & Rastreamento:** Bloqueio de serviços de diagnóstico invasivos, tarefas agendadas em segundo plano e serviços de coleta de dados.
+- **Ajustes de Latência e Escalonador:** Otimização das filas de escalonamento do kernel para resposta instantânea em jogos e ferramentas de desenvolvimento.
+
+---
+
+## 🛠️ 4. Utilitários & Ferramentas Open Source
+
+### 4.1 Little Registry Cleaner (v2.0.0)
+- Utilitário em C# e .NET para limpeza e otimização do Registro do Windows com arquitetura 64-bit real (`IntPtr` / `Wow6432Node`).
+- Suporte a Windows 7, 8, 10 e 11.
+- Integração de progresso na barra de tarefas (Taskbar COM `ITaskbarList3`).
+- Startup Manager (Gerenciador de programas de inicialização) e Uninstall Manager (Desinstalador forçado de sobras).
+- Backups automáticos em XML e restauração em 1 clique.
+
+### 4.2 GpuCpuMonitor (v1.0.2)
+- Monitor de telemetria de CPU e GPU leve para a bandeja do sistema (System Tray) do Windows em .NET 9 single-file.
+- Ícones dinâmicos com porcentagem de carga e barras coloridas por nível de uso.
+- Acesso a sensores MSR para leitura de temperatura real Intel e AMD via driver `WinRing0x64.sys`.
+- Atualização em tempo real de clocks, VRAM, TDP e início automático com o Windows.
+
+### 4.3 check-cpu-mitigations & hardview
+- `check-cpu-mitigations`: Auditor de vulnerabilidades de hardware (Spectre, Meltdown, Foreshadow, MDS) em PowerShell.
+- `hardview`: Auditoria detalhada de especificações e status de hardware para distribuições Linux (Arch, Fedora, Ubuntu).
+
+---
+
+## 👤 5. Sobre o Autor: siliconfps
 - **Foco:** Performance extrema de software, ferramentas para sistemas operacionais (Windows e Linux) e agentes autônomos de Inteligência Artificial.
 - **GitHub:** [https://github.com/siliconfps](https://github.com/siliconfps)
 - **YouTube:** [https://youtube.com/@siliconfps](https://youtube.com/@siliconfps)
-- **Licença:** Open Source (MIT)
+- **Licença Geral:** Open Source (MIT / GPLv3)

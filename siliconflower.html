@@ -1,1693 +1,648 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siliconflower 🌸 — Agente de IA Autônomo CLI/TUI para Windows</title>
-    
-    <!-- ====== SEO PRINCIPAL ====== -->
-    <meta name="description" content="Apresentação oficial e especificação técnica do Siliconflower: Agente de IA autônomo CLI/TUI para Windows com raciocínio controlável, 34 ferramentas integradas, protocolo MCP e suporte multi-provedor.">
-    <meta name="keywords" content="SiliconFlower, SiliconFlower AI, agente de IA, AI Agent Windows, Model Context Protocol, MCP, Bun, TypeScript, IA CLI, reasoning effort, terminal AI, siliconfps">
-    <meta name="author" content="siliconfps">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="https://siliconfps.github.io/siliconflower.html">
-    <link rel="alternate" type="text/plain" href="https://siliconfps.github.io/llms.txt" title="Documentação Técnica para LLMs">
-
-    <!-- ====== OPEN GRAPH ====== -->
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Siliconflower 🌸 — Agente de IA Autônomo CLI/TUI para Windows">
-    <meta property="og:description" content="Agente autônomo para desenvolvimento de software no Windows com raciocínio ajustável, 34 ferramentas integradas e protocolo MCP.">
-    <meta property="og:url" content="https://siliconfps.github.io/siliconflower.html">
-    <meta property="og:site_name" content="SILICONFPS">
-    <meta property="og:image" content="https://siliconfps.github.io/avatarupscaled.webp">
-
-    <!-- ====== TWITTER ====== -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Siliconflower 🌸 — Agente de IA Autônomo CLI/TUI para Windows">
-    <meta name="twitter:description" content="Agente autônomo para desenvolvimento de software no Windows com raciocínio ajustável, 34 ferramentas integradas e protocolo MCP.">
-    <meta name="twitter:image" content="https://siliconfps.github.io/avatarupscaled.webp">
-
-    <!-- ====== SCHEMA.ORG DADOS ESTRUTURADOS (JSON-LD) ====== -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "SiliconFlower",
-      "alternateName": "SiliconFlower AI Agent",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Windows, Linux, macOS",
-      "description": "Harness CLI/TUI autônomo para desenvolvimento de software com raciocínio controlável, 34 ferramentas nativas, protocolo MCP e suporte multi-provedor de LLMs.",
-      "url": "https://siliconfps.github.io/siliconflower.html",
-      "codeRepository": "https://github.com/siliconfps/siliconflower",
-      "author": {
-        "@type": "Person",
-        "name": "siliconfps",
-        "url": "https://siliconfps.github.io/"
-      }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SiliconFlower — Harness profissional de agentes de IA</title>
+  <meta name="description" content="Harness CLI/TUI para engenharia de software com 34 ferramentas nativas, subagentes, memória persistente, Git worktrees, RepoMap e protocolo MCP.">
+  <meta name="author" content="siliconfps">
+  <meta name="theme-color" content="#050907">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://siliconfps.github.io/siliconflower.html">
+  <link rel="alternate" type="text/plain" href="https://siliconfps.github.io/llms.txt" title="Documentação para LLMs">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SILICONFPS">
+  <meta property="og:title" content="SiliconFlower — Seu agente de engenharia no terminal">
+  <meta property="og:description" content="Orquestre modelos, ferramentas e subagentes em um harness local, transparente e extensível.">
+  <meta property="og:url" content="https://siliconfps.github.io/siliconflower.html">
+  <meta property="og:image" content="https://siliconfps.github.io/og-siliconflower.png">
+  <meta property="og:image:alt" content="SiliconFlower, harness de agentes de IA para terminal">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SiliconFlower — Seu agente de engenharia no terminal">
+  <meta name="twitter:description" content="34 ferramentas, subagentes, MCP, worktrees e memória persistente em uma TUI de alta performance.">
+  <meta name="twitter:image" content="https://siliconfps.github.io/og-siliconflower.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SiliconFlower",
+    "softwareVersion": "0.2.4",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "description": "Harness CLI/TUI para engenharia de software com 34 ferramentas nativas, subagentes, memória persistente, Git worktrees, RepoMap e protocolo MCP.",
+    "url": "https://siliconfps.github.io/siliconflower.html",
+    "codeRepository": "https://github.com/siliconfps/siliconflower",
+    "license": "https://opensource.org/license/mit",
+    "author": { "@type": "Person", "name": "siliconfps", "url": "https://github.com/siliconfps" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050806;
+      --surface: #08100c;
+      --surface-2: #0b1510;
+      --surface-3: #0e1b14;
+      --ink: #f0f7f2;
+      --muted: #8ca096;
+      --muted-2: #5d7066;
+      --green: #67f58a;
+      --green-strong: #21dc61;
+      --cyan: #65dfe2;
+      --violet: #aa8cff;
+      --amber: #ffc967;
+      --red: #ff756d;
+      --line: rgba(118, 255, 160, .14);
+      --line-strong: rgba(118, 255, 160, .32);
+      --glow: rgba(50, 235, 104, .16);
+      --mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+      --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --max: 1200px;
+      --radius: 18px;
     }
-    </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* ===== RESET & BASE ===== */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --black: #0a0a0a;
-            --black-light: #111111;
-            --black-card: #161616;
-            --black-hover: #1a1a1a;
-            --purple-deep: #2d1b4e;
-            --purple-dark: #4a2875;
-            --purple: #7c3aed;
-            --purple-light: #a78bfa;
-            --purple-lighter: #c4b5fd;
-            --lilac: #c084fc;
-            --lilac-light: #d8b4fe;
-            --lilac-pale: #e9d5ff;
-            --lilac-glow: #f3e8ff;
-            --pink-accent: #e879f9;
-            --white: #f5f0ff;
-            --white-dim: #c8c0d8;
-            --gradient-main: linear-gradient(135deg, #7c3aed 0%, #c084fc 50%, #e879f9 100%);
-            --gradient-dark: linear-gradient(135deg, #2d1b4e 0%, #4a2875 100%);
-            --gradient-card: linear-gradient(145deg, rgba(124, 58, 237, 0.08) 0%, rgba(192, 132, 252, 0.04) 100%);
-            --glow-purple: 0 0 40px rgba(124, 58, 237, 0.3);
-            --glow-lilac: 0 0 60px rgba(192, 132, 252, 0.2);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background-color: var(--black);
-            color: var(--white);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--black); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--purple-dark);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover { background: var(--purple); }
-
-        /* ===== UTILITY ===== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .gradient-text {
-            background: var(--gradient-main);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* ===== PARTICLES BACKGROUND ===== */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* ===== NAVIGATION ===== */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            padding: 16px 0;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            background: rgba(10, 10, 10, 0.7);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-        }
-
-        nav.scrolled {
-            background: rgba(10, 10, 10, 0.95);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
-        }
-
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.3rem;
-            font-weight: 800;
-            text-decoration: none;
-            color: var(--white);
-        }
-
-        .nav-logo .flower-icon {
-            font-size: 1.6rem;
-            animation: spin-slow 8s linear infinite;
-        }
-
-        @keyframes spin-slow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--white-dim);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-main);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--lilac-light);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            padding: 8px 20px;
-            background: var(--gradient-main);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--glow-purple);
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            z-index: 1;
-            padding: 120px 24px 80px;
-        }
-
-        .hero-bg-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
-            z-index: -1;
-        }
-
-        .hero-bg-glow.glow-1 {
-            top: 10%;
-            left: 20%;
-            background: var(--purple);
-        }
-
-        .hero-bg-glow.glow-2 {
-            bottom: 10%;
-            right: 15%;
-            background: var(--lilac);
-        }
-
-        .hero-bg-glow.glow-3 {
-            top: 40%;
-            right: 30%;
-            background: var(--pink-accent);
-            opacity: 0.08;
-        }
-
-        .hero-content {
-            max-width: 800px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 20px;
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            color: var(--lilac-light);
-            margin-bottom: 32px;
-            background: rgba(124, 58, 237, 0.08);
-            animation: fade-in-up 0.8s ease-out;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 8px;
-            animation: fade-in-up 0.8s ease-out 0.1s both;
-        }
-
-        .hero-flower-line {
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-            animation: fade-in-up 0.8s ease-out 0.2s both;
-            letter-spacing: 12px;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-            color: var(--white-dim);
-            max-width: 600px;
-            margin: 0 auto 48px;
-            font-weight: 400;
-            animation: fade-in-up 0.8s ease-out 0.3s both;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fade-in-up 0.8s ease-out 0.4s both;
-        }
-
-        .btn-primary {
-            padding: 14px 32px;
-            background: var(--gradient-main);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
-        }
-
-        .btn-secondary {
-            padding: 14px 32px;
-            background: transparent;
-            border: 1px solid rgba(124, 58, 237, 0.4);
-            border-radius: 12px;
-            color: var(--lilac-light);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: var(--purple);
-        }
-
-        /* ===== TERMINAL PREVIEW ===== */
-        .terminal-section {
-            position: relative;
-            z-index: 1;
-            padding: 0 24px 120px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .terminal {
-            background: var(--black-light);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 16px;
-            max-width: 750px;
-            width: 100%;
-            overflow: hidden;
-            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), var(--glow-lilac);
-        }
-
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 20px;
-            background: rgba(124, 58, 237, 0.06);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-        }
-
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .terminal-dot.red { background: #ef4444; }
-        .terminal-dot.yellow { background: #f59e0b; }
-        .terminal-dot.green { background: #22c55e; }
-
-        .terminal-title {
-            margin-left: 12px;
-            font-size: 0.8rem;
-            color: var(--white-dim);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .terminal-body {
-            padding: 24px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            line-height: 1.8;
-        }
-
-        .terminal-line {
-            opacity: 0;
-            animation: typewriter 0.3s ease-out forwards;
-        }
-
-        .terminal-prompt {
-            color: var(--lilac);
-        }
-
-        .terminal-command {
-            color: var(--white);
-        }
-
-        .terminal-output {
-            color: var(--white-dim);
-        }
-
-        .terminal-flower {
-            color: var(--pink-accent);
-        }
-
-        .terminal-success {
-            color: #22c55e;
-        }
-
-        .terminal-accent {
-            color: var(--purple-light);
-        }
-
-        @keyframes typewriter {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== SECTIONS ===== */
-        section {
-            position: relative;
-            z-index: 1;
-            padding: 100px 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 64px;
-        }
-
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--lilac);
-            margin-bottom: 20px;
-            background: rgba(124, 58, 237, 0.06);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .section-header p {
-            font-size: 1.1rem;
-            color: var(--white-dim);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* ===== FEATURES GRID ===== */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 24px;
-        }
-
-        .feature-card {
-            background: var(--black-card);
-            border: 1px solid rgba(124, 58, 237, 0.1);
-            border-radius: 20px;
-            padding: 36px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-main);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .feature-card:hover {
-            border-color: rgba(124, 58, 237, 0.3);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 0 40px rgba(124, 58, 237, 0.08);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-            background: rgba(124, 58, 237, 0.1);
-            border: 1px solid rgba(124, 58, 237, 0.15);
-        }
-
-        .feature-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--white);
-        }
-
-        .feature-card p {
-            color: var(--white-dim);
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        .feature-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .feature-tag {
-            padding: 4px 12px;
-            background: rgba(124, 58, 237, 0.08);
-            border: 1px solid rgba(124, 58, 237, 0.15);
-            border-radius: 6px;
-            font-size: 0.75rem;
-            color: var(--purple-light);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* ===== CAPABILITIES ===== */
-        .capabilities-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
-
-        .capabilities-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .capability-item {
-            display: flex;
-            gap: 16px;
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid transparent;
-            transition: all 0.3s;
-            cursor: default;
-        }
-
-        .capability-item:hover {
-            background: rgba(124, 58, 237, 0.05);
-            border-color: rgba(124, 58, 237, 0.15);
-        }
-
-        .capability-icon {
-            font-size: 1.5rem;
-            flex-shrink: 0;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(124, 58, 237, 0.1);
-            border-radius: 10px;
-        }
-
-        .capability-text h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .capability-text p {
-            font-size: 0.9rem;
-            color: var(--white-dim);
-        }
-
-        .capabilities-visual {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .flower-diagram {
-            position: relative;
-            width: 360px;
-            height: 360px;
-        }
-
-        .flower-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100px;
-            height: 100px;
-            background: var(--gradient-main);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
-            z-index: 2;
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.5); }
-            50% { box-shadow: 0 0 60px rgba(192, 132, 252, 0.6); }
-        }
-
-        .petal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            transition: all 0.4s;
-            animation: float-petal 6s ease-in-out infinite;
-        }
-
-        .petal:hover {
-            background: rgba(124, 58, 237, 0.25);
-            transform: translate(-50%, -50%) scale(1.15) !important;
-            box-shadow: var(--glow-purple);
-        }
-
-        .petal:nth-child(1) { animation-delay: 0s; }
-        .petal:nth-child(2) { animation-delay: 0.5s; }
-        .petal:nth-child(3) { animation-delay: 1s; }
-        .petal:nth-child(4) { animation-delay: 1.5s; }
-        .petal:nth-child(5) { animation-delay: 2s; }
-        .petal:nth-child(6) { animation-delay: 2.5s; }
-        .petal:nth-child(7) { animation-delay: 3s; }
-        .petal:nth-child(8) { animation-delay: 3.5s; }
-
-        @keyframes float-petal {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 1; }
-        }
-
-        /* ===== SKILLS SECTION ===== */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .skill-card {
-            background: var(--black-card);
-            border: 1px solid rgba(124, 58, 237, 0.1);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .skill-card:hover {
-            border-color: rgba(124, 58, 237, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .skill-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-        }
-
-        .skill-card h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .skill-card p {
-            color: var(--white-dim);
-            font-size: 0.9rem;
-        }
-
-        /* ===== STATS ===== */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-top: 80px;
-        }
-
-        .stat-card {
-            text-align: center;
-            padding: 32px 16px;
-            border-radius: 16px;
-            background: var(--black-card);
-            border: 1px solid rgba(124, 58, 237, 0.08);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--white-dim);
-            font-weight: 500;
-        }
-
-        /* ===== HOW IT WORKS ===== */
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-            position: relative;
-        }
-
-        .steps-grid::before {
-            content: '';
-            position: absolute;
-            top: 48px;
-            left: calc(16.66% + 16px);
-            right: calc(16.66% + 16px);
-            height: 2px;
-            background: linear-gradient(to right, var(--purple), var(--lilac), var(--pink-accent));
-            opacity: 0.3;
-        }
-
-        .step-card {
-            text-align: center;
-            padding: 32px 24px;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient-main);
-            box-shadow: var(--glow-purple);
-        }
-
-        .step-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .step-card p {
-            color: var(--white-dim);
-            font-size: 0.95rem;
-        }
-
-        /* ===== CODE EXAMPLE ===== */
-        .code-showcase {
-            max-width: 800px;
-            margin: 64px auto 0;
-        }
-
-        .code-block {
-            background: var(--black-light);
-            border: 1px solid rgba(124, 58, 237, 0.15);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .code-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 20px;
-            background: rgba(124, 58, 237, 0.05);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-        }
-
-        .code-lang {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--lilac);
-        }
-
-        .code-body {
-            padding: 24px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            line-height: 1.9;
-            overflow-x: auto;
-        }
-
-        .code-body .comment { color: #6b7280; }
-        .code-body .keyword { color: var(--purple-light); }
-        .code-body .string { color: #22c55e; }
-        .code-body .function { color: var(--lilac); }
-        .code-body .type { color: var(--pink-accent); }
-        .code-body .punctuation { color: var(--white-dim); }
-
-        /* ===== TECH STACK ===== */
-        .tech-row {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 48px;
-        }
-
-        .tech-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--black-card);
-            border: 1px solid rgba(124, 58, 237, 0.12);
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--white-dim);
-            transition: all 0.3s;
-        }
-
-        .tech-badge:hover {
-            border-color: var(--purple);
-            color: var(--white);
-            background: rgba(124, 58, 237, 0.08);
-        }
-
-        .tech-badge span {
-            font-size: 1.2rem;
-        }
-
-        /* ===== CTA SECTION ===== */
-        .cta-section {
-            text-align: center;
-            padding: 120px 24px;
-        }
-
-        .cta-box {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 64px 48px;
-            background: var(--gradient-dark);
-            border-radius: 24px;
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box::before {
-            content: '🌸';
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            font-size: 8rem;
-            opacity: 0.08;
-        }
-
-        .cta-box h2 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .cta-box p {
-            color: var(--white-dim);
-            margin-bottom: 32px;
-            font-size: 1.05rem;
-        }
-
-        .cta-install {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 28px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem;
-            color: var(--lilac-light);
-            margin-bottom: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .cta-install:hover {
-            border-color: var(--purple);
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .cta-install .copy-icon {
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        .cta-install:hover .copy-icon {
-            opacity: 1;
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid rgba(124, 58, 237, 0.1);
-            padding: 48px 24px;
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .footer-copy {
-            color: var(--white-dim);
-            font-size: 0.85rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 24px;
-        }
-
-        .footer-links a {
-            color: var(--white-dim);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--lilac-light);
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fade-in-up {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== MOBILE MENU ===== */
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 900px) {
-            .nav-links { display: none; }
-            .mobile-toggle { display: block; }
-
-            .nav-links.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 10, 0.98);
-                padding: 24px;
-                gap: 20px;
-                border-bottom: 1px solid rgba(124, 58, 237, 0.1);
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .capabilities-wrapper {
-                grid-template-columns: 1fr;
-            }
-
-            .capabilities-visual {
-                order: -1;
-            }
-
-            .flower-diagram {
-                width: 280px;
-                height: 280px;
-            }
-
-            .steps-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .steps-grid::before { display: none; }
-
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .stats-row {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .cta-box {
-                padding: 40px 24px;
-            }
-        }
-    </style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 72% -10%, rgba(59, 235, 113, .1), transparent 34rem),
+        radial-gradient(circle at -8% 36%, rgba(91, 218, 224, .055), transparent 30rem),
+        var(--bg);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::after {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      content: "";
+      opacity: .15;
+      background: repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,.35) 4px);
+      mix-blend-mode: overlay;
+    }
+    ::selection { color: #031006; background: var(--green); }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    code, pre, .mono { font-family: var(--mono); }
+    .skip { position: fixed; top: -60px; left: 16px; z-index: 100; padding: 10px 14px; color: #031006; background: var(--green); }
+    .skip:focus { top: 16px; }
+    .wrap { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+    .grid-bg { position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: .16; background-image: linear-gradient(rgba(103,245,138,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(103,245,138,.023) 1px, transparent 1px); background-size: 58px 58px; mask-image: linear-gradient(to bottom, black, transparent 82%); }
+
+    .nav-shell { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); background: rgba(5,8,6,.82); backdrop-filter: blur(18px); }
+    .nav { min-height: 70px; display: flex; align-items: center; gap: 30px; }
+    .logo { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; font: 600 14px var(--mono); letter-spacing: -.02em; }
+    .logo-mark { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid var(--line-strong); border-radius: 9px; color: var(--green); background: rgba(103,245,138,.06); box-shadow: inset 0 0 20px rgba(103,245,138,.04); }
+    .logo-word span { color: var(--green); }
+    .nav-version { padding: 5px 8px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; font: 500 9px var(--mono); }
+    .nav-links { margin-left: auto; display: flex; align-items: center; gap: 24px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font: 500 11px var(--mono); transition: color .2s ease; }
+    .nav-links a:hover { color: var(--green); }
+    .github-button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; color: var(--ink) !important; border: 1px solid var(--line-strong); border-radius: 9px; background: rgba(103,245,138,.05); }
+    .back-link { display: inline-flex; align-items: center; gap: 7px; color: var(--muted-2); text-decoration: none; font: 500 10px var(--mono); }
+    .back-link:hover { color: var(--green); }
+    .menu { display: none; margin-left: auto; width: 42px; height: 42px; color: var(--green); border: 1px solid var(--line); border-radius: 9px; background: transparent; font: 600 18px var(--mono); cursor: pointer; }
+
+    .hero { position: relative; padding: 105px 0 88px; border-bottom: 1px solid var(--line); overflow: hidden; }
+    .hero::before { position: absolute; top: 12%; right: -150px; width: 520px; height: 520px; content: ""; border: 1px solid rgba(103,245,138,.1); border-radius: 50%; box-shadow: 0 0 0 70px rgba(103,245,138,.012), 0 0 0 140px rgba(103,245,138,.008); }
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: clamp(45px, 7vw, 90px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 24px; color: var(--green); font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .eyebrow::before { width: 22px; height: 1px; content: ""; background: var(--green); }
+    h1 { margin: 0; max-width: 660px; font-size: clamp(3.2rem, 6.8vw, 6.4rem); line-height: .94; letter-spacing: -.065em; }
+    h1 span { color: var(--green); }
+    .hero-copy { max-width: 640px; margin: 28px 0 32px; color: #abbcb2; font-size: clamp(.98rem, 1.35vw, 1.14rem); line-height: 1.75; }
+    .hero-copy strong { color: var(--ink); font-weight: 600; }
+    .actions { display: flex; flex-wrap: wrap; gap: 11px; }
+    .button { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 18px; border: 1px solid var(--line-strong); border-radius: 9px; text-decoration: none; font: 600 11px var(--mono); transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+    .button:hover { transform: translateY(-2px); border-color: var(--green); }
+    .button.primary { color: #031006; border-color: var(--green); background: var(--green); box-shadow: 0 16px 45px rgba(41,220,97,.12); }
+    .button.secondary { background: rgba(5,8,6,.66); }
+    .hero-note { margin-top: 17px; color: var(--muted-2); font: 10px/1.5 var(--mono); }
+
+    .product-shell { position: relative; border: 1px solid var(--line-strong); border-radius: 17px; overflow: hidden; background: rgba(5,10,7,.94); box-shadow: 0 35px 100px rgba(0,0,0,.5), 0 0 60px rgba(48,229,102,.05); }
+    .product-shell::after { position: absolute; inset: 0; pointer-events: none; content: ""; box-shadow: inset 0 0 80px rgba(103,245,138,.025); }
+    .real-product { position: relative; aspect-ratio: 1.85 / 1; overflow: hidden; background: #000; }
+    .real-product img { display: block; width: 132%; max-width: none; height: auto; transform: translate(-12%, -19.4%); }
+    .capture-flag { position: absolute; top: 14px; right: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; color: var(--green); border: 1px solid rgba(103,245,138,.28); border-radius: 6px; background: rgba(5,8,6,.84); backdrop-filter: blur(8px); font: 600 8px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    .capture-flag::before { width: 5px; height: 5px; content: ""; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+    .privacy-mask { position: absolute; left: 22%; top: 58%; z-index: 2; width: 22%; height: 3.8%; display: flex; align-items: center; padding-left: 4px; color: #c59b2d; background: #0a0a0a; font: 500 clamp(4px, .48vw, 7px) var(--mono); white-space: nowrap; overflow: hidden; }
+    .window-bar { min-height: 44px; display: flex; align-items: center; gap: 7px; padding: 0 14px; color: var(--muted-2); border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); font: 9px var(--mono); }
+    .window-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); }
+    .window-dot:nth-child(2) { background: var(--amber); }
+    .window-dot:nth-child(3) { background: var(--green); }
+    .window-title { margin-left: 7px; }
+    .window-status { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--green); }
+    .window-status::before { width: 5px; height: 5px; content: ""; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .tui { display: grid; grid-template-columns: 145px 1fr; min-height: 430px; }
+    .tui-sidebar { padding: 15px 10px; border-right: 1px solid var(--line); background: rgba(255,255,255,.008); }
+    .side-label { display: block; margin: 8px 9px 12px; color: var(--muted-2); font: 600 8px var(--mono); letter-spacing: .09em; }
+    .side-item { display: flex; align-items: center; gap: 8px; padding: 9px; color: #809288; border-radius: 6px; font: 9px var(--mono); }
+    .side-item.active { color: var(--green); background: rgba(103,245,138,.065); }
+    .side-item .icon { width: 13px; color: var(--muted-2); }
+    .side-item.active .icon { color: var(--green); }
+    .side-count { margin-left: auto; color: var(--muted-2); }
+    .side-divider { height: 1px; margin: 10px 9px; background: var(--line); }
+    .tui-main { display: flex; flex-direction: column; min-width: 0; }
+    .session-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 16px; color: var(--muted); border-bottom: 1px solid var(--line); font: 9px var(--mono); }
+    .mode { padding: 4px 7px; color: var(--cyan); border: 1px solid rgba(101,223,226,.2); border-radius: 5px; background: rgba(101,223,226,.04); }
+    .chat { flex: 1; padding: 18px; font: 9.5px/1.65 var(--mono); }
+    .chat-label { margin-bottom: 7px; color: var(--muted-2); }
+    .user-message { margin-bottom: 19px; padding: 11px 13px; color: #c3d1c8; border-left: 2px solid var(--cyan); background: rgba(101,223,226,.035); }
+    .agent-line { display: flex; gap: 9px; margin: 7px 0; color: #9aada2; }
+    .agent-mark { flex: 0 0 auto; color: var(--green); }
+    .tool { color: var(--cyan); }
+    .ok { color: var(--green); }
+    .dim { color: var(--muted-2); }
+    .task-line { display: grid; grid-template-columns: 16px 1fr auto; gap: 7px; margin: 7px 0 7px 25px; color: #84978c; }
+    .task-line .running { color: var(--amber); }
+    .composer { display: flex; align-items: center; gap: 9px; margin: 0 15px 15px; padding: 12px; color: var(--muted-2); border: 1px solid var(--line-strong); border-radius: 8px; background: #060b08; font: 9px var(--mono); }
+    .composer span:first-child { color: var(--green); }
+    .composer-meta { margin-left: auto; }
+    .status-bar { display: flex; align-items: center; gap: 14px; padding: 7px 12px; color: #64776c; border-top: 1px solid var(--line); background: rgba(103,245,138,.025); font: 8px var(--mono); }
+    .status-bar .branch { color: var(--violet); }
+    .status-bar .ready { margin-left: auto; color: var(--green); }
+
+    .proof { border-bottom: 1px solid var(--line); background: #07100b; }
+    .proof-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .proof-item { padding: 23px 24px; border-right: 1px solid var(--line); }
+    .proof-item:last-child { border-right: 0; }
+    .proof-item strong { display: block; color: var(--ink); font: 600 1.2rem var(--mono); }
+    .proof-item span { color: var(--muted); font: 9px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+
+    .actual-product { padding: 62px 0 0; display: grid; grid-template-columns: .64fr 1.36fr; align-items: center; gap: 45px; }
+    .actual-copy h2 { max-width: 420px; font-size: clamp(1.8rem, 3.2vw, 2.75rem); }
+    .actual-copy p { margin: 17px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.7; }
+    .ready-frame { margin: 0; border: 1px solid var(--line-strong); border-radius: 14px; overflow: hidden; background: #090909; box-shadow: 0 22px 65px rgba(0,0,0,.35); }
+    .ready-frame-head { display: flex; align-items: center; gap: 7px; min-height: 38px; padding: 0 13px; color: var(--muted-2); border-bottom: 1px solid var(--line); font: 8px var(--mono); }
+    .ready-frame-head span:first-child { color: var(--green); }
+    .ready-crop { position: relative; aspect-ratio: 4.1 / 1; overflow: hidden; }
+    .ready-crop img { width: 100%; height: auto; }
+
+    .section { padding: 110px 0; }
+    .section + .section { border-top: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 1fr .72fr; gap: 55px; align-items: end; margin-bottom: 48px; }
+    .kicker { display: block; margin-bottom: 13px; color: var(--green); font: 600 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    h2 { margin: 0; max-width: 780px; font-size: clamp(2.2rem, 4.5vw, 4.15rem); line-height: 1.03; letter-spacing: -.055em; }
+    .lead { margin: 0; color: var(--muted); font-size: .97rem; line-height: 1.78; }
+
+    .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .outcome { min-height: 315px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .outcome-index { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-bottom: 68px; color: var(--green); border: 1px solid var(--line-strong); border-radius: 8px; background: rgba(103,245,138,.04); font: 600 10px var(--mono); }
+    .outcome h3 { margin: 0 0 13px; font-size: 1.28rem; letter-spacing: -.03em; }
+    .outcome p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.72; }
+
+    .console-showcase { border: 1px solid var(--line-strong); border-radius: 22px; overflow: hidden; background: #060a08; box-shadow: 0 30px 90px rgba(0,0,0,.36); }
+    .console-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) .7fr; }
+    .console-log { min-height: 540px; padding: clamp(25px, 4vw, 46px); border-right: 1px solid var(--line); font: 11px/1.9 var(--mono); }
+    .console-log .line { display: block; }
+    .console-log .space { height: 17px; }
+    .console-log .prompt { color: var(--green); }
+    .console-log .path { color: var(--cyan); }
+    .console-log .label { color: var(--violet); }
+    .console-log .comment { color: var(--muted-2); }
+    .console-log .success { color: var(--green); }
+    .console-log .warn { color: var(--amber); }
+    .console-log .indent { padding-left: 21px; }
+    .console-side { display: flex; flex-direction: column; }
+    .console-panel { flex: 1; padding: 26px; border-bottom: 1px solid var(--line); }
+    .console-panel:last-child { border-bottom: 0; }
+    .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 20px; color: var(--muted); font: 600 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .panel-title span:last-child { color: var(--green); }
+    .agent-row { display: grid; grid-template-columns: 8px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(118,255,160,.07); font: 9px var(--mono); }
+    .agent-row:last-child { border-bottom: 0; }
+    .agent-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px currentColor; }
+    .agent-dot.waiting { background: var(--amber); }
+    .agent-role { color: #a6b7ad; }
+    .agent-state { color: var(--muted-2); }
+    .metric-row { display: flex; justify-content: space-between; gap: 15px; margin: 12px 0; color: var(--muted); font: 9px var(--mono); }
+    .metric-row strong { color: var(--ink); font-weight: 500; }
+    .meter { height: 4px; margin-top: 8px; border-radius: 99px; background: rgba(255,255,255,.05); overflow: hidden; }
+    .meter span { display: block; height: 100%; width: 62%; background: var(--green); box-shadow: 0 0 9px var(--green); }
+    .meter.cyan span { width: 78%; background: var(--cyan); box-shadow: 0 0 9px var(--cyan); }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .feature { grid-column: span 4; min-height: 265px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); transition: border-color .2s ease, transform .2s ease; }
+    .feature:hover { transform: translateY(-3px); border-color: var(--line-strong); }
+    .feature.wide { grid-column: span 6; }
+    .feature-code { display: inline-block; margin-bottom: 48px; color: var(--green); font: 600 10px var(--mono); }
+    .feature h3 { margin: 0 0 11px; font-size: 1.14rem; letter-spacing: -.025em; }
+    .feature p { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.7; }
+
+    .architecture { display: grid; grid-template-columns: repeat(7, auto); align-items: stretch; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: rgba(8,16,12,.7); }
+    .arch-node { min-height: 180px; min-width: 0; display: flex; flex: 1; flex-direction: column; justify-content: space-between; padding: 22px; }
+    .arch-node.core { background: rgba(103,245,138,.065); }
+    .arch-index { color: var(--green); font: 9px var(--mono); }
+    .arch-node h3 { margin: 0 0 6px; font-size: .94rem; }
+    .arch-node p { margin: 0; color: var(--muted); font: 9px/1.55 var(--mono); }
+    .arch-arrow { display: grid; place-items: center; width: 35px; color: var(--green); border-inline: 1px solid var(--line); font: 15px var(--mono); }
+
+    .control-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 55px; align-items: start; }
+    .control-copy { position: sticky; top: 110px; }
+    .control-copy p { max-width: 520px; margin: 24px 0 0; color: var(--muted); line-height: 1.78; }
+    .control-list { border-top: 1px solid var(--line); }
+    .control-item { display: grid; grid-template-columns: 68px 1fr; gap: 20px; padding: 29px 0; border-bottom: 1px solid var(--line); }
+    .control-item > span { color: var(--green); font: 500 10px var(--mono); }
+    .control-item h3 { margin: 0 0 8px; font-size: 1.04rem; }
+    .control-item p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.7; }
+    .mode-pills { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+    .pill { padding: 6px 8px; color: var(--cyan); border: 1px solid rgba(101,223,226,.17); border-radius: 5px; background: rgba(101,223,226,.03); font: 8px var(--mono); }
+
+    .providers { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .provider { min-height: 165px; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; border-right: 1px solid var(--line); background: var(--surface); }
+    .provider:last-child { border-right: 0; }
+    .provider > span { color: var(--muted-2); font: 9px var(--mono); }
+    .provider strong { font-size: 1.03rem; }
+    .provider small { color: var(--green); font: 8px var(--mono); }
+
+    .install { display: grid; grid-template-columns: .8fr 1.2fr; gap: 65px; align-items: center; }
+    .install-copy p { max-width: 500px; margin: 23px 0 30px; color: var(--muted); line-height: 1.75; }
+    .requirements { display: flex; flex-wrap: wrap; gap: 8px; }
+    .requirement { padding: 7px 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; font: 9px var(--mono); }
+    .install-card { border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: #060a08; box-shadow: 0 30px 80px rgba(0,0,0,.32); }
+    .install-tabs { display: flex; align-items: center; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.018); }
+    .install-tab { padding: 14px 17px; color: var(--muted-2); border: 0; border-right: 1px solid var(--line); background: transparent; font: 500 9px var(--mono); cursor: pointer; }
+    .install-tab.active { color: var(--green); background: rgba(103,245,138,.04); }
+    .copy-button { margin-left: auto; margin-right: 10px; padding: 7px 9px; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; background: transparent; font: 8px var(--mono); cursor: pointer; }
+    .copy-button:hover { color: var(--green); border-color: var(--line-strong); }
+    .install-code { min-height: 215px; margin: 0; padding: 24px; color: #a8b9af; font: 11px/1.85 var(--mono); white-space: pre-wrap; }
+    .install-code .comment { color: var(--muted-2); }
+    .install-code .command { color: var(--green); }
+    .install-code[hidden] { display: none; }
+
+    .cta { padding: 30px 0 95px; }
+    .cta-box { position: relative; padding: clamp(38px, 7vw, 78px); border: 1px solid var(--line-strong); border-radius: 24px; overflow: hidden; background: linear-gradient(135deg, rgba(103,245,138,.095), rgba(8,16,12,.92)); }
+    .cta-box::after { position: absolute; top: -160px; right: -130px; width: 450px; height: 450px; content: ""; border: 1px solid var(--line); border-radius: 50%; box-shadow: 0 0 0 70px rgba(103,245,138,.012), 0 0 0 140px rgba(103,245,138,.008); }
+    .cta-box h2, .cta-box p, .cta-box .actions { position: relative; z-index: 1; }
+    .cta-box p { max-width: 630px; margin: 21px 0 30px; color: var(--muted); line-height: 1.75; }
+    footer { color: var(--muted-2); border-top: 1px solid var(--line); font: 9px var(--mono); }
+    .footer-inner { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 25px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .footer-links a { text-decoration: none; }
+    .footer-links a:hover { color: var(--green); }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+
+    @media (max-width: 1000px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-copy { max-width: 720px; }
+      .product-shell { max-width: 820px; }
+      .actual-product { grid-template-columns: 1fr; gap: 28px; }
+      .section-head { grid-template-columns: 1fr; gap: 22px; }
+      .console-grid { grid-template-columns: 1fr; }
+      .console-log { min-height: 500px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .console-side { display: grid; grid-template-columns: 1fr 1fr; }
+      .console-panel { border-bottom: 0; border-right: 1px solid var(--line); }
+      .console-panel:last-child { border-right: 0; }
+      .feature { grid-column: span 6; }
+      .architecture { grid-template-columns: 1fr; }
+      .arch-node { min-height: 130px; }
+      .arch-arrow { width: auto; height: 35px; border-inline: 0; border-block: 1px solid var(--line); transform: rotate(90deg); }
+      .install { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(calc(100% - 28px), var(--max)); }
+      .nav-version, .back-link { display: none; }
+      .menu { display: grid; place-items: center; }
+      .nav-links { position: absolute; top: 69px; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 12px 14px 18px; border-bottom: 1px solid var(--line); background: rgba(5,8,6,.98); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 14px; }
+      .github-button { margin-top: 6px; }
+      .hero { padding: 78px 0 65px; }
+      h1 { font-size: clamp(3rem, 16vw, 5rem); }
+      .tui { grid-template-columns: 1fr; }
+      .tui-sidebar { display: none; }
+      .chat { font-size: 8.5px; }
+      .session-head span:last-child { display: none; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .proof-item:nth-child(2) { border-right: 0; }
+      .proof-item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .actual-product { padding-top: 44px; }
+      .ready-crop { aspect-ratio: 3.5 / 1; }
+      .section { padding: 78px 0; }
+      .outcomes { grid-template-columns: 1fr; }
+      .outcome { min-height: 270px; }
+      .outcome-index { margin-bottom: 48px; }
+      .console-log { min-height: 460px; padding: 22px 18px; font-size: 9px; overflow-x: auto; }
+      .console-side { grid-template-columns: 1fr; }
+      .console-panel { border-right: 0; border-bottom: 1px solid var(--line); }
+      .console-panel:last-child { border-bottom: 0; }
+      .feature, .feature.wide { grid-column: 1 / -1; min-height: 245px; }
+      .control-grid { grid-template-columns: 1fr; gap: 40px; }
+      .control-copy { position: static; }
+      .control-item { grid-template-columns: 42px 1fr; gap: 12px; }
+      .providers { grid-template-columns: repeat(2, 1fr); }
+      .provider:nth-child(2) { border-right: 0; }
+      .provider:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .install-code { font-size: 9.5px; overflow-x: auto; }
+      .footer-inner { padding: 22px 0; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Pular para o conteúdo</a>
+  <div class="grid-bg" aria-hidden="true"></div>
 
-    <!-- Particles Canvas -->
-    <canvas id="particles-canvas"></canvas>
-
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-inner">
-            <a href="#" class="nav-logo">
-                <span class="flower-icon">🌸</span>
-                <span class="gradient-text">siliconflower</span>
-            </a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#features">Funcionalidades</a></li>
-                <li><a href="#capabilities">Capacidades</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#how">Como Funciona</a></li>
-            </ul>
-            <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="nav-cta">GitHub ⭐</a>
-            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">☰</button>
-        </div>
+  <header class="nav-shell">
+    <nav class="nav wrap" aria-label="Navegação principal">
+      <a class="logo" href="#top" aria-label="SiliconFlower — início">
+        <span class="logo-mark">🌸</span>
+        <span class="logo-word">silicon<span>flower</span></span>
+      </a>
+      <span class="nav-version">v0.2.4 · MIT</span>
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> SILICONFPS</a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">≡</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#produto">produto</a>
+        <a href="#recursos">recursos</a>
+        <a href="#arquitetura">arquitetura</a>
+        <a href="#instalar">instalar</a>
+        <a class="github-button" href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
     </nav>
+  </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-bg-glow glow-1"></div>
-        <div class="hero-bg-glow glow-2"></div>
-        <div class="hero-bg-glow glow-3"></div>
-
-        <div class="hero-content">
-            <div class="hero-badge">
-                🌺 Agente de IA CLI para Windows
-            </div>
-            <h1>
-                <span class="gradient-text">silicon</span><span>flower</span>
-            </h1>
-            <div class="hero-flower-line">
-                🌸 🌺 🌼 🌷 🌻 🪻 🌹
-            </div>
-            <p class="hero-subtitle">
-                Um agente de inteligência artificial que opera no terminal com acesso real ao sistema de arquivos, ferramentas MCP e raciocínio avançado para desenvolvedores.
-            </p>
-            <div class="hero-buttons">
-                <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="btn-primary">🚀 Baixar no GitHub</a>
-                <a href="#features" class="btn-secondary">🌼 Explorar Features</a>
-            </div>
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-grid wrap">
+        <div>
+          <span class="eyebrow">harness de agentes para engenharia</span>
+          <h1>Seu código.<br>Seu terminal.<br><span>Um agente.</span></h1>
+          <p class="hero-copy">O SiliconFlower reúne <strong>modelos, contexto, ferramentas e subagentes</strong> em um harness local para executar trabalho real de engenharia — com cada ação visível e sob seu controle.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener">Começar no GitHub <span aria-hidden="true">↗</span></a>
+            <a class="button secondary" href="#produto">Ver como funciona <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="hero-note">Windows 10/11 · Bun 1.3+ ou Node.js 20+ · licença MIT</p>
         </div>
+
+        <section class="product-shell" aria-label="Captura real do SiliconFlower em execução">
+          <div class="window-bar"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><span class="window-title">siliconflower — sessão real</span><span class="window-status">running</span></div>
+          <div class="real-product">
+            <img src="siliconflower-live.png" alt="SiliconFlower respondendo no terminal e apresentando acesso a arquivos, comandos, programação, pesquisa, memória e subagentes" width="1920" height="1280" fetchpriority="high">
+            <span class="capture-flag">captura real</span>
+            <span class="privacy-mask" aria-hidden="true">C:\workspace\project</span>
+          </div>
+          <div class="status-bar"><span class="ready">● ready</span></div>
+        </section>
+      </div>
     </section>
 
-    <!-- Terminal Preview -->
-    <div class="terminal-section animate-on-scroll">
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-                <span class="terminal-title">siliconflower — terminal</span>
-            </div>
-            <div class="terminal-body" id="terminal-body">
-                <!-- Lines added via JS -->
-            </div>
-        </div>
+    <div class="proof">
+      <div class="proof-grid wrap">
+        <div class="proof-item"><strong>34</strong><span>ferramentas nativas</span></div>
+        <div class="proof-item"><strong>4+</strong><span>provedores de modelo</span></div>
+        <div class="proof-item"><strong>MCP</strong><span>extensível por protocolo</span></div>
+        <div class="proof-item"><strong>1 .exe</strong><span>build standalone</span></div>
+      </div>
     </div>
 
-    <!-- Features -->
-    <section id="features">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <div class="section-tag">🌸 Funcionalidades</div>
-                <h2>O que o <span class="gradient-text">siliconflower</span> faz</h2>
-                <p>Um agente completo que entende seu código, gerencia seu sistema e executa tarefas complexas com inteligência.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">📂</div>
-                    <h3>Sistema de Arquivos</h3>
-                    <p>Lê, cria, edita e gerencia arquivos e diretórios com precisão cirúrgica. Suporta patches atômicos e operações em lote.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">read_file</span>
-                        <span class="feature-tag">write_file</span>
-                        <span class="feature-tag">edit_file</span>
-                        <span class="feature-tag">apply_patch</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">💻</div>
-                    <h3>Execução de Comandos</h3>
-                    <p>Executa comandos no terminal (PowerShell/Bash) com suporte a processos em background, timeouts e captura de output.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">execute_command</span>
-                        <span class="feature-tag">background</span>
-                        <span class="feature-tag">timeout</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Navegação de Código</h3>
-                    <p>Mapeia repositórios, busca símbolos (funções, classes, tipos) e pesquisa conteúdo com regex em todo o projeto.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">repo_map</span>
-                        <span class="feature-tag">find_symbol</span>
-                        <span class="feature-tag">grep_content</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🌐</div>
-                    <h3>Acesso à Web</h3>
-                    <p>Pesquisa na web e busca conteúdo de páginas automaticamente, convertendo HTML em Markdown limpo para análise.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">web_search</span>
-                        <span class="feature-tag">web_fetch</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🤖</div>
-                    <h3>Subagentes Autônomos</h3>
-                    <p>Lança subagentes para executar tarefas em paralelo ou background — pesquisas complexas, refatorações e verificações.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">run_task</span>
-                        <span class="feature-tag">background</span>
-                        <span class="feature-tag">parallel</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Memória Persistente</h3>
-                    <p>Salva regras de projeto, preferências do usuário e aprendizados que persistem entre sessões. Nunca perca contexto.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">save_memory</span>
-                        <span class="feature-tag">recall_memory</span>
-                        <span class="feature-tag">scope</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🔀</div>
-                    <h3>Git Worktrees</h3>
-                    <p>Cria branches de trabalho isoladas para testar mudanças com segurança, sem afetar o branch principal.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">enter_worktree</span>
-                        <span class="feature-tag">exit_worktree</span>
-                        <span class="feature-tag">isolamento</span>
-                    </div>
-                </div>
-
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">📊</div>
-                    <h3>Artefatos Estruturados</h3>
-                    <p>Gera relatórios, diagramas Mermaid, documentos HTML, JSON e código. Tudo salvo e recuperável por ID.</p>
-                    <div class="feature-tags">
-                        <span class="feature-tag">create_artifact</span>
-                        <span class="feature-tag">mermaid</span>
-                        <span class="feature-tag">html</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-row animate-on-scroll">
-                <div class="stat-card">
-                    <div class="stat-number gradient-text">30+</div>
-                    <div class="stat-label">Ferramentas Disponíveis</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gradient-text">∞</div>
-                    <div class="stat-label">Linguagens Suportadas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gradient-text">24/7</div>
-                    <div class="stat-label">Disponibilidade</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number gradient-text">0ms</div>
-                    <div class="stat-label">Latência de Setup</div>
-                </div>
-            </div>
-        </div>
+    <section class="actual-product wrap" aria-labelledby="real-interface-title">
+      <div class="actual-copy reveal">
+        <span class="kicker">REAL INTERFACE / NO MOCKUP</span>
+        <h2 id="real-interface-title">Terminal de verdade, sem uma camada escondendo o produto.</h2>
+        <p>O estado inicial mostra modelo, reasoning, modo, ferramentas, skills e consumo de tokens antes mesmo da primeira instrução.</p>
+      </div>
+      <figure class="ready-frame reveal">
+        <figcaption class="ready-frame-head"><span>● ready</span><span>siliconflower · estado inicial</span></figcaption>
+        <div class="ready-crop"><img src="siliconflower-ready.png" alt="Tela inicial real do SiliconFlower com modelo, nível de reasoning, modo, ferramentas e skills" width="936" height="401" loading="lazy"></div>
+      </figure>
     </section>
 
-    <!-- Capabilities -->
-    <section id="capabilities">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <div class="section-tag">🌺 Capacidades</div>
-                <h2>Como o <span class="gradient-text">siliconflower</span> pensa</h2>
-                <p>Raciocínio antes de ação, convenções do projeto e código idiomático e seguro.</p>
-            </div>
-
-            <div class="capabilities-wrapper">
-                <div class="capabilities-list">
-                    <div class="capability-item animate-on-scroll">
-                        <div class="capability-icon">🧩</div>
-                        <div class="capability-text">
-                            <h4>Raciocínio Antes de Agir</h4>
-                            <p>Analisa o contexto, lê os arquivos relevantes e planeja antes de executar qualquer modificação.</p>
-                        </div>
-                    </div>
-                    <div class="capability-item animate-on-scroll">
-                        <div class="capability-icon">📐</div>
-                        <div class="capability-text">
-                            <h4>Convenções do Projeto</h4>
-                            <p>Segue as bibliotecas, padrões e estilos já existentes no código. Nunca impõe estilos arbitrários.</p>
-                        </div>
-                    </div>
-                    <div class="capability-item animate-on-scroll">
-                        <div class="capability-icon">🛡️</div>
-                        <div class="capability-text">
-                            <h4>Código Seguro</h4>
-                            <p>Escreve código idiomático, com tratamento de erros, validação de inputs e boas práticas de segurança.</p>
-                        </div>
-                    </div>
-                    <div class="capability-item animate-on-scroll">
-                        <div class="capability-icon">🎯</div>
-                        <div class="capability-text">
-                            <h4>Foco em Programação</h4>
-                            <p>Escreve, revisa, refatora e explica código em qualquer linguagem. Mode, Review, Debug — tudo no terminal.</p>
-                        </div>
-                    </div>
-                    <div class="capability-item animate-on-scroll">
-                        <div class="capability-icon">🇧🇷</div>
-                        <div class="capability-text">
-                            <h4>Português Brasileiro</h4>
-                            <p>Responde nativamente em PT-BR com formatação Markdown e comunicação técnica clara.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="capabilities-visual animate-on-scroll">
-                    <div class="flower-diagram">
-                        <div class="flower-center">🌸</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(0, -120px);">📂</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(85px, -85px);">💻</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(120px, 0);">🔍</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(85px, 85px);">🌐</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(0, 120px);">🤖</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(-85px, 85px);">🧠</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(-120px, 0);">🔀</div>
-                        <div class="petal" style="transform: translate(-50%, -50%) translate(-85px, -85px);">📊</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="section wrap" id="produto">
+      <header class="section-head reveal">
+        <div><span class="kicker">01 / outcomes</span><h2>Do pedido ao código validado.</h2></div>
+        <p class="lead">Não é apenas uma janela de chat. O harness entende o repositório, escolhe ferramentas, coordena trabalho paralelo e mantém o estado da execução.</p>
+      </header>
+      <div class="outcomes">
+        <article class="outcome reveal"><span class="outcome-index">01</span><h3>Entende antes de editar</h3><p>RepoMap, busca de símbolos e leitura seletiva constroem contexto estrutural sem despejar o projeto inteiro no modelo.</p></article>
+        <article class="outcome reveal"><span class="outcome-index">02</span><h3>Executa em paralelo</h3><p>Subagentes assumem pesquisa, planejamento, implementação e verificação enquanto a sessão principal continua responsiva.</p></article>
+        <article class="outcome reveal"><span class="outcome-index">03</span><h3>Isola mudanças</h3><p>Git worktrees permitem testar refatorações e tarefas arriscadas em branches temporárias sem tocar na área de trabalho atual.</p></article>
+      </div>
     </section>
 
-    <!-- Skills -->
-    <section id="skills">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <div class="section-tag">🌼 Skills Especializadas</div>
-                <h2>Habilidades <span class="gradient-text">modulares</span></h2>
-                <p>Skills são módulos de instruções especializadas que expandem as capacidades do agente para domínios específicos.</p>
+    <section class="section wrap" aria-labelledby="console-title">
+      <header class="section-head reveal">
+        <div><span class="kicker">02 / observable execution</span><h2 id="console-title">A execução não fica escondida.</h2></div>
+        <p class="lead">Chamadas de ferramenta, agentes ativos, branch, consumo de contexto e modo de operação permanecem visíveis durante todo o trabalho.</p>
+      </header>
+      <div class="console-showcase reveal">
+        <div class="window-bar"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><span class="window-title">run_28c1 · refactor/payment-service</span><span class="window-status">3 agents</span></div>
+        <div class="console-grid">
+          <div class="console-log" role="log" aria-label="Exemplo de execução no terminal">
+            <span class="line"><span class="prompt">❯</span> Refatore o serviço de pagamentos e mantenha compatibilidade com a API atual.</span>
+            <div class="space"></div>
+            <span class="line"><span class="label">PLAN</span> Analisando dependências e superfície pública…</span>
+            <span class="line indent"><span class="path">read_skill</span> code-review <span class="comment">· loaded</span></span>
+            <span class="line indent"><span class="path">repo_map</span> src/payments <span class="comment">· 18 files · 64 symbols</span></span>
+            <span class="line indent"><span class="path">find_symbol</span> PaymentService <span class="comment">· 7 references</span></span>
+            <div class="space"></div>
+            <span class="line"><span class="label">DELEGATE</span> Iniciando tarefas independentes</span>
+            <span class="line indent"><span class="success">✓ research</span> contratos públicos e dependentes</span>
+            <span class="line indent"><span class="warn">◌ coder</span> extração de gateway e tipos</span>
+            <span class="line indent"><span class="warn">◌ verification</span> suíte de regressão</span>
+            <div class="space"></div>
+            <span class="line"><span class="label">ISOLATE</span> <span class="path">enter_worktree</span> sf/payment-refactor</span>
+            <span class="line indent"><span class="success">✓</span> workspace isolado em .git/worktrees/…</span>
+            <div class="space"></div>
+            <span class="line"><span class="label">APPLY</span> 4 arquivos alterados · 2 adicionados</span>
+            <span class="line indent"><span class="path">apply_patch</span> src/payments/service.ts</span>
+            <span class="line indent"><span class="path">apply_patch</span> src/payments/gateway.ts</span>
+            <span class="line indent"><span class="path">execute_command</span> bun test payments</span>
+            <span class="line indent"><span class="success">✓ 18 testes passaram</span> <span class="comment">· 0 falhas · 1.42s</span></span>
+          </div>
+          <aside class="console-side" aria-label="Estado da execução conceitual">
+            <div class="console-panel">
+              <div class="panel-title"><span>subagents</span><span>3 active</span></div>
+              <div class="agent-row"><span class="agent-dot"></span><span class="agent-role">research</span><span class="agent-state">complete</span></div>
+              <div class="agent-row"><span class="agent-dot waiting"></span><span class="agent-role">coder</span><span class="agent-state">editing</span></div>
+              <div class="agent-row"><span class="agent-dot waiting"></span><span class="agent-role">verification</span><span class="agent-state">testing</span></div>
             </div>
-
-            <div class="skills-grid">
-                <div class="skill-card animate-on-scroll">
-                    <div class="skill-icon">🔍</div>
-                    <h3>Code Review</h3>
-                    <p>Análise profunda de código com foco em qualidade, segurança, performance e boas práticas.</p>
-                </div>
-                <div class="skill-card animate-on-scroll">
-                    <div class="skill-icon">💾</div>
-                    <h3>Windows Backup</h3>
-                    <p>Automação de backups no Windows com estratégias inteligentes de versionamento e restauração.</p>
-                </div>
-                <div class="skill-card animate-on-scroll">
-                    <div class="skill-icon">🔒</div>
-                    <h3>Windows Privacy</h3>
-                    <p>Configuração e auditoria de privacidade no Windows, desabilitando telemetria e rastreamento.</p>
-                </div>
+            <div class="console-panel">
+              <div class="panel-title"><span>session</span><span>healthy</span></div>
+              <div class="metric-row"><span>context</span><strong>62%</strong></div><div class="meter"><span></span></div>
+              <div class="metric-row"><span>task progress</span><strong>78%</strong></div><div class="meter cyan"><span></span></div>
+              <div class="metric-row"><span>reasoning</span><strong>high</strong></div>
+              <div class="metric-row"><span>mode</span><strong>programação</strong></div>
             </div>
+          </aside>
         </div>
+      </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <div class="section-tag">🌷 Como Funciona</div>
-                <h2>Simples como <span class="gradient-text">plantar uma flor</span></h2>
-                <p>Três passos para ter um agente de IA poderoso no seu terminal.</p>
-            </div>
-
-            <div class="steps-grid">
-                <div class="step-card animate-on-scroll">
-                    <div class="step-number">1</div>
-                    <h3>Instale</h3>
-                    <p>Configure o Siliconflower no seu ambiente Windows com Node.js ou Bun. Uma vez instalado, ele está pronto.</p>
-                </div>
-                <div class="step-card animate-on-scroll">
-                    <div class="step-number">2</div>
-                    <h3>Converse</h3>
-                    <p>Diga o que precisa em português. Ele entende contexto, lê seu projeto e planeja antes de agir.</p>
-                </div>
-                <div class="step-card animate-on-scroll">
-                    <div class="step-number">3</div>
-                    <h3>Construa</h3>
-                    <p>Ele executa: cria arquivos, edita código, roda comandos, faz commits e muito mais — tudo pelo terminal.</p>
-                </div>
-            </div>
-
-            <!-- Code Example -->
-            <div class="code-showcase animate-on-scroll">
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-lang">terminal</span>
-                        <span style="font-size: 0.8rem; color: var(--white-dim);">exemplo de uso</span>
-                    </div>
-                    <div class="code-body">
-                        <div><span class="comment">// No seu terminal, basta conversar:</span></div>
-                        <div>&nbsp;</div>
-                        <div><span class="punctuation">$</span> <span class="function">siliconflower</span></div>
-                        <div>&nbsp;</div>
-                        <div><span class="keyword">🌸</span> <span class="string">"Crie uma API REST em TypeScript com Hono</span></div>
-                        <div><span class="string">   para gerenciar tarefas, com validação Zod"</span></div>
-                        <div>&nbsp;</div>
-                        <div><span class="comment">// O siliconflower vai:</span></div>
-                        <div><span class="comment">// 1. Mapear o projeto atual</span></div>
-                        <div><span class="comment">// 2. Criar a estrutura de arquivos</span></div>
-                        <div><span class="comment">// 3. Escrever o código idiomatico</span></div>
-                        <div><span class="comment">// 4. Configurar tsconfig e dependências</span></div>
-                        <div><span class="comment">// 5. Testar e documentar</span></div>
-                        <div>&nbsp;</div>
-                        <div><span class="success">✅ Projeto criado com sucesso!</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tech Stack -->
-            <div class="tech-row animate-on-scroll">
-                <div class="tech-badge"><span>⚡</span> Node.js</div>
-                <div class="tech-badge"><span>🧅</span> Bun</div>
-                <div class="tech-badge"><span>🐚</span> PowerShell</div>
-                <div class="tech-badge"><span>📁</span> Git</div>
-                <div class="tech-badge"><span>🔌</span> MCP Tools</div>
-                <div class="tech-badge"><span>📝</span> Markdown</div>
-                <div class="tech-badge"><span>🎨</span> Mermaid</div>
-                <div class="tech-badge"><span>🤖</span> Subagentes</div>
-            </div>
-        </div>
+    <section class="section wrap" id="recursos">
+      <header class="section-head reveal">
+        <div><span class="kicker">03 / capabilities</span><h2>As peças certas, no mesmo loop.</h2></div>
+        <p class="lead">Recursos integrados para reduzir troca de contexto e permitir que o agente vá além de gerar trechos de código.</p>
+      </header>
+      <div class="feature-grid">
+        <article class="feature wide reveal"><span class="feature-code">agent.orchestration</span><h3>Subagentes e tarefas em background</h3><p>Delegue papéis de research, plan, coder, verification ou custom. A sessão principal acompanha resultados e continua trabalhando sem bloquear a interface.</p></article>
+        <article class="feature wide reveal"><span class="feature-code">workspace.memory</span><h3>Memória persistente sem poluir o projeto</h3><p>Preferências, regras e contexto ficam isolados por workspace em <code>~/.siliconflower/</code>, fora do repositório e disponíveis em sessões futuras.</p></article>
+        <article class="feature reveal"><span class="feature-code">code.context</span><h3>RepoMap &amp; símbolos</h3><p>Mapeamento estrutural para TypeScript, JavaScript, Python, Go, Rust, C e C++ com uso econômico de contexto.</p></article>
+        <article class="feature reveal"><span class="feature-code">git.isolation</span><h3>Git worktrees</h3><p>Crie ambientes temporários, valide mudanças e encerre a tarefa sem alterar sua branch de trabalho.</p></article>
+        <article class="feature reveal"><span class="feature-code">protocol.mcp</span><h3>Model Context Protocol</h3><p>Conecte servidores MCP externos e amplie o conjunto de ferramentas sem acoplar integrações ao núcleo.</p></article>
+        <article class="feature reveal"><span class="feature-code">lifecycle.hooks</span><h3>Hooks de automação</h3><p>Dispare rotinas em eventos como preTool, postTool, onEdit, onCommand e início ou fim de sessão.</p></article>
+        <article class="feature reveal"><span class="feature-code">web.research</span><h3>Pesquisa web</h3><p>Pesquise e consulte documentação durante a execução para trabalhar com informação atual e verificável.</p></article>
+        <article class="feature reveal"><span class="feature-code">artifact.output</span><h3>Artefatos estruturados</h3><p>Produza entregáveis em Markdown, HTML, JSON e Mermaid fora do fluxo efêmero da conversa.</p></article>
+      </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section" id="install">
-        <div class="cta-box animate-on-scroll">
-            <div style="font-size: 3rem; margin-bottom: 16px;">🌸🌺🌼</div>
-            <h2>Pronto para <span class="gradient-text">florescer</span>?</h2>
-            <p>Baixe o siliconflower no GitHub e transforme seu terminal em um ambiente de desenvolvimento inteligente.</p>
-            <a href="https://github.com/siliconfps/siliconflower" target="_blank" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; margin: 20px 0 16px; font-size: 1.1rem; padding: 14px 32px; text-decoration: none; border-radius: 12px;">⭐ Ver no GitHub</a>
-            <br>
-            <div class="cta-install" onclick="copyInstall()">
-                <span>git clone https://github.com/siliconfps/siliconflower</span>
-                <span class="copy-icon">📋</span>
-            </div>
-            <br>
-            <div style="font-size: 0.85rem; color: var(--white-dim);">
-                Requer Node.js 18+ ou Bun • Windows 10/11
-            </div>
-        </div>
+    <section class="section wrap" id="arquitetura">
+      <header class="section-head reveal">
+        <div><span class="kicker">04 / architecture</span><h2>Um núcleo. Vários modelos. Qualquer ferramenta.</h2></div>
+        <p class="lead">A arquitetura separa provedor, orquestração e execução. Você pode trocar o modelo sem reaprender o produto ou refazer seu workflow.</p>
+      </header>
+      <div class="architecture reveal" role="group" aria-label="Fluxo da arquitetura do SiliconFlower">
+        <div class="arch-node"><span class="arch-index">INPUT</span><div><h3>Você</h3><p>instrução · arquivos · contexto</p></div></div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-node"><span class="arch-index">MODELS</span><div><h3>Provider</h3><p>OpenAI · Anthropic · OpenRouter · SiliconFlow</p></div></div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-node core"><span class="arch-index">CORE</span><div><h3>SiliconFlower</h3><p>planning · routing · memory · modes</p></div></div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-node"><span class="arch-index">EXECUTION</span><div><h3>Workspace</h3><p>34 tools · MCP · agents · hooks</p></div></div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-brand">
-                <span>🌸</span>
-                <span class="gradient-text">siliconflower</span>
-            </div>
-            <div class="footer-copy">
-                Feito com 💜 e inteligência artificial
-            </div>
-            <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#capabilities">Capacidades</a>
-                <a href="#skills">Skills</a>
-                <a href="https://github.com/siliconfps/siliconflower" target="_blank">GitHub</a>
-                <a href="#install">Instalar</a>
-            </div>
+    <section class="section wrap">
+      <div class="control-grid">
+        <div class="control-copy reveal">
+          <span class="kicker">05 / control plane</span>
+          <h2>Autonomia com limites explícitos.</h2>
+          <p>Você escolhe quanto o agente pode pensar, onde pode atuar e como deve se comportar. Os controles ficam disponíveis durante a sessão, não escondidos em uma configuração distante.</p>
         </div>
-    </footer>
+        <div class="control-list reveal">
+          <article class="control-item"><span>CTRL+E</span><div><h3>Reasoning effort</h3><p>Ajuste a profundidade de raciocínio conforme a complexidade da tarefa e o suporte do provedor.</p><div class="mode-pills"><span class="pill">off</span><span class="pill">low</span><span class="pill">medium</span><span class="pill">high</span></div></div></article>
+          <article class="control-item"><span>CTRL+O</span><div><h3>Modos de operação</h3><p>Alterne entre programação, sistema e plano para adaptar o conjunto de ações permitidas ao tipo de trabalho.</p><div class="mode-pills"><span class="pill">programação</span><span class="pill">sistema</span><span class="pill">plano</span></div></div></article>
+          <article class="control-item"><span>GIT</span><div><h3>Isolamento reversível</h3><p>Worktrees e branches temporárias mantêm mudanças experimentais separadas até você decidir integrá-las.</p></div></article>
+          <article class="control-item"><span>LOGS</span><div><h3>Estado observável</h3><p>Ferramentas, tarefas, saídas truncadas e eventos de sessão ficam organizados em <code>~/.siliconflower/</code>.</p></div></article>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        // ===== PARTICLES =====
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null };
+    <section class="section wrap" aria-labelledby="providers-title">
+      <header class="section-head reveal">
+        <div><span class="kicker">06 / provider agnostic</span><h2 id="providers-title">Escolha o modelo. Mantenha o harness.</h2></div>
+        <p class="lead">Use APIs diretas ou catálogos multi-modelo. A configuração centraliza endpoint, credencial, modelo e nível de raciocínio.</p>
+      </header>
+      <div class="providers reveal">
+        <div class="provider"><span>provider_01</span><strong>OpenAI</strong><small>native</small></div>
+        <div class="provider"><span>provider_02</span><strong>Anthropic</strong><small>native</small></div>
+        <div class="provider"><span>provider_03</span><strong>OpenRouter</strong><small>compatible</small></div>
+        <div class="provider"><span>provider_04</span><strong>SiliconFlow</strong><small>compatible</small></div>
+      </div>
+    </section>
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    <section class="section wrap" id="instalar">
+      <div class="install">
+        <div class="install-copy reveal">
+          <span class="kicker">07 / quick start</span>
+          <h2>Rode em minutos.</h2>
+          <p>Clone o projeto, instale as dependências e inicie. Na primeira execução, o assistente configura provedor, modelo e credencial.</p>
+          <div class="requirements"><span class="requirement">Bun 1.3+</span><span class="requirement">Node.js 20+</span><span class="requirement">Windows 10/11</span><span class="requirement">MIT</span></div>
+        </div>
+        <div class="install-card reveal">
+          <div class="install-tabs">
+            <button class="install-tab active" type="button" data-tab="source">código-fonte</button>
+            <button class="install-tab" type="button" data-tab="binary">build standalone</button>
+            <button class="copy-button" type="button">copiar</button>
+          </div>
+          <pre class="install-code" data-panel="source"><span class="comment"># clone e instale</span>
+<span class="command">git clone https://github.com/siliconfps/siliconflower.git</span>
+<span class="command">cd siliconflower</span>
+<span class="command">bun install</span>
+
+<span class="comment"># abre o wizard na primeira execução</span>
+<span class="command">bun run start</span></pre>
+          <pre class="install-code" data-panel="binary" hidden><span class="comment"># gera dist/siliconflower.exe</span>
+<span class="command">bun run build</span>
+
+<span class="comment"># adiciona ao PATH do usuário</span>
+<span class="command">npm run install:bin</span>
+
+<span class="comment"># execute de qualquer pasta</span>
+<span class="command">siliconflower</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta wrap">
+      <div class="cta-box reveal">
+        <span class="kicker">READY / START SESSION</span>
+        <h2>Seu próximo agente pode trabalhar dentro do repositório.</h2>
+        <p>Explore o código, consulte a documentação e adapte o SiliconFlower ao seu fluxo. O projeto é gratuito, open source e publicado sob licença MIT.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener">Abrir no GitHub <span aria-hidden="true">↗</span></a>
+          <a class="button secondary" href="index.html">Voltar para SILICONFPS <span aria-hidden="true">←</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner wrap">
+      <span>SiliconFlower v0.2.4 · feito por siliconfps · MIT</span>
+      <div class="footer-links"><a href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener">GitHub</a><a href="llms-full.txt">spec técnica</a><a href="index.html">SILICONFPS</a><a href="#top">↑ topo</a></div>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector('.menu');
+    const navLinks = document.querySelector('.nav-links');
+    menuButton.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.textContent = open ? '×' : '≡';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.textContent = '≡';
+    }));
+
+    const tabs = document.querySelectorAll('.install-tab');
+    const panels = document.querySelectorAll('.install-code');
+    const copyButton = document.querySelector('.copy-button');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(item => item.classList.remove('active'));
+      tab.classList.add('active');
+      panels.forEach(panel => { panel.hidden = panel.dataset.panel !== tab.dataset.tab; });
+      copyButton.textContent = 'copiar';
+    }));
+    copyButton.addEventListener('click', async () => {
+      const activePanel = [...panels].find(panel => !panel.hidden);
+      try {
+        await navigator.clipboard.writeText(activePanel.innerText);
+        copyButton.textContent = 'copiado ✓';
+      } catch {
+        copyButton.textContent = 'selecione o texto';
+      }
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        document.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.3;
-                this.speedY = (Math.random() - 0.5) * 0.3;
-                this.opacity = Math.random() * 0.4 + 0.1;
-                this.hue = Math.random() > 0.5 ? 270 : 290;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (mouse.x && mouse.y) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 150) {
-                        this.x -= dx * 0.002;
-                        this.y -= dy * 0.002;
-                    }
-                }
-
-                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-                    this.reset();
-                }
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(${this.hue}, 70%, 70%, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 80; i++) {
-            particles.push(new Particle());
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            // Draw connections
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `hsla(270, 60%, 60%, ${0.08 * (1 - dist / 120)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            requestAnimationFrame(animateParticles);
-        }
-        animateParticles();
-
-        // ===== TERMINAL ANIMATION =====
-        const terminalLines = [
-            { type: 'prompt', text: '🌸 siliconflower> ', extra: 'Olá! Como posso ajudar?' },
-            { type: 'input', text: 'Crie um componente React com TypeScript' },
-            { type: 'blank' },
-            { type: 'thinking', text: '🧠 Analisando estrutura do projeto...' },
-            { type: 'output', text: '📂 Lendo package.json, tsconfig.json...' },
-            { type: 'output', text: '🔍 Mapeando diretório src/components/...' },
-            { type: 'output', text: '✨ Criando src/components/UserCard.tsx' },
-            { type: 'output', text: '📝 Escrevendo código com tipos TypeScript' },
-            { type: 'output', text: '✅ Arquivo criado com sucesso!' },
-            { type: 'blank' },
-            { type: 'success', text: '🌸 Pronto! Componente UserCard criado com:' },
-            { type: 'accent', text: '   • Props tipadas com interface' },
-            { type: 'accent', text: '   • Estilos com Tailwind CSS' },
-            { type: 'accent', text: '   • Testes unitários inclusos' },
-        ];
-
-        const terminalBody = document.getElementById('terminal-body');
-
-        function renderTerminal() {
-            terminalBody.innerHTML = '';
-            terminalLines.forEach((line, i) => {
-                const div = document.createElement('div');
-                div.className = 'terminal-line';
-                div.style.animationDelay = `${i * 0.15}s`;
-
-                if (line.type === 'blank') {
-                    div.innerHTML = '&nbsp;';
-                } else if (line.type === 'prompt') {
-                    div.innerHTML = `<span class="terminal-prompt">${line.text}</span><span class="terminal-command">${line.extra}</span>`;
-                } else if (line.type === 'input') {
-                    div.innerHTML = `<span class="terminal-prompt">❯ </span><span class="terminal-command">${line.text}</span>`;
-                } else if (line.type === 'thinking') {
-                    div.innerHTML = `<span class="terminal-flower">${line.text}</span>`;
-                } else if (line.type === 'output') {
-                    div.innerHTML = `<span class="terminal-output">${line.text}</span>`;
-                } else if (line.type === 'success') {
-                    div.innerHTML = `<span class="terminal-success">${line.text}</span>`;
-                } else if (line.type === 'accent') {
-                    div.innerHTML = `<span class="terminal-accent">${line.text}</span>`;
-                }
-
-                terminalBody.appendChild(div);
-            });
-        }
-
-        // Intersection observer for terminal
-        const terminalObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    renderTerminal();
-                    terminalObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-
-        const terminalSection = document.querySelector('.terminal-section');
-        if (terminalSection) terminalObserver.observe(terminalSection);
-
-        // ===== SCROLL ANIMATIONS =====
-        const scrollObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            scrollObserver.observe(el);
-        });
-
-        // ===== NAVBAR SCROLL =====
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-        });
-
-        // ===== MOBILE MENU =====
-        document.getElementById('mobile-toggle').addEventListener('click', () => {
-            document.getElementById('nav-links').classList.toggle('open');
-        });
-
-        // Close mobile menu on link click
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('nav-links').classList.remove('open');
-            });
-        });
-
-        // ===== COPY INSTALL =====
-        function copyInstall() {
-            navigator.clipboard.writeText('git clone https://github.com/siliconfps/siliconflower').then(() => {
-                const el = document.querySelector('.cta-install');
-                const original = el.innerHTML;
-                el.innerHTML = '<span>✅ Copiado!</span>';
-                setTimeout(() => { el.innerHTML = original; }, 2000);
-            });
-        }
-
-        // ===== SMOOTH SCROLL =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
+      });
+    }, { threshold: .08 });
+    document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+  </script>
 </body>
 </html>

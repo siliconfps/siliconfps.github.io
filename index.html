@@ -1,1406 +1,551 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- ====== SEO PRINCIPAL ====== -->
-    <title>SILICONFPS — SiliconFlower AI, MarkiiDown &amp; Otimizações Windows</title>
-    <meta name="description" content="Portal oficial de SILICONFPS: SiliconFlower AI, MarkiiDown, Otimizador Windows e ferramentas de alta performance para desenvolvedores.">
-    <meta name="keywords" content="SiliconFlower, SiliconFlower AI, MarkiiDown, markiidown, siliconfps, AI Agent Windows, Agente de IA, Model Context Protocol, MCP, Otimizador Windows, otimizador-windows, Little Registry Cleaner, LittleRegistryCleaner, GpuCpuMonitor, gpu-cpu-monitor-windows, latência zero, Bun, TypeScript, C#, PowerShell, IA CLI">
-    <meta name="author" content="siliconfps">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    
-    <!-- Link Canônico -->
-    <link rel="canonical" href="https://siliconfps.github.io/">
-    
-    <!-- Metadados para IAs / LLMs e Sitemap -->
-    <link rel="alternate" type="text/plain" href="https://siliconfps.github.io/llms.txt" title="Documentação Técnica para LLMs">
-    <link rel="sitemap" type="application/xml" href="https://siliconfps.github.io/sitemap.xml">
-
-    <!-- ====== OPEN GRAPH / SOCIAL ====== -->
-    <meta property="og:locale" content="pt_BR">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="SILICONFPS — SiliconFlower AI, MarkiiDown &amp; Otimizações Windows">
-    <meta property="og:description" content="Agente autônomo SiliconFlower AI, leitor MarkiiDown e utilitários de alta performance e baixa latência para Windows.">
-    <meta property="og:url" content="https://siliconfps.github.io/">
-    <meta property="og:site_name" content="SILICONFPS">
-    <meta property="og:image" content="https://siliconfps.github.io/avatarupscaled.webp">
-    <meta property="og:image:alt" content="SILICONFPS Avatar">
-
-    <!-- ====== TWITTER CARDS ====== -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="SILICONFPS — SiliconFlower AI, MarkiiDown &amp; Otimizações Windows">
-    <meta name="twitter:description" content="Agente autônomo SiliconFlower AI, leitor MarkiiDown e utilitários de alta performance e baixa latência para Windows.">
-    <meta name="twitter:image" content="https://siliconfps.github.io/avatarupscaled.webp">
-
-    <!-- ====== SCHEMA.ORG DADOS ESTRUTURADOS (JSON-LD) ====== -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://siliconfps.github.io/#website",
-          "url": "https://siliconfps.github.io/",
-          "name": "SILICONFPS",
-          "description": "Desenvolvimento de software de alta performance, agente de inteligência artificial SiliconFlower, MarkiiDown e ferramentas open source para Windows.",
-          "inLanguage": "pt-BR",
-          "publisher": {
-            "@id": "https://siliconfps.github.io/#author"
-          }
-        },
-        {
-          "@type": "ProfilePage",
-          "@id": "https://siliconfps.github.io/#profilepage",
-          "url": "https://siliconfps.github.io/",
-          "name": "SILICONFPS — Perfil de Desenvolvedor e Projetos",
-          "mainEntity": {
-            "@id": "https://siliconfps.github.io/#author"
-          }
-        },
-        {
-          "@type": "Person",
-          "@id": "https://siliconfps.github.io/#author",
-          "name": "siliconfps",
-          "alternateName": "SILICONFPS",
-          "url": "https://siliconfps.github.io/",
-          "image": "https://siliconfps.github.io/avatarupscaled.webp",
-          "sameAs": [
-            "https://github.com/siliconfps",
-            "https://youtube.com/@siliconfps"
-          ],
-          "knowsAbout": [
-            "Artificial Intelligence",
-            "Autonomous AI Agents",
-            "Model Context Protocol (MCP)",
-            "Reasoning Effort Control",
-            "Markdown Parsers and TUI",
-            "Windows System Optimization",
-            "Latency Reduction",
-            "TypeScript",
-            "Bun",
-            "C#",
-            ".NET",
-            "PowerShell",
-            "Linux"
-          ]
-        },
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://siliconfps.github.io/#siliconflower",
-          "name": "SiliconFlower",
-          "alternateName": "SiliconFlower AI Agent",
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "Windows, Linux, macOS",
-          "description": "Agente autônomo CLI/TUI para desenvolvimento de software no Windows com raciocínio controlável, 34 ferramentas nativas, protocolo MCP e suporte multi-provedor.",
-          "url": "https://siliconfps.github.io/siliconflower.html",
-          "codeRepository": "https://github.com/siliconfps/siliconflower",
-          "author": {
-            "@id": "https://siliconfps.github.io/#author"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://siliconfps.github.io/#markiidown",
-          "name": "MarkiiDown",
-          "alternateName": "markiidown",
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "Windows, Linux, macOS",
-          "description": "Leitor de Markdown standalone e offline em TypeScript com Bun, TUI Pager interativo, busca, sumário TOC e integração ao menu de contexto do Windows Explorer.",
-          "url": "https://github.com/siliconfps/markiidown",
-          "codeRepository": "https://github.com/siliconfps/markiidown",
-          "author": {
-            "@id": "https://siliconfps.github.io/#author"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://siliconfps.github.io/#otimizador-windows",
-          "name": "Otimizador Windows",
-          "alternateName": "otimizador-windows",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Windows 10, Windows 11",
-          "description": "Otimizador para Windows 10/11 focado em máximo FPS, redução de latência, controle de mitigações de CPU e debloat pós-instalação.",
-          "url": "https://github.com/siliconfps/otimizador-windows",
-          "codeRepository": "https://github.com/siliconfps/otimizador-windows",
-          "author": {
-            "@id": "https://siliconfps.github.io/#author"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://siliconfps.github.io/#littleregistrycleaner",
-          "name": "Little Registry Cleaner",
-          "alternateName": "LittleRegistryCleaner",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Windows 7, 8, 10, 11",
-          "description": "Limpador e otimizador de Registro do Windows nativo em C# (64-bit real) com Startup Manager, desinstalador de sobras e backups automáticos XML.",
-          "url": "https://github.com/siliconfps/LittleRegistryCleaner",
-          "codeRepository": "https://github.com/siliconfps/LittleRegistryCleaner",
-          "author": {
-            "@id": "https://siliconfps.github.io/#author"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "SoftwareApplication",
-          "@id": "https://siliconfps.github.io/#gpucpumonitor",
-          "name": "GpuCpuMonitor",
-          "alternateName": "gpu-cpu-monitor-windows",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Windows 10, Windows 11",
-          "description": "Monitor de telemetria de CPU e GPU na bandeja do sistema em .NET 9 single-file com suporte a sensores MSR de temperatura real Intel/AMD.",
-          "url": "https://github.com/siliconfps/gpu-cpu-monitor-windows",
-          "codeRepository": "https://github.com/siliconfps/gpu-cpu-monitor-windows",
-          "author": {
-            "@id": "https://siliconfps.github.io/#author"
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        }
-      ]
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SILICONFPS — IA, performance e ferramentas de terminal</title>
+  <meta name="description" content="Software open source para quem prefere controle: agentes de IA, ferramentas de terminal, monitoramento e otimização de sistemas.">
+  <meta name="author" content="siliconfps">
+  <meta name="theme-color" content="#07110d">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://siliconfps.github.io/">
+  <link rel="alternate" type="text/plain" href="https://siliconfps.github.io/llms.txt" title="Documentação para LLMs">
+  <link rel="sitemap" type="application/xml" href="https://siliconfps.github.io/sitemap.xml">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SILICONFPS">
+  <meta property="og:title" content="SILICONFPS — Software rápido. Controle total.">
+  <meta property="og:description" content="Agentes de IA, ferramentas de terminal e utilitários open source para Windows e Linux.">
+  <meta property="og:url" content="https://siliconfps.github.io/">
+  <meta property="og:image" content="https://siliconfps.github.io/avatarupscaled-v2.png">
+  <meta property="og:image:alt" content="Arte cyberpunk da SILICONFPS">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SILICONFPS — Software rápido. Controle total.">
+  <meta name="twitter:description" content="Agentes de IA, ferramentas de terminal e utilitários open source para Windows e Linux.">
+  <meta name="twitter:image" content="https://siliconfps.github.io/avatarupscaled-v2.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "siliconfps",
+    "url": "https://siliconfps.github.io/",
+    "image": "https://siliconfps.github.io/avatarupscaled-v2.png",
+    "sameAs": ["https://github.com/siliconfps", "https://youtube.com/@siliconfps"],
+    "knowsAbout": ["AI Agents", "Model Context Protocol", "Windows performance", "Linux", "TypeScript", "Rust", "C#", "PowerShell"]
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050806;
+      --panel: #09110d;
+      --panel-2: #0c1712;
+      --ink: #edf8f0;
+      --muted: #8da297;
+      --green: #67f58a;
+      --green-2: #1ed760;
+      --cyan: #5ce7e7;
+      --amber: #ffc857;
+      --pink: #ff77bd;
+      --line: rgba(126, 255, 164, .15);
+      --line-strong: rgba(126, 255, 164, .34);
+      --glow: rgba(42, 236, 101, .18);
+      --mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+      --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --radius: 18px;
+      --max: 1180px;
     }
-    </script>
 
-    <!-- Fontes & Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <style>
-        /* ============================================================
-           TERMINAL THEME TOKENS
-           ============================================================ */
-        :root {
-            --bg: #0a0a0a;
-            --bg-panel: #0d0d0d;
-            --bg-line: rgba(0, 255, 65, 0.03);
-            --green: #00ff41;
-            --green-dim: #00cc33;
-            --green-glow: rgba(0, 255, 65, 0.15);
-            --green-faint: rgba(0, 255, 65, 0.06);
-            --green-text: #33ff77;
-            --amber: #ffb800;
-            --amber-dim: rgba(255, 184, 0, 0.25);
-            --amber-glow: rgba(255, 184, 0, 0.2);
-            --red: #ff3333;
-            --cyan: #00e5ff;
-            --cyan-glow: rgba(0, 229, 255, 0.2);
-            --text: #b0b0b0;
-            --text-dim: #555;
-            --border: rgba(0, 255, 65, 0.12);
-            --border-hover: rgba(0, 255, 65, 0.35);
-            --mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'SF Mono', 'Consolas', 'Courier New', monospace;
-            --transition: 0.25s ease;
-        }
-
-        /* ============================================================
-           RESET & BASE
-           ============================================================ */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: var(--mono);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            font-size: 13.5px;
-            line-height: 1.6;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        ::selection {
-            background: var(--green);
-            color: var(--bg);
-        }
-
-        a { color: var(--green); text-decoration: none; }
-        a:hover { color: var(--green-text); text-shadow: 0 0 8px var(--green-glow); }
-
-        code {
-            font-family: var(--mono);
-            font-size: 0.88em;
-            background: rgba(0, 255, 65, 0.08);
-            color: var(--green-text);
-            padding: 1px 5px;
-            border-radius: 3px;
-            border: 1px solid rgba(0, 255, 65, 0.18);
-            word-break: break-word;
-            overflow-wrap: anywhere;
-        }
-
-        /* ============================================================
-           SCANLINES OVERLAY
-           ============================================================ */
-        .scanlines {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.03) 2px,
-                rgba(0, 0, 0, 0.03) 4px
-            );
-        }
-
-        /* ============================================================
-           LAYOUT
-           ============================================================ */
-        .container {
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 36px 20px 60px;
-            position: relative;
-        }
-
-        /* ============================================================
-           TERMINAL WINDOW CHROME
-           ============================================================ */
-        .terminal {
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            background: var(--bg-panel);
-            margin-bottom: 24px;
-        }
-
-        .terminal-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            background: #111;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .terminal-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-        }
-        .terminal-dot--r { background: #ff5f57; }
-        .terminal-dot--y { background: #febc2e; }
-        .terminal-dot--g { background: #28c840; }
-
-        .terminal-title {
-            flex: 1;
-            text-align: center;
-            font-size: 11px;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .terminal-body {
-            padding: 24px 20px;
-        }
-
-        /* ============================================================
-           HERO
-           ============================================================ */
-        .hero {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-            flex-wrap: wrap;
-            padding: 12px 0 0;
-        }
-
-        .hero-avatar-wrap {
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border: 2px solid var(--green);
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 0 20px var(--green-glow), inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: calc(50% - 5px) top;
-            transform: scale(2.8);
-            transform-origin: top center;
-            filter: grayscale(60%) brightness(0.9) contrast(1.1);
-        }
-
-        .hero-info { flex: 1; min-width: 240px; }
-
-        .prompt-line {
-            font-size: 13px;
-            color: var(--green-dim);
-            margin-bottom: 4px;
-        }
-        .prompt-line .user { color: var(--cyan); }
-        .prompt-line .path { color: var(--amber); }
-        .prompt-line .symbol { color: var(--green); }
-
-        .hero-name {
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            font-weight: 700;
-            color: var(--green);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            line-height: 1.1;
-            margin-bottom: 10px;
-            text-shadow: 0 0 30px var(--green-glow), 0 0 60px rgba(0, 255, 65, 0.08);
-        }
-
-        .hero-name .cursor {
-            display: inline-block;
-            width: 0.55em;
-            height: 1em;
-            background: var(--green);
-            vertical-align: text-bottom;
-            animation: blink 1s step-end infinite;
-            margin-left: 2px;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .hero-tagline {
-            font-size: 13px;
-            color: var(--text);
-            margin-bottom: 14px;
-        }
-        .hero-tagline .comment { color: var(--text-dim); }
-
-        .hero-badges {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            font-size: 12px;
-            font-family: var(--mono);
-            color: var(--text);
-            transition: all var(--transition);
-            cursor: pointer;
-            text-decoration: none;
-            background: transparent;
-        }
-
-        .badge:hover {
-            border-color: var(--green);
-            color: var(--green);
-            background: var(--green-faint);
-            box-shadow: 0 0 12px var(--green-glow);
-        }
-
-        .badge--loc { cursor: default; }
-        .badge--loc i { color: var(--green); }
-        .badge--gh:hover { border-color: #fff; color: #fff; }
-        .badge--yt:hover { border-color: var(--red); color: var(--red); }
-
-        /* ============================================================
-           STATS BAR
-           ============================================================ */
-        .stats-bar {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin: 0 0 24px;
-        }
-
-        .stat-item {
-            flex: 1;
-            min-width: 140px;
-            text-align: center;
-            padding: 16px 14px;
-            border: 1px solid var(--border);
-            border-radius: 3px;
-            background: var(--bg-panel);
-            transition: all var(--transition);
-        }
-
-        .stat-item:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 0 16px var(--green-glow);
-        }
-
-        .stat-num {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--green);
-            line-height: 1;
-            text-shadow: 0 0 20px var(--green-glow);
-        }
-
-        .stat-label {
-            font-size: 10px;
-            color: var(--text-dim);
-            margin-top: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* ============================================================
-           SECTION HEADERS
-           ============================================================ */
-        .section-head {
-            margin-bottom: 6px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--green);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .section-title::before {
-            content: '> ';
-            color: var(--text-dim);
-        }
-
-        .section-sub {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-        .section-sub::before {
-            content: '# ';
-            color: var(--border);
-        }
-
-        /* ============================================================
-           SILICONFLOWER SHOWCASE SECTION (DESTAQUE #1)
-           ============================================================ */
-        .sf-showcase-wrapper {
-            border: 2px solid var(--green);
-            border-radius: 6px;
-            overflow: hidden;
-            background: #0d0d12;
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.2), inset 0 0 15px rgba(0,0,0,0.8);
-            margin-bottom: 32px;
-            transition: all var(--transition);
-            max-width: 100%;
-        }
-
-        .sf-showcase-wrapper:hover {
-            box-shadow: 0 0 35px rgba(0, 255, 65, 0.35), inset 0 0 20px rgba(0,0,0,0.8);
-            border-color: var(--green-text);
-        }
-
-        .sf-showcase-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 9px 14px;
-            background: #11131a;
-            border-bottom: 1px solid var(--border-hover);
-            font-size: 11px;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        .sf-showcase-bar .dots {
-            display: flex; gap: 6px; flex-shrink: 0;
-        }
-        .sf-showcase-bar .dots span {
-            width: 10px; height: 10px; border-radius: 50%; display: inline-block;
-        }
-        .dot-r { background: #ff5f57; }
-        .dot-y { background: #febc2e; }
-        .dot-g { background: #28c840; }
-
-        .sf-bar-title {
-            color: var(--green-text);
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 8px var(--green-glow);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .sf-btn-fullscreen {
-            color: var(--cyan);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border: 1px solid var(--cyan);
-            border-radius: 3px;
-            transition: all var(--transition);
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .sf-btn-fullscreen:hover {
-            background: rgba(0, 229, 255, 0.15);
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
-            color: #fff;
-        }
-
-        .sf-iframe-container {
-            width: 100%;
-            height: 520px;
-            position: relative;
-            background: #1a1b26;
-            overflow: hidden;
-        }
-
-        .sf-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        .sf-showcase-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            background: #11131a;
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .sf-tags {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-        }
-
-        .sf-tag {
-            font-size: 10.5px;
-            padding: 3px 9px;
-            background: rgba(0, 255, 65, 0.08);
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            border-radius: 3px;
-            color: var(--green-text);
-        }
-
-        .sf-links {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .sf-action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 7px 15px;
-            border-radius: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all var(--transition);
-        }
-
-        .sf-action-btn.primary {
-            background: var(--green);
-            color: #000;
-            border: 1px solid var(--green);
-            box-shadow: 0 0 12px var(--green-glow);
-        }
-        .sf-action-btn.primary:hover {
-            background: var(--green-text);
-            box-shadow: 0 0 18px var(--green-glow);
-            color: #000;
-        }
-
-        .sf-action-btn.secondary {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border-hover);
-        }
-        .sf-action-btn.secondary:hover {
-            border-color: #fff;
-            color: #fff;
-        }
-
-        /* ============================================================
-           PROJECT CARDS (DESTAQUES 2 & 3)
-           ============================================================ */
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 18px;
-            margin-bottom: 32px;
-        }
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 18px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            background: var(--bg-panel);
-            transition: all var(--transition);
-            min-width: 0;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .card:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 0 22px var(--green-glow);
-            transform: translateY(-2px);
-        }
-
-        .card-destaque-2 {
-            border-color: rgba(255, 184, 0, 0.35);
-            background: linear-gradient(180deg, rgba(255, 184, 0, 0.04) 0%, rgba(13, 13, 13, 1) 100%);
-        }
-        .card-destaque-2:hover {
-            border-color: var(--amber);
-            box-shadow: 0 0 24px var(--amber-glow);
-        }
-
-        .card-destaque-3 {
-            border-color: rgba(0, 229, 255, 0.35);
-            background: linear-gradient(180deg, rgba(0, 229, 255, 0.04) 0%, rgba(13, 13, 13, 1) 100%);
-        }
-        .card-destaque-3:hover {
-            border-color: var(--cyan);
-            box-shadow: 0 0 24px var(--cyan-glow);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            min-width: 0;
-        }
-
-        .card-icon {
-            font-size: 16px;
-            width: 34px;
-            height: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            flex-shrink: 0;
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .card h3 {
-            font-size: 14.5px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            min-width: 0;
-            line-height: 1.35;
-        }
-
-        .card h3 a {
-            color: var(--green);
-            transition: all var(--transition);
-        }
-
-        .card h3 a:hover {
-            color: var(--green-text);
-            text-shadow: 0 0 10px var(--green-glow);
-        }
-
-        .card p {
-            font-size: 12px;
-            color: var(--text);
-            line-height: 1.6;
-            margin-bottom: 14px;
-            flex: 1;
-        }
-
-        .card-features {
-            list-style: none;
-            margin-bottom: 14px;
-            padding: 0;
-        }
-
-        .card-features li {
-            font-size: 11.5px;
-            color: var(--text);
-            margin-bottom: 6px;
-            position: relative;
-            padding-left: 14px;
-            line-height: 1.45;
-            word-break: break-word;
-            overflow-wrap: anywhere;
-        }
-
-        .card-features li::before {
-            content: '▫';
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: var(--green-dim);
-            font-size: 10px;
-            line-height: 1.45;
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .card-tags {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .lang {
-            font-size: 9.5px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 3px 7px;
-            border: 1px solid var(--border);
-            border-radius: 2px;
-            color: var(--green-dim);
-            background: rgba(0, 255, 65, 0.03);
-        }
-
-        .card-links-wrap {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .card-link {
-            font-size: 11px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            transition: color var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .card-link:hover { color: var(--green); }
-
-        .badge-destaque-2 {
-            font-size: 8.5px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            padding: 2px 6px;
-            background: var(--amber);
-            color: #000;
-            border-radius: 2px;
-            white-space: nowrap;
-        }
-
-        .badge-destaque-3 {
-            font-size: 8.5px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            padding: 2px 6px;
-            background: var(--cyan);
-            color: #000;
-            border-radius: 2px;
-            white-space: nowrap;
-        }
-
-        .badge-util {
-            font-size: 8.5px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-            padding: 2px 6px;
-            background: rgba(0, 255, 65, 0.08);
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            color: var(--green-text);
-            border-radius: 2px;
-            white-space: nowrap;
-        }
-
-        /* ============================================================
-           SECONDARY UTILITIES GRID
-           ============================================================ */
-        .projects-secondary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 14px;
-            margin-bottom: 32px;
-        }
-
-        .card-secondary {
-            padding: 16px 16px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            background: #0c0c0e;
-            display: flex;
-            flex-direction: column;
-            transition: all var(--transition);
-            min-width: 0;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .card-secondary:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 0 16px var(--green-glow);
-            transform: translateY(-2px);
-        }
-
-        .card-secondary .card-header {
-            margin-bottom: 10px;
-        }
-
-        .card-secondary .card-icon {
-            width: 30px;
-            height: 30px;
-            font-size: 14px;
-        }
-
-        .card-secondary h3 {
-            font-size: 13.5px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            min-width: 0;
-            line-height: 1.35;
-        }
-
-        .card-secondary p {
-            font-size: 11.5px;
-            margin-bottom: 12px;
-            line-height: 1.5;
-            color: var(--text);
-            flex: 1;
-        }
-
-        .card-secondary .card-footer {
-            padding-top: 10px;
-        }
-
-        /* ============================================================
-           FOOTER
-           ============================================================ */
-        .footer {
-            text-align: center;
-            padding: 28px 0 0;
-            border-top: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--text-dim);
-        }
-
-        .footer .highlight { color: var(--green); }
-
-        .footer-links {
-            margin-top: 12px;
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-        }
-
-        .footer-links a {
-            color: var(--text-dim);
-            font-size: 18px;
-            transition: all var(--transition);
-        }
-
-        .footer-links a:hover {
-            color: var(--green);
-            text-shadow: 0 0 10px var(--green-glow);
-        }
-
-        .footer-meta {
-            margin-top: 12px;
-            font-size: 11px;
-            color: #444;
-            line-height: 1.6;
-        }
-
-        /* ============================================================
-           SCROLL REVEAL
-           ============================================================ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-d1 { transition-delay: 0.05s; }
-        .reveal-d2 { transition-delay: 0.12s; }
-        .reveal-d3 { transition-delay: 0.18s; }
-
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
-        @media (max-width: 768px) {
-            .hero {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            .hero-badges { justify-content: center; }
-            .avatar { width: 100px; height: 100px; }
-            .prompt-line { text-align: center; }
-            .projects { grid-template-columns: 1fr; }
-            .projects-secondary { grid-template-columns: 1fr; }
-            .sf-showcase-bar {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .sf-bar-title {
-                order: 2;
-                width: 100%;
-                white-space: normal;
-                font-size: 10.5px;
-            }
-            .sf-btn-fullscreen {
-                order: 1;
-                margin-left: auto;
-            }
-            .sf-showcase-footer { flex-direction: column; align-items: flex-start; }
-            .sf-links { width: 100%; justify-content: flex-start; }
-        }
-
-        @media (max-width: 480px) {
-            .container { padding: 20px 12px 40px; }
-            .terminal-body { padding: 16px 12px; }
-            .hero-name { letter-spacing: 2px; font-size: 1.8rem; }
-            .stat-item { padding: 12px 10px; min-width: 100px; }
-            .stat-num { font-size: 1.5rem; }
-            .badge { padding: 5px 10px; font-size: 11px; }
-            .card { padding: 16px 14px; }
-            .card-secondary { padding: 14px 12px; }
-            .sf-iframe-container { height: 380px; }
-        }
-
-        /* ============================================================
-           PREFERS REDUCED MOTION
-           ============================================================ */
-        @media (prefers-reduced-motion: reduce) {
-            .hero-name .cursor { animation: none; opacity: 1; }
-            .reveal { transition: none; opacity: 1; transform: none; }
-            .card:hover, .card-secondary:hover { transform: none; }
-        }
-    </style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 86% 3%, rgba(26, 215, 106, .1), transparent 27rem),
+        radial-gradient(circle at 9% 28%, rgba(31, 181, 198, .07), transparent 25rem),
+        var(--bg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      z-index: 10;
+      opacity: .18;
+      background: repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0,0,0,.34) 4px);
+      mix-blend-mode: overlay;
+    }
+    ::selection { background: var(--green); color: #041006; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    img { max-width: 100%; display: block; }
+    code, .mono { font-family: var(--mono); }
+    .skip-link { position: fixed; top: -60px; left: 16px; z-index: 100; padding: 10px 14px; background: var(--green); color: #031007; }
+    .skip-link:focus { top: 16px; }
+    .shell { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+    .noise { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .14; background-image: linear-gradient(rgba(103,245,138,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(103,245,138,.018) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, black, transparent 72%); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(5, 8, 6, .78);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 68px; display: flex; align-items: center; gap: 32px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font: 600 14px/1 var(--mono); letter-spacing: .06em; }
+    .brand-mark { position: relative; display: grid; place-items: center; width: 29px; height: 29px; color: #031007; background: var(--green); border-radius: 7px; box-shadow: 0 0 24px var(--glow); font-size: 16px; }
+    .brand-mark::after { position: absolute; inset: -4px; content: ""; border: 1px solid var(--line-strong); border-radius: 10px; }
+    .brand span:last-child { color: var(--green); }
+    .nav-links { margin-left: auto; display: flex; align-items: center; gap: 26px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font: 500 12px/1 var(--mono); transition: .2s ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--green); }
+    .nav-cta { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; color: var(--ink) !important; border: 1px solid var(--line-strong); border-radius: 9px; background: rgba(103, 245, 138, .05); }
+    .menu-button { display: none; margin-left: auto; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 9px; color: var(--green); background: transparent; font: 600 18px var(--mono); cursor: pointer; }
+
+    .hero { position: relative; isolation: isolate; min-height: 710px; display: grid; align-items: end; border-bottom: 1px solid var(--line); overflow: hidden; }
+    .hero-media { position: absolute; inset: 0; z-index: -3; }
+    .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 66% 50%; filter: saturate(.78) contrast(1.05) brightness(.68); }
+    .hero-media::after { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, #050806 2%, rgba(5,8,6,.93) 27%, rgba(5,8,6,.48) 63%, rgba(5,8,6,.78) 100%), linear-gradient(0deg, #050806 0%, transparent 40%); }
+    .hero-grid { padding: 120px 0 70px; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, .72fr); align-items: end; gap: 70px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; color: var(--green); font: 500 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 5px rgba(103,245,138,.09), 0 0 20px var(--green); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .45; box-shadow: 0 0 0 8px transparent; } }
+    h1 { max-width: 780px; margin: 0; font-size: clamp(3.1rem, 7.4vw, 6.9rem); line-height: .92; letter-spacing: -.065em; }
+    h1 .outline { color: transparent; -webkit-text-stroke: 1px rgba(237,248,240,.63); }
+    h1 .accent { color: var(--green); text-shadow: 0 0 40px rgba(103,245,138,.19); }
+    .hero-copy { max-width: 690px; margin: 28px 0 34px; color: #b5c6bb; font-size: clamp(1rem, 1.4vw, 1.16rem); line-height: 1.75; }
+    .hero-copy strong { color: var(--ink); font-weight: 600; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; gap: 9px; padding: 0 18px; border: 1px solid var(--line-strong); border-radius: 10px; text-decoration: none; font: 600 12px var(--mono); transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+    .button:hover { transform: translateY(-2px); border-color: var(--green); }
+    .button.primary { color: #031007; background: var(--green); border-color: var(--green); box-shadow: 0 12px 35px rgba(31,215,96,.13); }
+    .button.secondary { color: var(--ink); background: rgba(5,8,6,.56); }
+    .button .arrow { transition: transform .2s ease; }
+    .button:hover .arrow { transform: translate(2px,-2px); }
+
+    .terminal-card { box-shadow: 0 24px 80px rgba(0,0,0,.5); border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: rgba(5,10,7,.86); backdrop-filter: blur(15px); }
+    .terminal-head { display: flex; align-items: center; gap: 7px; height: 43px; padding: 0 15px; color: #789084; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.022); font: 500 10px var(--mono); }
+    .terminal-head .dot { width: 8px; height: 8px; border-radius: 50%; background: #ff675d; }
+    .terminal-head .dot:nth-child(2) { background: #ffc857; }
+    .terminal-head .dot:nth-child(3) { background: var(--green); }
+    .terminal-title { margin-left: 7px; }
+    .terminal-body { min-height: 282px; padding: 22px; font: 12px/1.9 var(--mono); color: #aabbb1; }
+    .terminal-line { display: block; }
+    .prompt { color: var(--green); }
+    .path { color: var(--cyan); }
+    .comment { color: #597064; }
+    .success { color: var(--green); }
+    .warning { color: var(--amber); }
+    .terminal-cursor { display: inline-block; width: 8px; height: 14px; translate: 0 2px; background: var(--green); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .terminal-meta { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+    .terminal-meta div { padding: 14px 16px; border-right: 1px solid var(--line); }
+    .terminal-meta div:last-child { border-right: 0; }
+    .terminal-meta strong { display: block; color: var(--ink); font: 600 13px var(--mono); }
+    .terminal-meta span { color: var(--muted); font: 10px var(--mono); }
+
+    .ticker { border-bottom: 1px solid var(--line); background: #07100b; overflow: hidden; }
+    .ticker-inner { min-height: 48px; display: flex; align-items: center; gap: 0; white-space: nowrap; }
+    .ticker-label { align-self: stretch; display: flex; align-items: center; padding-right: 24px; color: #031007; background: var(--green); font: 600 10px var(--mono); letter-spacing: .07em; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); }
+    .ticker-items { display: flex; align-items: center; gap: 30px; padding-left: 24px; color: #91a89b; font: 11px var(--mono); }
+    .ticker-items span::before { content: "//"; margin-right: 8px; color: var(--green); }
+
+    .section { padding: 110px 0; }
+    .section + .section { border-top: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: 1fr .8fr; gap: 50px; align-items: end; margin-bottom: 46px; }
+    .kicker { display: block; margin-bottom: 13px; color: var(--green); font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    h2 { margin: 0; max-width: 760px; font-size: clamp(2.1rem, 4.4vw, 4rem); line-height: 1.03; letter-spacing: -.05em; }
+    .section-lead { margin: 0; color: var(--muted); line-height: 1.75; font-size: .98rem; }
+
+    .featured { position: relative; display: grid; grid-template-columns: 1.08fr .92fr; border: 1px solid var(--line-strong); border-radius: 22px; overflow: hidden; background: linear-gradient(135deg, rgba(103,245,138,.08), rgba(9,17,13,.85) 45%); }
+    .featured::before { position: absolute; inset: 0; content: ""; pointer-events: none; background: linear-gradient(90deg, transparent 49.8%, var(--line) 50%, transparent 50.2%); }
+    .featured-copy { padding: clamp(28px, 5vw, 58px); }
+    .featured-label { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 54px; color: var(--green); font: 600 11px var(--mono); }
+    .featured-label::before { content: ""; width: 22px; height: 1px; background: var(--green); }
+    .featured h3 { margin: 0 0 17px; font-size: clamp(2rem, 4vw, 3.4rem); letter-spacing: -.045em; }
+    .featured p { margin: 0 0 30px; max-width: 590px; color: #9fb2a6; font-size: 1rem; line-height: 1.8; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; color: #a8baaf; background: rgba(0,0,0,.12); font: 500 10px var(--mono); }
+    .featured-panel { min-height: 490px; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(28px, 5vw, 55px); background: rgba(0,0,0,.16); }
+    .code-window { border: 1px solid var(--line); border-radius: 13px; overflow: hidden; background: #050907; box-shadow: inset 0 0 50px rgba(49,241,108,.025); }
+    .code-window-head { padding: 12px 15px; color: #647a6e; border-bottom: 1px solid var(--line); font: 10px var(--mono); }
+    .code-window pre { margin: 0; padding: 22px; color: #a8b9af; font: 11px/1.8 var(--mono); white-space: pre-wrap; }
+    .code-window .green { color: var(--green); }
+    .code-window .cyan { color: var(--cyan); }
+    .featured-links { display: flex; gap: 20px; margin-top: 26px; }
+    .text-link { display: inline-flex; gap: 8px; align-items: center; color: var(--ink); text-decoration: none; font: 600 11px var(--mono); }
+    .text-link:hover { color: var(--green); }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: -14px 0 28px; }
+    .filter { padding: 9px 13px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: transparent; font: 500 10px var(--mono); cursor: pointer; transition: .2s ease; }
+    .filter:hover, .filter.active { color: #031007; border-color: var(--green); background: var(--green); }
+    .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .project-card { position: relative; grid-column: span 4; min-height: 310px; display: flex; flex-direction: column; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--panel); text-decoration: none; transition: border-color .25s ease, transform .25s ease, background .25s ease; }
+    .project-card.wide { grid-column: span 6; }
+    .project-card:hover { transform: translateY(-5px); border-color: var(--line-strong); background: var(--panel-2); }
+    .project-card::after { position: absolute; right: -34px; bottom: -44px; width: 130px; height: 130px; content: ""; border: 1px solid var(--line); border-radius: 50%; box-shadow: 0 0 0 18px rgba(103,245,138,.015), 0 0 0 38px rgba(103,245,138,.01); }
+    .project-card[hidden] { display: none; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 50px; }
+    .card-index { color: #587064; font: 10px var(--mono); }
+    .card-state { display: inline-flex; align-items: center; gap: 7px; color: var(--green); font: 9px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+    .card-state::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+    .project-card h3 { position: relative; z-index: 1; margin: 0 0 13px; font: 600 clamp(1.15rem, 2vw, 1.45rem) var(--mono); letter-spacing: -.035em; }
+    .project-card p { position: relative; z-index: 1; margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.72; }
+    .card-foot { position: relative; z-index: 1; margin-top: auto; padding-top: 28px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .language { color: #a7baaf; font: 10px var(--mono); }
+    .language::before { display: inline-block; width: 7px; height: 7px; margin-right: 7px; content: ""; border-radius: 50%; background: var(--green); }
+    .language.ts::before { background: #3178c6; }
+    .language.ps::before { background: #5391fe; }
+    .language.cs::before { background: #a179dc; }
+    .language.rs::before { background: #dea584; }
+    .language.py::before { background: #ffdf66; }
+    .language.c::before { background: #7f8cff; }
+    .card-arrow { color: var(--green); font: 15px var(--mono); transition: transform .2s ease; }
+    .project-card:hover .card-arrow { transform: translate(3px,-3px); }
+
+    .manifesto { display: grid; grid-template-columns: .85fr 1.15fr; gap: 70px; align-items: start; }
+    .manifesto-sticky { position: sticky; top: 108px; }
+    .manifesto-copy { margin: 25px 0 0; color: var(--muted); line-height: 1.8; }
+    .principles { counter-reset: principle; border-top: 1px solid var(--line); }
+    .principle { position: relative; display: grid; grid-template-columns: 80px 1fr; gap: 24px; padding: 31px 0; border-bottom: 1px solid var(--line); }
+    .principle::before { counter-increment: principle; content: "0" counter(principle); color: var(--green); font: 500 11px var(--mono); }
+    .principle h3 { margin: 0 0 9px; font-size: 1.08rem; }
+    .principle p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+    .stack { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .stack-cell { min-height: 170px; padding: 25px; border-right: 1px solid var(--line); background: rgba(9,17,13,.7); }
+    .stack-cell:last-child { border-right: 0; }
+    .stack-cell span { display: block; margin-bottom: 39px; color: var(--green); font: 10px var(--mono); }
+    .stack-cell h3 { margin: 0 0 8px; font-size: 1rem; }
+    .stack-cell p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+
+    .contact { padding: 90px 0 46px; }
+    .contact-box { position: relative; padding: clamp(32px, 7vw, 76px); border: 1px solid var(--line-strong); border-radius: 24px; overflow: hidden; background: linear-gradient(135deg, rgba(103,245,138,.1), rgba(8,17,12,.94)); }
+    .contact-box::after { position: absolute; top: -110px; right: -110px; width: 350px; height: 350px; content: ""; border: 1px solid var(--line); border-radius: 50%; box-shadow: 0 0 0 55px rgba(103,245,138,.016), 0 0 0 110px rgba(103,245,138,.01); }
+    .contact h2 { position: relative; z-index: 1; max-width: 820px; }
+    .contact p { position: relative; z-index: 1; max-width: 620px; margin: 22px 0 30px; color: var(--muted); line-height: 1.75; }
+    .contact .actions { position: relative; z-index: 1; }
+    footer { padding: 25px 0 38px; color: #627469; font: 10px var(--mono); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 25px; border-top: 1px solid var(--line); padding-top: 25px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
+    .footer-links a { color: inherit; text-decoration: none; }
+    .footer-links a:hover { color: var(--green); }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+
+    @media (max-width: 920px) {
+      .hero { min-height: auto; }
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; padding-top: 100px; }
+      .hero-media img { object-position: 61% 50%; }
+      .hero-media::after { background: linear-gradient(90deg, rgba(5,8,6,.94), rgba(5,8,6,.48)), linear-gradient(0deg, #050806 0%, transparent 50%); }
+      .terminal-card { max-width: 590px; }
+      .section-head, .featured, .manifesto { grid-template-columns: 1fr; }
+      .featured::before { display: none; }
+      .featured-panel { min-height: 400px; border-top: 1px solid var(--line); }
+      .project-card, .project-card.wide { grid-column: span 6; }
+      .manifesto { gap: 45px; }
+      .manifesto-sticky { position: static; }
+      .stack { grid-template-columns: repeat(2, 1fr); }
+      .stack-cell:nth-child(2) { border-right: 0; }
+      .stack-cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    }
+
+    @media (max-width: 700px) {
+      .shell { width: min(calc(100% - 28px), var(--max)); }
+      .menu-button { display: grid; place-items: center; }
+      .nav-links { position: absolute; top: 67px; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 12px 14px 18px; border-bottom: 1px solid var(--line); background: rgba(5,8,6,.97); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 15px; }
+      .nav-cta { margin-top: 6px; }
+      .hero-grid { padding-bottom: 48px; }
+      h1 { font-size: clamp(3rem, 16vw, 5rem); }
+      .terminal-body { min-height: 255px; padding: 18px; font-size: 10.5px; }
+      .ticker-items span:nth-child(n+4) { display: none; }
+      .section { padding: 78px 0; }
+      .section-head { gap: 20px; margin-bottom: 34px; }
+      .featured-label { margin-bottom: 35px; }
+      .featured-panel { min-height: auto; }
+      .project-card, .project-card.wide { grid-column: 1 / -1; min-height: 280px; }
+      .principle { grid-template-columns: 45px 1fr; gap: 12px; }
+      .stack { grid-template-columns: 1fr; }
+      .stack-cell, .stack-cell:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stack-cell:last-child { border-bottom: 0; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <div class="noise" aria-hidden="true"></div>
 
-    <div class="scanlines"></div>
+  <header class="topbar">
+    <nav class="nav shell" aria-label="Navegação principal">
+      <a class="brand" href="#top" aria-label="SILICONFPS — início">
+        <span class="brand-mark">&gt;_</span>
+        <span>SILICON<span>FPS</span></span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav-links">≡</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#projetos">./projetos</a>
+        <a href="#filosofia">./filosofia</a>
+        <a href="#stack">./stack</a>
+        <a class="nav-cta" href="https://github.com/siliconfps" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
 
-    <main class="container">
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-media" aria-hidden="true"><img src="avatarupscaled-v2.png" alt=""></div>
+      <div class="hero-grid shell">
+        <div class="hero-main">
+          <div class="eyebrow"><span class="status-dot"></span> sistemas online · brasil</div>
+          <h1><span class="outline">Software rápido.</span><br><span class="accent">Controle total.</span></h1>
+          <p class="hero-copy">Construo <strong>agentes de IA, ferramentas de terminal e utilitários de sistema</strong> para quem prefere desempenho real, transparência e menos camadas entre a ideia e a máquina.</p>
+          <div class="actions">
+            <a class="button primary" href="#projetos">Explorar projetos <span class="arrow" aria-hidden="true">↓</span></a>
+            <a class="button secondary" href="https://github.com/siliconfps" target="_blank" rel="noopener">github.com/siliconfps <span class="arrow" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
 
-        <!-- ====== HERO TERMINAL ====== -->
-        <header class="terminal reveal">
-            <div class="terminal-bar">
-                <div class="terminal-dot terminal-dot--r"></div>
-                <div class="terminal-dot terminal-dot--y"></div>
-                <div class="terminal-dot terminal-dot--g"></div>
-                <span class="terminal-title">siliconfps@github ~ /home</span>
-            </div>
-            <div class="terminal-body">
-                <section class="hero">
-                    <div class="hero-avatar-wrap">
-                        <div class="avatar">
-                            <img src="avatarupscaled.webp" alt="siliconfps avatar" class="avatar-img" width="120" height="120">
-                        </div>
-                    </div>
-                    <div class="hero-info">
-                        <div class="prompt-line">
-                            <span class="user">siliconfps</span>@<span class="path">github</span>:<span class="symbol">~$</span> whoami
-                        </div>
-                        <h1 class="hero-name">SILICONFPS<span class="cursor"></span></h1>
-                        <p class="hero-tagline"><span class="comment">//</span> Engenharia de Performance &amp; Agentes de IA Autônomos</p>
-                        <div class="hero-badges">
-                            <span class="badge badge--loc">
-                                <i class="fas fa-map-marker-alt"></i> Brasil
-                            </span>
-                            <a href="https://github.com/siliconfps" target="_blank" rel="noopener" class="badge badge--gh">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://youtube.com/@siliconfps" target="_blank" rel="noopener" class="badge badge--yt">
-                                <i class="fab fa-youtube"></i> YouTube
-                            </a>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </header>
+        <aside class="terminal-card" aria-label="Resumo do perfil em formato de terminal">
+          <div class="terminal-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="terminal-title">silicon@workstation:~</span></div>
+          <div class="terminal-body">
+            <span class="terminal-line"><span class="prompt">silicon@fps</span>:<span class="path">~</span>$ whoami</span>
+            <span class="terminal-line">engenheiro_de_sistemas</span>
+            <span class="terminal-line comment"># IA agêntica + baixa latência</span>
+            <br>
+            <span class="terminal-line"><span class="prompt">silicon@fps</span>:<span class="path">~</span>$ cat focus.conf</span>
+            <span class="terminal-line">platforms = [<span class="cyan">"windows"</span>, <span class="cyan">"linux"</span>]</span>
+            <span class="terminal-line">principles = [<span class="cyan">"fast"</span>, <span class="cyan">"lean"</span>, <span class="cyan">"open"</span>]</span>
+            <span class="terminal-line">status = <span class="success">"building"</span></span>
+            <br>
+            <span class="terminal-line"><span class="prompt">silicon@fps</span>:<span class="path">~</span>$ <span class="terminal-cursor" aria-hidden="true"></span></span>
+          </div>
+          <div class="terminal-meta">
+            <div><strong>19</strong><span>repositórios</span></div>
+            <div><strong>100%</strong><span>open source</span></div>
+            <div><strong>BR</strong><span>location</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-        <!-- ====== STATS ====== -->
-        <section class="stats-bar reveal" aria-label="Estatísticas">
-            <div class="stat-item">
-                <div class="stat-num" data-target="3">0</div>
-                <div class="stat-label">Destaques Principais</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num" data-target="19">0</div>
-                <div class="stat-label">Repositórios GitHub</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num" data-target="100">0</div>
-                <div class="stat-label">% Open Source</div>
-            </div>
-        </section>
+    <div class="ticker">
+      <div class="ticker-inner shell">
+        <span class="ticker-label">CORE_MODULES</span>
+        <div class="ticker-items">
+          <span>AI AGENTS</span><span>TERMINAL UX</span><span>WINDOWS PERF</span><span>HARDWARE TELEMETRY</span><span>LINUX TOOLS</span>
+        </div>
+      </div>
+    </div>
 
-        <!-- ====== DESTAQUE #1: SILICONFLOWER FLAGSHIP SHOWCASE ====== -->
-        <section class="section-head reveal">
-            <h2 class="section-title">🌸 1º Destaque: SiliconFlower AI</h2>
-        </section>
-        <p class="section-sub reveal">Harness autônomo CLI/TUI para Windows com Raciocínio Controlável, MCP e Suporte Multi-Provedor</p>
+    <section class="section shell" id="projetos">
+      <header class="section-head reveal">
+        <div><span class="kicker">01 / flagship</span><h2>Um agente que trabalha no mesmo lugar que você.</h2></div>
+        <p class="section-lead">O projeto principal reúne execução local, contexto de código e orquestração de agentes em uma interface criada para o terminal — sem esconder o que está acontecendo.</p>
+      </header>
 
-        <section class="sf-showcase-wrapper reveal" aria-label="SiliconFlower Live Demo">
-            <div class="sf-showcase-bar">
-                <div class="dots">
-                    <span class="dot-r"></span>
-                    <span class="dot-y"></span>
-                    <span class="dot-g"></span>
-                </div>
-                <span class="sf-bar-title">🌸 SILICONFLOWER v0.2.3 :: APRESENTAÇÃO INTERATIVA &amp; ESPECIFICAÇÃO</span>
-                <a href="siliconflower.html" target="_blank" class="sf-btn-fullscreen" title="Abrir Apresentação Completa em Nova Aba">
-                    <i class="fas fa-expand"></i> Tela Cheia ↗
-                </a>
-            </div>
-            <div class="sf-iframe-container">
-                <iframe src="siliconflower.html" class="sf-iframe" title="SiliconFlower Interactive Deck" loading="lazy"></iframe>
-            </div>
-            <div class="sf-showcase-footer">
-                <div class="sf-tags">
-                    <span class="sf-tag">Bun / TypeScript</span>
-                    <span class="sf-tag">34 Ferramentas Nativas</span>
-                    <span class="sf-tag">Model Context Protocol</span>
-                    <span class="sf-tag">Reasoning Effort</span>
-                    <span class="sf-tag">Subagentes &amp; Tasks</span>
-                    <span class="sf-tag">Standalone .exe</span>
-                </div>
-                <div class="sf-links">
-                    <a href="siliconflower.html" target="_blank" class="sf-action-btn primary">
-                        <i class="fas fa-play"></i> Ver Apresentação ↗
-                    </a>
-                    <a href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener" class="sf-action-btn secondary">
-                        <i class="fab fa-github"></i> Código no GitHub
-                    </a>
-                </div>
-            </div>
-        </section>
+      <article class="featured reveal">
+        <div class="featured-copy">
+          <span class="featured-label">SILICONFLOWER · v0.2.4</span>
+          <h3>IA agêntica,<br>direto no terminal.</h3>
+          <p>Harness CLI/TUI de alta performance para desenvolvimento de software. Traz 34 ferramentas nativas, subagentes concorrentes, memória persistente, Git worktrees, RepoMap, busca web e suporte ao protocolo MCP.</p>
+          <div class="tags"><span class="tag">TypeScript</span><span class="tag">Bun</span><span class="tag">OpenAI</span><span class="tag">Anthropic</span><span class="tag">OpenRouter</span><span class="tag">MCP</span></div>
+        </div>
+        <div class="featured-panel">
+          <div class="code-window">
+            <div class="code-window-head">~/.siliconflower/config.json</div>
+            <pre>{
+  <span class="cyan">"mode"</span>: <span class="green">"programação"</span>,
+  <span class="cyan">"reasoning"</span>: <span class="green">"high"</span>,
+  <span class="cyan">"tools"</span>: <span class="green">34</span>,
+  <span class="cyan">"worktrees"</span>: <span class="green">true</span>,
+  <span class="cyan">"mcp"</span>: <span class="green">"enabled"</span>
+}</pre>
+          </div>
+          <div class="featured-links">
+            <a class="text-link" href="siliconflower.html">Ver apresentação <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="https://github.com/siliconfps/siliconflower" target="_blank" rel="noopener">Abrir repositório <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
 
-        <!-- ====== DESTAQUES #2 & #3 ====== -->
-        <section class="section-head reveal">
-            <h2 class="section-title">Projetos em Destaque</h2>
-        </section>
-        <p class="section-sub reveal">Principais ferramentas de software com lançamentos recentes e alta performance</p>
+    <section class="section shell" aria-labelledby="projects-title">
+      <header class="section-head reveal">
+        <div><span class="kicker">02 / repository index</span><h2 id="projects-title">Ferramentas para o mundo real.</h2></div>
+        <p class="section-lead">Projetos pequenos o bastante para serem entendidos e específicos o bastante para resolver um problema de verdade.</p>
+      </header>
 
-        <section class="projects" aria-label="Projetos em Destaque">
+      <div class="filters reveal" role="group" aria-label="Filtrar projetos">
+        <button class="filter active" type="button" data-filter="all">todos</button>
+        <button class="filter" type="button" data-filter="terminal">terminal</button>
+        <button class="filter" type="button" data-filter="windows">windows</button>
+        <button class="filter" type="button" data-filter="linux">linux</button>
+      </div>
 
-            <!-- 2º DESTAQUE: MARKII DOWN -->
-            <article class="card reveal reveal-d1 card-destaque-2">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--amber); border-color: var(--amber);">
-                        <i class="fas fa-file-lines"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/markiidown" target="_blank" rel="noopener">markiidown</a>
-                        <span class="badge-destaque-2">⭐ 2º DESTAQUE · TUI PAGER</span>
-                    </h3>
-                </div>
-                <p>Leitor de Markdown standalone e offline em TypeScript/Bun. Roda no terminal via TUI de alto desempenho, sem servidores locais nem portas de rede.</p>
-                <ul class="card-features">
-                    <li>TUI Pager com buffer alternativo e rolagem suave (<code>j</code>/<code>k</code>).</li>
-                    <li>Busca em tempo real (<code>/</code>) e sumário navegável TOC (<code>t</code>).</li>
-                    <li>Instalação local rápida em <code>PATH</code> sem exigir admin.</li>
-                    <li>Menu de contexto no Explorer: <em>"Abrir com MarkiiDown"</em>.</li>
-                    <li>Modo contínuo (<code>--watch</code>) e exportação HTML (<code>--export</code>).</li>
-                </ul>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">TypeScript</span>
-                        <span class="lang">Bun</span>
-                        <span class="lang">TUI</span>
-                        <span class="lang">Standalone</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/markiidown/releases/tag/1.1.0" target="_blank" rel="noopener" class="card-link" style="color: var(--amber);">
-                            <i class="fas fa-tag"></i> v1.1.0 ↗
-                        </a>
-                        <a href="https://github.com/siliconfps/markiidown" target="_blank" rel="noopener" class="card-link">
-                            <i class="fab fa-github"></i> GitHub ↗
-                        </a>
-                    </div>
-                </div>
-            </article>
+      <div class="project-grid">
+        <a class="project-card wide reveal" data-category="terminal windows" href="https://github.com/siliconfps/markiidown" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_02</span><span class="card-state">ativo</span></div>
+          <h3>MarkiiDown</h3>
+          <p>Leitor de Markdown 100% offline com TUI interativa, busca, sumário, watch mode e exportação HTML. Instala no Windows sem administrador e roda como executável portátil.</p>
+          <div class="card-foot"><span class="language ts">TypeScript</span><span class="card-arrow">↗</span></div>
+        </a>
 
-            <!-- 3º DESTAQUE: OTIMIZADOR WINDOWS -->
-            <article class="card reveal reveal-d2 card-destaque-3">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--cyan); border-color: var(--cyan);">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/otimizador-windows" target="_blank" rel="noopener">otimizador-windows</a>
-                        <span class="badge-destaque-3">⚡ 3º DESTAQUE · PERFORMANCE</span>
-                    </h3>
-                </div>
-                <p>Otimizador para Windows 10/11 focado em máximo FPS, baixa latência e remoção de bloatware pós-instalação.</p>
-                <ul class="card-features">
-                    <li>Executável <code>otimizador.exe</code> (1-clique) ou script <code>.ps1</code> modular.</li>
-                    <li>Debloat profundo: remove apps UWP e serviços desnecessários.</li>
-                    <li>Controle de mitigações de CPU para ganho imediato de FPS.</li>
-                    <li>Desativação de telemetria e diagnósticos em segundo plano.</li>
-                    <li>Ajustes no escalonador do kernel para menor latência em jogos.</li>
-                </ul>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">PowerShell</span>
-                        <span class="lang">Win 10/11</span>
-                        <span class="lang">Latency</span>
-                        <span class="lang">Debloat</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/otimizador-windows/releases" target="_blank" rel="noopener" class="card-link" style="color: var(--cyan);">
-                            <i class="fas fa-tag"></i> v3.3 ↗
-                        </a>
-                        <a href="https://github.com/siliconfps/otimizador-windows" target="_blank" rel="noopener" class="card-link">
-                            <i class="fab fa-github"></i> GitHub ↗
-                        </a>
-                    </div>
-                </div>
-            </article>
+        <a class="project-card wide reveal" data-category="windows" href="https://github.com/siliconfps/otimizador-windows" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_03</span><span class="card-state">v3.3</span></div>
+          <h3>Otimizador Windows</h3>
+          <p>Automação pós-instalação para Windows 10/11 com 19 ajustes de desempenho e privacidade. Disponível em PowerShell ou como executável — com avisos claros para mudanças sensíveis.</p>
+          <div class="card-foot"><span class="language ps">PowerShell</span><span class="card-arrow">↗</span></div>
+        </a>
 
-        </section>
+        <a class="project-card reveal" data-category="windows" href="https://github.com/siliconfps/gpu-cpu-monitor-windows" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_04</span><span class="card-state">ativo</span></div>
+          <h3>GPU / CPU Monitor</h3>
+          <p>Telemetria em tempo real na bandeja do Windows: uso, clocks, temperaturas, VRAM, energia e ventoinha, atualizados a cada segundo.</p>
+          <div class="card-foot"><span class="language cs">C# · .NET 9</span><span class="card-arrow">↗</span></div>
+        </a>
 
-        <!-- ====== OUTROS LANÇAMENTOS E UTILITÁRIOS RECENTES ====== -->
-        <section class="section-head reveal">
-            <h2 class="section-title">Mais Programas &amp; Utilitários Open Source</h2>
-        </section>
-        <p class="section-sub reveal">Ferramentas de diagnóstico, monitoramento de hardware e otimização de sistema</p>
+        <a class="project-card reveal" data-category="terminal linux" href="https://github.com/siliconfps/editor-seco-seco" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_05</span><span class="card-state">minimal</span></div>
+          <h3>Editor Seco-Seco</h3>
+          <p>Editor de texto para terminal escrito em Rust, com UTF-8, busca, undo e syntax highlight para 14 linguagens — sem framework TUI externo.</p>
+          <div class="card-foot"><span class="language rs">Rust</span><span class="card-arrow">↗</span></div>
+        </a>
 
-        <section class="projects-secondary" aria-label="Outros Utilitários">
+        <a class="project-card reveal" data-category="windows" href="https://github.com/siliconfps/LittleRegistryCleaner" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_06</span><span class="card-state">mantido</span></div>
+          <h3>Little Registry Cleaner</h3>
+          <p>Modernização do utilitário open source para limpeza do Registro, com suporte 64-bit, backup XML, restauração e gerenciadores de inicialização e desinstalação.</p>
+          <div class="card-foot"><span class="language cs">C#</span><span class="card-arrow">↗</span></div>
+        </a>
 
-            <!-- UTILITÁRIO 1: Little Registry Cleaner -->
-            <article class="card-secondary reveal reveal-d1">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--green); border-color: var(--border);">
-                        <i class="fas fa-broom"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/LittleRegistryCleaner" target="_blank" rel="noopener">LittleRegistryCleaner</a>
-                        <span class="badge-util">v2.0.0</span>
-                    </h3>
-                </div>
-                <p>Limpador e otimizador de Registro nativo em C# (64-bit real). Inclui Startup Manager, desinstalador de sobras e backup XML em 1 clique.</p>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">C#</span>
-                        <span class="lang">.NET</span>
-                        <span class="lang">Registry</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/LittleRegistryCleaner/releases/tag/2.0.0" target="_blank" rel="noopener" class="card-link">Release ↗</a>
-                        <a href="https://github.com/siliconfps/LittleRegistryCleaner" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+        <a class="project-card reveal" data-category="windows" href="https://github.com/siliconfps/check-cpu-mitigations" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_07</span><span class="card-state">diagnóstico</span></div>
+          <h3>CPU Mitigation Checker</h3>
+          <p>Relatório em português sobre Spectre, Meltdown, MDS, HVCI e VBS, com leitura do módulo oficial da Microsoft e fallback pelo Registro.</p>
+          <div class="card-foot"><span class="language ps">PowerShell</span><span class="card-arrow">↗</span></div>
+        </a>
 
-            <!-- UTILITÁRIO 2: GpuCpuMonitor -->
-            <article class="card-secondary reveal reveal-d2">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--cyan); border-color: var(--border);">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/gpu-cpu-monitor-windows" target="_blank" rel="noopener">GpuCpuMonitor</a>
-                        <span class="badge-util">v1.0.2</span>
-                    </h3>
-                </div>
-                <p>Monitor de CPU e GPU na bandeja em .NET 9 single-file. Exibe % de uso, sensores de temperatura MSR, clocks e VRAM em tempo real.</p>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">C#</span>
-                        <span class="lang">.NET 9</span>
-                        <span class="lang">Tray</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/gpu-cpu-monitor-windows/releases" target="_blank" rel="noopener" class="card-link">Release ↗</a>
-                        <a href="https://github.com/siliconfps/gpu-cpu-monitor-windows" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+        <a class="project-card reveal" data-category="linux" href="https://github.com/siliconfps/WoeUSB-remast" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_08</span><span class="card-state">remaster</span></div>
+          <h3>WoeUSB Remast</h3>
+          <p>Manutenção do utilitário Linux que cria pendrives de instalação do Windows a partir de ISO ou DVD, com interface gráfica e modo CLI.</p>
+          <div class="card-foot"><span class="language py">Python</span><span class="card-arrow">↗</span></div>
+        </a>
 
-            <!-- UTILITÁRIO 3: check-cpu-mitigations -->
-            <article class="card-secondary reveal reveal-d1">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--amber); border-color: var(--border);">
-                        <i class="fas fa-shield-halved"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/check-cpu-mitigations" target="_blank" rel="noopener">check-cpu-mitigations</a>
-                        <span class="badge-util">PowerShell</span>
-                    </h3>
-                </div>
-                <p>Auditor de mitigações de CPU em PowerShell: verifica o status de Spectre, Meltdown e correções de kernel no Windows.</p>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">PowerShell</span>
-                        <span class="lang">Security</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/check-cpu-mitigations" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+        <a class="project-card reveal" data-category="linux" href="https://github.com/siliconfps/lxpanel-cpu-gpu-monitor" target="_blank" rel="noopener">
+          <div class="card-top"><span class="card-index">repo_09</span><span class="card-state">linux suite</span></div>
+          <h3>Linux Monitor Suite</h3>
+          <p>Monitores leves de CPU e GPU para GNOME, XFCE4 e LXDE, além de ferramentas para frequência de CPU, overclock AMD e inventário do sistema.</p>
+          <div class="card-foot"><span class="language c">C · JS · Shell</span><span class="card-arrow">↗</span></div>
+        </a>
+      </div>
+    </section>
 
-            <!-- UTILITÁRIO 4: hardview & Linux Tools -->
-            <article class="card-secondary reveal reveal-d2">
-                <div class="card-header">
-                    <div class="card-icon" style="color: var(--green-text); border-color: var(--border);">
-                        <i class="fab fa-linux"></i>
-                    </div>
-                    <h3>
-                        <a href="https://github.com/siliconfps/hardview" target="_blank" rel="noopener">hardview &amp; linux-tools</a>
-                        <span class="badge-util">Shell</span>
-                    </h3>
-                </div>
-                <p>Utilitários para Linux: auditoria de hardware (<code>hardview</code>), controle de overclock AMD PowerCap e plugins de painel XFCE/LXDE/GNOME.</p>
-                <div class="card-footer">
-                    <div class="card-tags">
-                        <span class="lang">Shell</span>
-                        <span class="lang">Linux</span>
-                        <span class="lang">Overclock</span>
-                    </div>
-                    <div class="card-links-wrap">
-                        <a href="https://github.com/siliconfps/hardview" target="_blank" rel="noopener" class="card-link">GitHub ↗</a>
-                    </div>
-                </div>
-            </article>
+    <section class="section shell" id="filosofia">
+      <div class="manifesto">
+        <div class="manifesto-sticky reveal">
+          <span class="kicker">03 / operating principles</span>
+          <h2>Menos ruído.<br>Mais máquina.</h2>
+          <p class="manifesto-copy">A tecnologia fica melhor quando você entende o que ela faz, consegue mudar seu comportamento e não paga por abstrações que não precisa.</p>
+        </div>
+        <div class="principles reveal">
+          <article class="principle"><div><h3>Performance é uma funcionalidade.</h3><p>Inicialização rápida, baixo uso de memória e trabalho feito perto do sistema — não como detalhe, mas como parte do produto.</p></div></article>
+          <article class="principle"><div><h3>Local primeiro.</h3><p>Ferramentas standalone, fluxos offline e dados sob controle do usuário sempre que o problema permite.</p></div></article>
+          <article class="principle"><div><h3>Interface sem mistério.</h3><p>Terminal, logs e configurações legíveis. O usuário deve enxergar decisões e consequências antes de apertar Enter.</p></div></article>
+          <article class="principle"><div><h3>Open source de verdade.</h3><p>Código disponível para estudar, auditar, adaptar e manter vivo — inclusive quando o projeto original perde ritmo.</p></div></article>
+        </div>
+      </div>
+    </section>
 
-        </section>
+    <section class="section shell" id="stack">
+      <header class="section-head reveal">
+        <div><span class="kicker">04 / toolchain</span><h2>A stack segue o problema.</h2></div>
+        <p class="section-lead">Do TypeScript para interfaces de terminal ao C e Rust quando controle e eficiência importam mais.</p>
+      </header>
+      <div class="stack reveal">
+        <div class="stack-cell"><span>01</span><h3>Agentes &amp; CLI</h3><p>TypeScript · Bun · Node.js · MCP</p></div>
+        <div class="stack-cell"><span>02</span><h3>Windows</h3><p>C# · .NET · PowerShell · Win32</p></div>
+        <div class="stack-cell"><span>03</span><h3>Low-level</h3><p>Rust · C · Shell · sensores MSR</p></div>
+        <div class="stack-cell"><span>04</span><h3>Workflow</h3><p>Git · Worktrees · Linux · automação</p></div>
+      </div>
+    </section>
 
-        <!-- ====== FOOTER ====== -->
-        <footer class="footer reveal">
-            <p><span class="highlight">$</span> Feito por <span class="highlight">siliconfps</span> &copy; 2026</p>
-            <div class="footer-links">
-                <a href="https://github.com/siliconfps" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://youtube.com/@siliconfps" target="_blank" rel="noopener" title="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
-            <p class="footer-meta">Referência para IA e Desenvolvedores: <a href="llms.txt" style="color: var(--cyan);">llms.txt</a> | <a href="llms-full.txt" style="color: var(--green);">llms-full.txt</a> | <a href="sitemap.xml" style="color: var(--text-dim);">sitemap.xml</a></p>
-        </footer>
+    <section class="contact shell">
+      <div class="contact-box reveal">
+        <span class="kicker">EOF / keep exploring</span>
+        <h2>Veja o código. Rode local. Quebre e melhore.</h2>
+        <p>Todos os projetos estão no GitHub com código, documentação e histórico de desenvolvimento. Se alguma ferramenta resolver seu problema, uma estrela ajuda outras pessoas a encontrá-la.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/siliconfps?tab=repositories" target="_blank" rel="noopener">Abrir repositórios <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="button secondary" href="https://youtube.com/@siliconfps" target="_blank" rel="noopener">YouTube <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    </main>
+  <footer class="shell">
+    <div class="footer-inner">
+      <span>© 2026 SILICONFPS · built close to the metal</span>
+      <div class="footer-links"><a href="llms.txt">llms.txt</a><a href="llms-full.txt">llms-full.txt</a><a href="sitemap.xml">sitemap.xml</a><a href="#top">↑ topo</a></div>
+    </div>
+  </footer>
 
-    <script>
-    // ============================================================
-    // SCROLL REVEAL
-    // ============================================================
-    (function() {
-        var els = document.querySelectorAll('.reveal');
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+  <script>
+    const menuButton = document.querySelector('.menu-button');
+    const navLinks = document.querySelector('.nav-links');
 
-        els.forEach(function(el) { observer.observe(el); });
-    })();
+    menuButton.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.textContent = open ? '×' : '≡';
+    });
 
-    // ============================================================
-    // ANIMATED STATS COUNTER
-    // ============================================================
-    (function() {
-        var statNums = document.querySelectorAll('.stat-num[data-target]');
-        var counted = false;
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.textContent = '≡';
+    }));
 
-        function animateCount(el) {
-            var target = parseInt(el.getAttribute('data-target'), 10);
-            var current = 0;
-            var increment = Math.max(1, Math.ceil(target / 30));
-            var stepTime = 1000 / 30;
+    const filters = document.querySelectorAll('.filter');
+    const projects = document.querySelectorAll('.project-card');
+    filters.forEach(button => button.addEventListener('click', () => {
+      filters.forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      const filter = button.dataset.filter;
+      projects.forEach(project => {
+        project.hidden = filter !== 'all' && !project.dataset.category.split(' ').includes(filter);
+      });
+    }));
 
-            var timer = setInterval(function() {
-                current += increment;
-                if (current >= target) {
-                    el.textContent = target + (target === 100 ? '%' : (target === 19 ? '+' : ''));
-                    clearInterval(timer);
-                } else {
-                    el.textContent = Math.floor(current);
-                }
-            }, stepTime);
+    const reveal = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          reveal.unobserve(entry.target);
         }
+      });
+    }, { threshold: .08 });
 
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting && !counted) {
-                    counted = true;
-                    statNums.forEach(function(el) { animateCount(el); });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        if (statNums.length > 0) {
-            var statsBar = document.querySelector('.stats-bar');
-            if (statsBar) observer.observe(statsBar);
-        }
-    })();
-    </script>
-
+    document.querySelectorAll('.reveal').forEach(element => reveal.observe(element));
+  </script>
 </body>
 </html>

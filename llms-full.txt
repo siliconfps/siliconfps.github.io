@@ -10,14 +10,14 @@ Site Oficial: https://siliconfps.github.io/
 ## 🌸 1. SiliconFlower — Agente Autônomo de IA CLI/TUI (1º Destaque)
 
 ### 1.1 Visão Geral
-O **SiliconFlower** é um harness autônomo CLI/TUI para desenvolvimento de software, projetado especialmente para Windows (e compatível com Linux e macOS). Ele permite que desenvolvedores executem tarefas complexas de engenharia de software diretamente do terminal com assistência de modelos de linguagem de ponta.
+O **SiliconFlower** é um harness CLI/TUI de alta performance para desenvolvimento de software no Windows. Ele permite executar tarefas complexas de engenharia diretamente do terminal com assistência de diferentes provedores de modelos de linguagem.
 
 ### 1.2 Principais Capacidades
 1. **Raciocínio Controlável (Reasoning Effort):** Permite alternar a profundidade de reflexão e cadeia de pensamento da IA entre níveis (desativado, baixo, médio, alto).
 2. **Model Context Protocol (MCP):** Integração nativa como cliente MCP via stdio, permitindo conectar servidores de ferramentas externos em tempo de execução.
-3. **Multi-Provedor:** Suporte nativo e unificado para OpenAI, Anthropic Claude, SiliconFlow e modelos compatíveis.
+3. **Multi-Provedor:** Suporte nativo e unificado para OpenAI, Anthropic, OpenRouter, SiliconFlow e APIs compatíveis.
 4. **Executável Standalone:** Compilado como binário único `.exe` de alta velocidade via Bun / TypeScript.
-5. **Memória Persistente:** Sistema de memória multi-nível (Projeto: `.siliconflower/memory/` e Global: `~/.siliconflower/memory/`) com categorização (user, feedback, project, reference).
+5. **Memória Persistente:** Preferências, regras e contexto ficam isolados em `~/.siliconflower/workspaces/<workspace-id>/memory/`, sem criar pastas visíveis dentro do repositório do projeto; memórias globais ficam em `~/.siliconflower/memory/`.
 6. **Subagentes Autônomos:** Criação de sessões isoladas para pesquisa de código, planejamento, codificação ou verificação.
 7. **Git Worktrees:** Execução isolada em branches temporárias para validação segura de alterações.
 
@@ -77,11 +77,11 @@ O **MarkiiDown** é um leitor de Markdown de alta performance projetado para rod
 ## ⚡ 3. Otimizador de Windows (3º Destaque)
 
 ### 3.1 Visão Geral
-O **otimizador-windows** é um utilitário avançado em PowerShell (com versão executável standalone `.exe`) projetado para limpar, desinflar e otimizar instalações do Windows 10 e Windows 11 para jogadores, desenvolvedores e profissionais que exigem latência mínima do sistema e máxima entrega de FPS.
+O **otimizador-windows** é uma automação pós-instalação em PowerShell, também distribuída como `.exe`, com 19 ajustes de desempenho e privacidade para Windows 10 e Windows 11.
 
 ### 3.2 Principais Otimizações
 - **Remoção de Bloatware:** Desinstalação completa de pacotes de telemetria, aplicativos pré-instalados da Microsoft Store e serviços residuais.
-- **Controle de Mitigações de CPU:** Gerenciamento seguro de mitigações de segurança de hardware (como Spectre e Meltdown) com foco em ganhos massivos de desempenho em CPUs.
+- **Controle de Mitigações de CPU:** Permite desativar mitigações como Spectre e Meltdown em cenários específicos, com aviso explícito sobre a redução de segurança e instruções de reversão.
 - **Desativação de Telemetria & Rastreamento:** Bloqueio de serviços de diagnóstico invasivos, tarefas agendadas em segundo plano e serviços de coleta de dados.
 - **Ajustes de Latência e Escalonador:** Otimização das filas de escalonamento do kernel para resposta instantânea em jogos e ferramentas de desenvolvimento.
 

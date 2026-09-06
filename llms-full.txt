@@ -106,10 +106,19 @@ O **otimizador-windows** é uma automação pós-instalação em PowerShell, tam
 - `check-cpu-mitigations`: Auditor de vulnerabilidades de hardware (Spectre, Meltdown, Foreshadow, MDS) em PowerShell.
 - `hardview`: Auditoria detalhada de especificações e status de hardware para distribuições Linux (Arch, Fedora, Ubuntu).
 
+### 4.4 Arch Linux Optimizations & Linux Tuning
+- Guia abrangente e scripts para Arch Linux com Kernel CachyOS e ambiente XFCE 4.20.
+- Otimizações de escalonador de CPU, perfis cpufreq em alta performance, áudio PipeWire de baixa latência e mitigação de gargalos.
+- Customização estética completa baseada em Libadwaita dark (`adw-gtk3-dark`), ícones Papirus-Dark e fontes Inter/JetBrains Mono.
+
+### 4.5 Editor Seco-Seco
+- Editor de texto CLI ultra-rápido desenvolvido em Rust puro sem dependências pesadas de frameworks TUI.
+- Suporte a edição UTF-8, busca em tempo real, desfazer (undo) e realce de sintaxe em 14 linguagens de programação.
+
 ---
 
 ## 👤 5. Sobre o Autor: siliconfps
 - **Foco:** Performance extrema de software, ferramentas para sistemas operacionais (Windows e Linux) e agentes autônomos de Inteligência Artificial.
-- **GitHub:** [https://github.com/siliconfps](https://github.com/siliconfps)
+- **GitHub:** [https://github.com/siliconfps](https://github.com/siliconfps) (20 repositórios públicos)
 - **YouTube:** [https://youtube.com/@siliconfps](https://youtube.com/@siliconfps)
 - **Licença Geral:** Open Source (MIT / GPLv3)

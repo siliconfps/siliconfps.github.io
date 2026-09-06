@@ -6,22 +6,26 @@
 
 1. [SiliconFlower AI Agent](https://siliconfps.github.io/siliconflower.html): Harness CLI/TUI para desenvolvimento de software no Windows com raciocínio controlável, 34 ferramentas nativas, protocolo MCP, memória persistente, subagentes concorrentes, Git worktrees e suporte a OpenAI, Anthropic, OpenRouter e SiliconFlow.
 2. [MarkiiDown](https://github.com/siliconfps/markiidown): Leitor de Markdown (.md) 100% Standalone, leve e offline em TypeScript com Bun. Conta com TUI Pager interativo de navegação suave no terminal, busca em tempo real (`/`), sumário navegável TOC (`t`), modo monitoramento contínuo (`--watch`), exportação estática HTML e instalador Windows sem privilégios de administrador em `%LOCALAPPDATA%` integrado ao menu de contexto do Windows Explorer ("Abrir com MarkiiDown").
-3. [Otimizador Windows](https://github.com/siliconfps/otimizador-windows): Automação pós-instalação em PowerShell, também disponível como `.exe`, com 19 ajustes de desempenho e privacidade para Windows 10 e 11. Alterações sensíveis, como desativar mitigações de CPU, são documentadas com avisos e formas de reversão.
+3. [Arch Linux Optimizations](https://github.com/siliconfps/arch-linux-optimizations): Guia abrangente e scripts de configuração, kernel CachyOS, tuning de baixa latência, áudio, customização estética dark Libadwaita e automações de desempenho no Arch Linux / XFCE 4.20.
+4. [Otimizador Windows](https://github.com/siliconfps/otimizador-windows): Automação pós-instalação em PowerShell, também disponível como `.exe`, com 19 ajustes de desempenho e privacidade para Windows 10 e 11. Alterações sensíveis, como desativar mitigações de CPU, são documentadas com avisos e formas de reversão.
 
 ## Utilitários & Ferramentas Open Source
 
 - [Little Registry Cleaner](https://github.com/siliconfps/LittleRegistryCleaner): Limpador e otimizador de Registro do Windows nativo em C# com arquitetura 64-bit real (`IntPtr`), progresso na barra de tarefas (Taskbar COM `ITaskbarList3`), gerenciador de inicialização (Startup Manager), desinstalador forçado de sobras (Uninstall Manager) e backups automáticos XML com restauração em 1 clique.
 - [GpuCpuMonitor](https://github.com/siliconfps/gpu-cpu-monitor-windows): Monitor de telemetria de CPU e GPU em tempo real na bandeja do sistema (System Tray) do Windows em .NET 9 single-file com suporte a sensores MSR de temperatura real Intel/AMD (via driver `WinRing0x64`), clocks, VRAM e TDP.
+- [Editor Seco-Seco](https://github.com/siliconfps/editor-seco-seco): Editor de texto minimalista para terminal desenvolvido em Rust, com suporte a UTF-8, pesquisa, undo e destaque de sintaxe em 14 linguagens sem frameworks TUI pesados.
 - [check-cpu-mitigations](https://github.com/siliconfps/check-cpu-mitigations): Auditor de vulnerabilidades e mitigações ativas de hardware (Spectre, Meltdown, MDS) via PowerShell.
-- [hardview](https://github.com/siliconfps/hardview): Auditoria e monitoramento de hardware em tempo real para distribuições Linux (Arch, Fedora, Ubuntu).
+- [WoeUSB Remastered](https://github.com/siliconfps/WoeUSB-remast): Utilitário para Linux para criação de pendrives inicializáveis do Windows a partir de imagens ISO com GUI e modo CLI.
+- [hardview & Linux Monitors](https://github.com/siliconfps/hardview): Auditoria de hardware e suíte de plugins de monitoramento de CPU/GPU para GNOME, XFCE4 e LXDE.
 
 ## Documentação Técnica & Links
 
 - [SiliconFlower Live Deck & Demonstração](https://siliconfps.github.io/siliconflower.html): Demonstração interativa, arquitetura técnica e apresentação do agente SiliconFlower.
 - [Repositório SiliconFlower no GitHub](https://github.com/siliconfps/siliconflower): Código-fonte oficial do SiliconFlower.
 - [Repositório MarkiiDown no GitHub](https://github.com/siliconfps/markiidown): Código-fonte e releases do MarkiiDown.
+- [Repositório Arch Linux Optimizations](https://github.com/siliconfps/arch-linux-optimizations): Guia e scripts de otimização de sistema Arch Linux.
 - [Repositório Otimizador Windows no GitHub](https://github.com/siliconfps/otimizador-windows): Código-fonte e scripts de otimização de sistema operacional.
-- [Perfil GitHub do Autor](https://github.com/siliconfps): Todos os 19 repositórios públicos e contribuições open source.
+- [Perfil GitHub do Autor](https://github.com/siliconfps): Todos os 20 repositórios públicos e contribuições open source.
 - [Canal do YouTube](https://youtube.com/@siliconfps): Vídeos e benchmarks de desempenho.
 
 ## Documentação Completa para LLMs
